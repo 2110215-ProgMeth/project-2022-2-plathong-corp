@@ -1,15 +1,19 @@
 package logic.entity;
 
-public class BaseEntity {
+public abstract class BaseEntity {
 	private int hp,atk;
+	private double speed;
 	private String name;
 	
 	public BaseEntity(String name , int hp ,int atk) {
 		setHp(hp);
 		setAtk(atk);
 		setName(name);
+		setSpeed(speed);
 		
 	}
+	
+	public abstract void normalAttack(Player p);
 
 	public int getHp() {
 		return hp;
@@ -33,5 +37,13 @@ public class BaseEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+	
+	public double getSpeed() {
+		return speed;
 	}
 }
