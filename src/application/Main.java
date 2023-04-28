@@ -1,18 +1,32 @@
 package application;
 
+import MainMenu.GameMenu;
 import drawing.GameScreen;
 import input.InputUtility;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import logic.game.GameLogic;
 import logic.entity.Player;
 import logic.entity.Werewolf;
 import sharedObject.RenderableHolder;
 
 public class Main extends Application{
+	
+	Scene gameScene,mainScene ;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -20,43 +34,43 @@ public class Main extends Application{
 	}
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage primaryStage) throws Exception {
+		
+		GameMenu gameMenu;
+			
+		Pane root = new Pane();
 		final int width = 1280;
 		final int height = 720;
-		// TODO Auto-generated method stub
-		StackPane root = new StackPane();
+		root.setPrefSize(width, height);
+		
+		gameMenu = new GameMenu();
+		
+		Image img = new Image(ClassLoader.getSystemResource("Elysia.jpeg").toString());
+		ImageView bg = new ImageView(img);
+		bg.setFitWidth(width);
+		bg.setFitHeight(height);
+		
+		root.getChildren().addAll(bg,gameMenu);
+		gameMenu.setVisible(false);
+
 		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.setTitle("2D Game");
 		
-		
-		GameScreen gameScreen = new GameScreen(width, height);
-		GameLogic logic = new GameLogic(gameScreen);
-		root.getChildren().add(gameScreen);
-		gameScreen.requestFocus();
-		
-		stage.show();
-		
-		AnimationTimer animation = new AnimationTimer() {
-			long previousTime = 0;
-			double drawInterval = 1e9/30;
-			double delta = 0;
-			
-			public void handle(long now) {
-				delta += (now-previousTime)/drawInterval;
-				previousTime = now;
-				
-				if (delta >= 1) {
-
-					gameScreen.paintComponent();
-					logic.logicUpdate();
-					RenderableHolder.getInstance().update();
-					InputUtility.updateInputState();
-					delta--;
-				}
+		scene.setOnKeyPressed(e->{
+			if (!gameMenu.isVisible()){
+				FadeTransition ft = new FadeTransition(Duration.seconds(1),gameMenu);
+				ft.setFromValue(0);
+				ft.setToValue(1);
+				gameMenu.setVisible(true);
+				ft.play();
 			}
-		};
-		animation.start();
-	}
+		});
+		
+		
+		
+		primaryStage.setTitle("Test");
+		primaryStage.setScene(scene);
+		
+		primaryStage.show();
 
+}
 }
