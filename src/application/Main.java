@@ -39,7 +39,7 @@ public class Main extends Application{
 		
 		AnimationTimer animation = new AnimationTimer() {
 			long previousTime = 0;
-			double drawInterval = 1e9/30;
+			double drawInterval = 1e9/60;
 			double delta = 0;
 			
 			public void handle(long now) {
@@ -47,9 +47,9 @@ public class Main extends Application{
 				previousTime = now;
 				
 				if (delta >= 1) {
-
-					gameScreen.paintComponent();
+					logic.count();
 					logic.logicUpdate();
+					gameScreen.paintComponent();
 					RenderableHolder.getInstance().update();
 					InputUtility.updateInputState();
 					delta--;

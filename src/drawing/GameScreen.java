@@ -7,6 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
@@ -68,6 +69,7 @@ public class GameScreen extends Canvas{
 			// System.out.println(entity.getZ());
 			if (entity.isVisible() && !entity.isDestroyed()) {
 				entity.draw(gc);
+			
 			}
 		}
 	}

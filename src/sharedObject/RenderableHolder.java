@@ -17,8 +17,10 @@ public class RenderableHolder {
 	private Comparator<IRenderable> comparator;
 	public static Image playerLeft;
 	public static Image playerRight;
+	public static Image playerRightAtk;
 	public static Image johnSprite;
-	public static Image mapSprite;
+	public static Image whiteTile;
+	public static Image grayTile;
 	
 	static {
 		loadResource();
@@ -38,10 +40,12 @@ public class RenderableHolder {
 	}
 
 	public static void loadResource() {
-		mapSprite = new Image(ClassLoader.getSystemResource("Map.png").toString());
-		playerLeft = new Image(ClassLoader.getSystemResource("RabbiLeft.png").toString());
-		playerRight = new Image(ClassLoader.getSystemResource("Rabbi.png").toString());
+		playerLeft = new Image(ClassLoader.getSystemResource("player/RabbiLeft.png").toString());
+		playerRight = new Image(ClassLoader.getSystemResource("player/Rabbi.png").toString());
+		playerRightAtk = new Image(ClassLoader.getSystemResource("player/RabbiRightAtk.png").toString());
 		johnSprite = new Image(ClassLoader.getSystemResource("John.png").toString());
+		whiteTile = new Image(ClassLoader.getSystemResource("Tiles/WhiteTile.png").toString());
+		grayTile = new Image(ClassLoader.getSystemResource("Tiles/GrayTile.png").toString());
 	}
 	
 	public void add(IRenderable entity) {

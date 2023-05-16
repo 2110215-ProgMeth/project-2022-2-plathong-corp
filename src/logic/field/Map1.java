@@ -9,51 +9,38 @@ import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
 public class Map1 implements IRenderable{
-	public GameLogic gameLogic;
-	private WritableImage[] croppedImage = new WritableImage[4];
+	public GameLogic gL;
+//	private WritableImage[] croppedImage = new WritableImage[4];
+	private Tile [] tiles = new Tile[2];
 	
 	public Map1(GameLogic gameLogic) {
-		this.gameLogic = gameLogic;
-		croppedImage[0] = new WritableImage(RenderableHolder.mapSprite.getPixelReader(),
-				0 * tileSize, 0, tileSize, tileSize);
-		croppedImage[1] = new WritableImage(RenderableHolder.mapSprite.getPixelReader(),
-				1 * tileSize, 0, tileSize, tileSize);
-		croppedImage[2] =new WritableImage(RenderableHolder.mapSprite.getPixelReader(),
-				2 * tileSize, 0, tileSize, tileSize);
+		this.gL = gameLogic;
+		tiles[0] = new Tile(RenderableHolder.whiteTile,false);
+		tiles[1] = new Tile(RenderableHolder.grayTile,true);
+//		croppedImage[0] = new WritableImage(RenderableHolder.superMapWowZaSprite.getPixelReader(),
+//				0 * tileSize, 0, tileSize, tileSize);
+//		croppedImage[1] = new WritableImage(RenderableHolder.superMapWowZaSprite.getPixelReader(),
+//				1 * tileSize, 0, tileSize, tileSize);
+//		croppedImage[2] =new WritableImage(RenderableHolder.superMapWowZaSprite.getPixelReader(),
+//				2 * tileSize, 0, tileSize, tileSize);
 	}
 	int tileSize = 64;
-	private static int[][] field = { { -1, 0, 0, 0, 0, 0, 0, 0, -1,-1, 0, 0, 0, 0, 0, 0, 0, -1, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{-1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, -2, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, -2, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, -1, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,-1, 0, 0, 0, 0, 0, 0, 0, -1, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{-1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, -2, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, -2, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, -1, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,-1, 0, 0, 0, 0, 0, 0, 0, -1, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{-1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, -2, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, -2, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, -1, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,-1, 0, 0, 0, 0, 0, 0, 0, -1, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{-1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, -2, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, -2, 0, 0, 0, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-			{ -1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, -1, 0, 0, 0, 0, 0 ,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, -1,0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+	public int[][] field = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 
 	public int getTerrain(int x, int y) {
 		if (x < 0 || x >= field[0].length || y < 0 || y >= field.length)
@@ -61,12 +48,12 @@ public class Map1 implements IRenderable{
 		return field[y][x];
 	}
 
-	private int getTileIndex(int x, int y) {
+	public int getTileIndex(int x, int y) {
 		int terrain = getTerrain(x, y);
 		if (terrain <= 0 && terrain >= -2)
 			return -terrain;
 		else
-			return 0;
+			return 1;
 	}
 
 	@Override
@@ -76,32 +63,35 @@ public class Map1 implements IRenderable{
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		
+		double width = field[0].length*tileSize;
+		double height = field.length*tileSize;
 		int worldCol = 0;
 		int worldRow = 0;
-		
-		while(worldCol < field[0].length && worldRow < field.length) {
-			int worldX = worldCol*tileSize;
-			int worldY = worldRow*tileSize;
-			double screenX = worldX-gameLogic.getPlayer().getWorldX()+gameLogic.getPlayer().screenX;
-			double screenY = worldY-gameLogic.getPlayer().getWorldY()+gameLogic.getPlayer().screenY;
-			
-//			if(worldX>gameLogic.getPlayer().getWorldX()-gameLogic.getPlayer().screenX && 
-//					worldX<gameLogic.getPlayer().getWorldX()+gameLogic.getPlayer().screenX &&
-//					worldY>gameLogic.getPlayer().getWorldY()-gameLogic.getPlayer().screenY &&
-//					worldY>gameLogic.getPlayer().getWorldY()+gameLogic.getPlayer().screenY ) {
-			if(screenX>-64 && screenX<gameLogic.getGameScreen().getWidth() && screenY>-64 && screenY < gameLogic.getGameScreen().getHeight()) {
-				gc.drawImage(croppedImage[Math.abs(getTileIndex(worldCol, worldRow))], screenX, screenY);
-		
+
+		while (worldCol < field[0].length && worldRow < field.length) {
+			int worldX = worldCol * tileSize;
+			int worldY = worldRow * tileSize;
+			int screenX = (int) (worldX - gL.getPlayer().getWorldX() + gL.getPlayer().screenX);
+			int screenY = (int) (worldY - gL.getPlayer().getWorldY() + gL.getPlayer().screenY);		
+
+			if (screenX > -tileSize && screenX < gL.getGameScreen().getWidth() && screenY > -tileSize
+					&& screenY < gL.getGameScreen().getHeight()) {
+//			if(worldX > gL.getPlayer().getWorldX()-gL.getPlayer().getScreenX()&&
+//					worldX<gL.getPlayer().getWorldX()+gL.getPlayer().getScreenX()&&
+//					worldY>gL.getPlayer().getWorldY()-gL.getPlayer().getScreenY()&&
+//					worldY<gL.getPlayer().getWorldY()+gL.getPlayer().getScreenY()) {
+				gc.drawImage(tiles[(getTileIndex(worldCol, worldRow))].getImage(), screenX, screenY);
+
 			}
 
 			worldCol++;
-			
+
 			if (worldCol == field[0].length) {
 				worldCol = 0;
 				worldRow++;
 			}
-	}
+		}
+		
 	}
 
 	@Override
@@ -115,4 +105,21 @@ public class Map1 implements IRenderable{
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+	public GameLogic getGameLogic() {
+		return gL;
+	}
+
+	public Tile[] getTiles() {
+		return tiles;
+	}
+
+	public int getTileSize() {
+		return tileSize;
+	}
+
+	public int[][] getField() {
+		return field;
+	}
+	
 }
