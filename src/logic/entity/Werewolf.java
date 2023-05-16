@@ -8,13 +8,12 @@ import sharedObject.RenderableHolder;
 
 public class Werewolf extends Entity{
 	private double angle = 0;
-	public GameLogic gameLogic;
 	public Werewolf(int x, int y,GameLogic gameLogic) {
 		this.worldX = x;
 		this.worldY = y;
 		this.z = -100;
 		this.speed =1;
-		this.gameLogic = gameLogic;;
+		this.gameLogic = gameLogic;
 	}
 	@Override
 	public void draw(GraphicsContext gc) {
@@ -24,8 +23,9 @@ public class Werewolf extends Entity{
 		gc.drawImage(RenderableHolder.johnSprite, screenX,  screenY);
 	}
 	
-	public void update(Player player) {
+	public void update() {
 		// TODO Auto-generated method stub	
+		Player player = gameLogic.getPlayer();
 		if (!canAttack(player.worldX, player.worldY, worldX, worldY, 24)) {
 			angle = Math.atan2(player.worldY-worldY,player.worldX-worldX);
 			double xspeed = Math.cos(angle) * speed;

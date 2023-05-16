@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import drawing.GameScreen;
+import logic.entity.Chicknight;
 import logic.entity.Entity;
 import logic.entity.Player;
 import logic.entity.Werewolf;
@@ -17,7 +18,7 @@ public class GameLogic {
 	
 	private GameScreen gameScreen;
 	private  Player player;
-	private Werewolf werewolf;
+	private Chicknight ck1;
 	private Map1 map;
 	
 	public GameLogic(GameScreen gameScreen){
@@ -28,9 +29,9 @@ public class GameLogic {
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
 		
-		werewolf = new Werewolf(100,100,this);
+		ck1 = new Chicknight(384,288,this);
 		addNewObject(player);
-		addNewObject(werewolf);
+		addNewObject(ck1);
 	}
 	
 	public GameScreen getGameScreen() {
@@ -103,7 +104,7 @@ public class GameLogic {
 	public void logicUpdate(){
 		if (counter == 60){
 			counter = 0;}
-		werewolf.update(player);
+		ck1.update();
 		player.update();
 	}
 	

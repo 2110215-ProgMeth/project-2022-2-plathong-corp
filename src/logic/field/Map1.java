@@ -11,33 +11,30 @@ import sharedObject.RenderableHolder;
 public class Map1 implements IRenderable{
 	public GameLogic gL;
 //	private WritableImage[] croppedImage = new WritableImage[4];
-	private Tile [] tiles = new Tile[2];
+	private Tile [] tiles = new Tile[5];
 	
 	public Map1(GameLogic gameLogic) {
 		this.gL = gameLogic;
 		tiles[0] = new Tile(RenderableHolder.whiteTile,false);
 		tiles[1] = new Tile(RenderableHolder.grayTile,true);
-//		croppedImage[0] = new WritableImage(RenderableHolder.superMapWowZaSprite.getPixelReader(),
-//				0 * tileSize, 0, tileSize, tileSize);
-//		croppedImage[1] = new WritableImage(RenderableHolder.superMapWowZaSprite.getPixelReader(),
-//				1 * tileSize, 0, tileSize, tileSize);
-//		croppedImage[2] =new WritableImage(RenderableHolder.superMapWowZaSprite.getPixelReader(),
-//				2 * tileSize, 0, tileSize, tileSize);
+		tiles[2] = new Tile(RenderableHolder.pathTile,false);
+		tiles[3] = new Tile(RenderableHolder.blackStarTile,true);
+		tiles[4] = new Tile(RenderableHolder.blackTile,true);
 	}
 	int tileSize = 64;
-	public int[][] field = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	public int[][] field = {{3,3,3,3,3,3,4,3,4,4,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
@@ -50,8 +47,8 @@ public class Map1 implements IRenderable{
 
 	public int getTileIndex(int x, int y) {
 		int terrain = getTerrain(x, y);
-		if (terrain <= 0 && terrain >= -2)
-			return -terrain;
+		if (terrain >= 0)
+			return terrain;
 		else
 			return 1;
 	}

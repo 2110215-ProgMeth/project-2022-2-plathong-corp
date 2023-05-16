@@ -1,6 +1,7 @@
 package logic.entity;
 
 import javafx.scene.shape.Rectangle;
+import logic.game.GameLogic;
 import sharedObject.IRenderable;
 
 public abstract class Entity implements IRenderable{
@@ -12,6 +13,7 @@ public abstract class Entity implements IRenderable{
 	protected String direction;
 	public Rectangle solidArea;
 	public boolean collisionOn = false;
+	public GameLogic gameLogic;
 	
 	protected Entity(){
 		visible = true;
@@ -19,6 +21,7 @@ public abstract class Entity implements IRenderable{
 	}
 	
 	public abstract void attack();
+	public abstract void update();
 	
 	public boolean canAttack(double x1,double y1,double x2,double y2,int attackRange) {
 		return (Math.abs(x1-x2) < attackRange && Math.abs(y1-y2) < attackRange);
