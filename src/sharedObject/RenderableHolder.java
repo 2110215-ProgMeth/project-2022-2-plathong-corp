@@ -25,6 +25,8 @@ public class RenderableHolder {
 	public static Image blackTile;
 	public static Image CKLeft,CKLeftWalk1,CKLeftAtk,CKRight,CKRightWalk1,CKRightAtk;
 	public static Image GELeft,GELeftWalk,GELeftWalk2,GERight,GERightWalk,GERightWalk2;
+	public static Image MTLeft1,MTLeft2,MTRight1,MTRight2;
+	public static Image moonSprite;
 	static {
 		loadResource();
 	}
@@ -43,15 +45,17 @@ public class RenderableHolder {
 	}
 
 	public static void loadResource() {
+		//player's Resource
 		playerLeft = new Image(ClassLoader.getSystemResource("player/RabbiLeft.png").toString());
 		playerRight = new Image(ClassLoader.getSystemResource("player/Rabbi.png").toString());
 		playerRightAtk = new Image(ClassLoader.getSystemResource("player/RabbiRightAtk.png").toString());
-		johnSprite = new Image(ClassLoader.getSystemResource("John.png").toString());
+
 		whiteTile = new Image(ClassLoader.getSystemResource("Tiles/WhiteTile.png").toString());
 		grayTile = new Image(ClassLoader.getSystemResource("Tiles/GrayTile.png").toString());
 		pathTile = new Image(ClassLoader.getSystemResource("Tiles/pathTile.png").toString());
 		blackStarTile = new Image(ClassLoader.getSystemResource("Tiles/blackStarTile.png").toString());
 		blackTile = new Image(ClassLoader.getSystemResource("Tiles/blackTile.png").toString());
+		moonSprite = new Image(ClassLoader.getSystemResource("moon.png").toString());
 		
 		//Chicknight's Resource
 		CKLeft = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightLeft.png").toString());
@@ -67,6 +71,11 @@ public class RenderableHolder {
 		GERight = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeRight.png").toString());
 		GERightWalk = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeRightWalk.png").toString());
 		GERightWalk2 = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeRightWalk2.png").toString());
+		//MagicalTortoise
+		MTLeft1 = new Image(ClassLoader.getSystemResource("MagicalTortoise/MagicalTortoiseLeft1.png").toString());
+		MTLeft2 = new Image(ClassLoader.getSystemResource("MagicalTortoise/MagicalTortoiseLeft2.png").toString());
+		MTRight1 = new Image(ClassLoader.getSystemResource("MagicalTortoise/MagicalTortoiseRight1.png").toString());
+		MTRight2 = new Image(ClassLoader.getSystemResource("MagicalTortoise/MagicalTortoiseRight2.png").toString());
 	}
 	
 	public void add(IRenderable entity) {

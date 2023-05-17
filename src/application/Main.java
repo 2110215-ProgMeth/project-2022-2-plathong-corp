@@ -20,8 +20,8 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		final int width = 1280;
-		final int height = 720;
+		final int width = 1920;
+		final int height = 1000;
 		// TODO Auto-generated method stub
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root);
