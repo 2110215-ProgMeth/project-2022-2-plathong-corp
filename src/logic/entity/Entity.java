@@ -24,7 +24,7 @@ public abstract class Entity implements IRenderable{
 		this.direction = "right";
 	}
 	
-	public abstract void attack();
+	public abstract void attack(Entity t);
 	public abstract void update();
 	
 	public boolean canAttack(double x1,double y1,double x2,double y2,int attackRange) {
@@ -88,4 +88,9 @@ public abstract class Entity implements IRenderable{
 	public void setCollisionOn(boolean collisionOn) {
 		this.collisionOn = collisionOn;
 	}
+
+	public void setDestroyed(boolean destroyed) {
+		this.destroyed = destroyed;
+	}
+	
 }

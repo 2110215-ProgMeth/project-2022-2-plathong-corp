@@ -50,7 +50,7 @@ public class GriszlyEye extends Entity{
 	
 
 	@Override
-	public void attack() {
+	public void attack(Entity p) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -92,7 +92,7 @@ public class GriszlyEye extends Entity{
 		
 		else {
 			currentState = "default";
-			attack();
+			attack(gameLogic.getPlayer());
 		}
 	}
 

@@ -37,7 +37,7 @@ public class MagicalTortoise extends Entity{
 	}
 
 	@Override
-	public void attack() {
+	public void attack(Entity p) {
 		// TODO Auto-generated method stub	
 	}
 

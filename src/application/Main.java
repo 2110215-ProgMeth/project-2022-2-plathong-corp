@@ -20,8 +20,8 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		final int width = 1920;
-		final int height = 1000;
+		final int width = 1280;
+		final int height = 720;
 		// TODO Auto-generated method stub
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root);
@@ -46,7 +46,6 @@ public class Main extends Application{
 				previousTime = now;
 				logic.checkGameState();
 				if (delta >= 1) {
-					
 					logic.count();
 //					logic.logicUpdate();
 //					gameScreen.paintComponent();

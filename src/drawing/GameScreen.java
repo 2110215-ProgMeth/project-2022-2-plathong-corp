@@ -3,6 +3,7 @@ package drawing;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -12,10 +13,11 @@ import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
 public class GameScreen extends Canvas{
+	private boolean paused = false;
+	
 	public GameScreen(double width, double height) {
 		super(width, height);
 		this.setVisible(true);
-		this.
 		addListerner();
 	}
 
@@ -59,6 +61,7 @@ public class GameScreen extends Canvas{
 				InputUtility.mouseY = event.getY();
 			}
 		});
+		
 	}
 
 	public void paintComponent() {
@@ -72,5 +75,9 @@ public class GameScreen extends Canvas{
 			
 			}
 		}
+	}
+	
+	public GameScreen getGameScreen() {
+		return this;
 	}
 }
