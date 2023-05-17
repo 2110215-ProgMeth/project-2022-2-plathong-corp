@@ -8,7 +8,6 @@ import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import logic.entity.Player;
-import logic.entity.Werewolf;
 
 public class RenderableHolder {
 	private static final RenderableHolder instance = new RenderableHolder();
@@ -24,8 +23,8 @@ public class RenderableHolder {
 	public static Image pathTile;
 	public static Image blackStarTile;
 	public static Image blackTile;
-	public static Image CKLeft,CKLeftWalk1,CKLeftWalk2,CKLeftAtk,CKRight,CKRightWalk1,CKRightWalk2,CKRightAtk;
-	
+	public static Image CKLeft,CKLeftWalk1,CKLeftAtk,CKRight,CKRightWalk1,CKRightAtk;
+	public static Image GELeft,GELeftWalk,GELeftWalk2,GERight,GERightWalk,GERightWalk2;
 	static {
 		loadResource();
 	}
@@ -57,12 +56,17 @@ public class RenderableHolder {
 		//Chicknight's Resource
 		CKLeft = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightLeft.png").toString());
 		CKLeftWalk1 = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightLeftWalk1.png").toString());
-		CKLeftWalk2 = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightLeftWalk2.png").toString());
 		CKLeftAtk = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightLeftAtk.png").toString());
 		CKRight = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightRight.png").toString());
 		CKRightWalk1 = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightRightWalk1.png").toString());
-		CKRightWalk2 = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightRightWalk2.png").toString());
 		CKRightAtk = new Image(ClassLoader.getSystemResource("Chicknight/ChicknightRightAtk.png").toString());
+		//GriszlyEye's Resource
+		GELeft = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeLeft.png").toString());
+		GELeftWalk = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeLeftWalk.png").toString());
+		GELeftWalk2 = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeLeftWalk2.png").toString());
+		GERight = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeRight.png").toString());
+		GERightWalk = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeRightWalk.png").toString());
+		GERightWalk2 = new Image(ClassLoader.getSystemResource("GriszlyEye/GriszlyEyeRightWalk2.png").toString());
 	}
 	
 	public void add(IRenderable entity) {
@@ -70,7 +74,7 @@ public class RenderableHolder {
 		entities.add(entity);
 		Collections.sort(entities, comparator);
 		for(IRenderable x: entities){
-			if(x instanceof Werewolf) System.out.println("WereWolf");
+			
 			if(x instanceof Player) System.out.println("player");
 			
 		}

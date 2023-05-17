@@ -12,17 +12,13 @@ import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
 public class Player extends Entity{
-	
-	public GameLogic gameLogic;
+
 	private String attackState = "no";
 	int counter;
 	public Player(int x, int y,GameLogic gameLogic) {
-		this.worldX = x;
-		this.worldY = y;
+		super(x,y,gameLogic);
 		this.speed = 3;
 		this.radius = 32;
-		this.gameLogic = gameLogic;
-		this.direction = "right";
 		screenX = gameLogic.getGameScreen().getWidth()/2-radius;
 		screenY = gameLogic.getGameScreen().getHeight()/2-radius;
 		solidArea = new Rectangle(16,32,32,32);
@@ -48,7 +44,7 @@ public class Player extends Entity{
 
 		attackState = "yes";
 	}
-
+	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		direction = "";

@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import drawing.GameScreen;
+import input.InputUtility;
+import javafx.scene.input.KeyCode;
 import logic.entity.Chicknight;
 import logic.entity.Entity;
+import logic.entity.GriszlyEye;
 import logic.entity.Player;
-import logic.entity.Werewolf;
 import logic.field.Map1;
-import logic.field.WhiteMap;
 import sharedObject.RenderableHolder;
 
 public class GameLogic {
@@ -18,8 +19,13 @@ public class GameLogic {
 	
 	private GameScreen gameScreen;
 	private  Player player;
+	private GriszlyEye ge;
 	private Chicknight ck1;
 	private Map1 map;
+	
+	public int gameState = 1;
+	public final int playState = 1;
+	public final int pauseState = 2;
 	
 	public GameLogic(GameScreen gameScreen){
 		this.gameObjectContainer = new ArrayList<Entity>();
@@ -28,10 +34,11 @@ public class GameLogic {
 		
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
-		
+		ge = new GriszlyEye(200,200,this);
 		ck1 = new Chicknight(384,288,this);
 		addNewObject(player);
 		addNewObject(ck1);
+		addNewObject(ge);
 	}
 	
 	public GameScreen getGameScreen() {
@@ -102,10 +109,22 @@ public class GameLogic {
 		
 	}
 	public void logicUpdate(){
-		if (counter == 60){
-			counter = 0;}
 		ck1.update();
 		player.update();
+		ge.update();
+	}
+	
+	public void update() {
+		if (counter == 60){
+			counter = 0;}
+//		System.out.println(gameState);
+		if(gameState == playState) {
+		logicUpdate();
+		gameScreen.paintComponent();
+		}
+		else if (gameState == pauseState) {
+//			System.out.println(500);
+		}
 	}
 	
 	public Player getPlayer() {
@@ -120,6 +139,21 @@ public class GameLogic {
 		counter++;
 		if(counter%10 == 0) {
 			System.out.println(counter);
+		}
+	}
+	
+	public void checkGameState() {
+		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
+			
+			if(gameState == playState) {
+				gameState = pauseState;
+			}
+			else if (gameState == pauseState) {
+				gameState = playState;
+				
+				
+			}
+			InputUtility.getKeyPressed().remove(KeyCode.SPACE );
 		}
 	}
 	

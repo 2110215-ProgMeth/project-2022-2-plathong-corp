@@ -14,6 +14,7 @@ public class InputUtility {
 	public static boolean getKeyPressed(KeyCode keycode) {
 		return keyPressed.contains(keycode);
 	}
+
 	public static void setKeyPressed(KeyCode keycode,boolean pressed) {
 		if(pressed){
 			if(!keyPressed.contains(keycode)){
@@ -42,4 +43,7 @@ public class InputUtility {
 		isLeftClickedLastTick = false;
 	}
 	
+	public static ArrayList<KeyCode> getKeyPressed() {
+		return keyPressed;
+	}
 }

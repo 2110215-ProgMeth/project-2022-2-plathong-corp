@@ -6,62 +6,55 @@ import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
-public class Chicknight extends Entity{
+public class GriszlyEye extends Entity{
 	private double angle = 0;
-	private Image image = RenderableHolder.CKRight;
-	private String currentState = "default";
-	public Chicknight(int x, int y,GameLogic gameLogic) {
+	public String currentState = "default";
+	public GriszlyEye(int x,int y,GameLogic gameLogic) {
 		super(x,y,gameLogic);
 		this.z = -100;
-		this.speed =1;
-		solidArea = new Rectangle(16,0,32,64);
+		this.speed =3;
+		solidArea = new Rectangle(20,0,24,32);
 	}
+	
+	private Image image = RenderableHolder.GERight;
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
-		
-		
 		switch(direction) {
 		case "right":
 			if(currentState=="default")
-				if (gameLogic.getCounter()/10%2==1) {
-					image = RenderableHolder.CKRight;
-				}
-				else
-					image = RenderableHolder.CKRightAtk;
+					image = RenderableHolder.GERight;
+
 			else {
 				if (gameLogic.getCounter()/10%2==1) {
-					image = RenderableHolder.CKRightWalk1;
+					image = RenderableHolder.GERightWalk;
 				}
 				else
-					image = RenderableHolder.CKRight;
+					image = RenderableHolder.GERightWalk2;
 			}
 			break;
 		case "left":
 			if(currentState=="default")
-				if (gameLogic.getCounter()/10%2==1) {
-					image = RenderableHolder.CKLeft;
-				}
-				else
-					image = RenderableHolder.CKLeftAtk;
+					image = RenderableHolder.GELeft;
 			else {
 				if (gameLogic.getCounter()/10%2==1) {
-					image = RenderableHolder.CKLeftWalk1;
+					image = RenderableHolder.GELeftWalk;
 				}
 				else
-					image = RenderableHolder.CKLeft;
+					image = RenderableHolder.GELeftWalk2;
 			}
 			break;
 		}
 		gc.drawImage(image, screenX, screenY);
 	}
-
 	
+
 	@Override
 	public void attack() {
 		// TODO Auto-generated method stub
 		
 	}
+
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub

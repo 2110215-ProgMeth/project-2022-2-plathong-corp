@@ -9,7 +9,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import logic.game.GameLogic;
 import logic.entity.Player;
-import logic.entity.Werewolf;
 import sharedObject.RenderableHolder;
 
 public class Main extends Application{
@@ -45,11 +44,13 @@ public class Main extends Application{
 			public void handle(long now) {
 				delta += (now-previousTime)/drawInterval;
 				previousTime = now;
-				
+				logic.checkGameState();
 				if (delta >= 1) {
+					
 					logic.count();
-					logic.logicUpdate();
-					gameScreen.paintComponent();
+//					logic.logicUpdate();
+//					gameScreen.paintComponent();
+					logic.update();
 					RenderableHolder.getInstance().update();
 					InputUtility.updateInputState();
 					delta--;

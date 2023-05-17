@@ -15,9 +15,13 @@ public abstract class Entity implements IRenderable{
 	public boolean collisionOn = false;
 	public GameLogic gameLogic;
 	
-	protected Entity(){
+	public Entity(int x, int y,GameLogic gameLogic){
 		visible = true;
 		destroyed = false;
+		worldX = x;
+		worldY = y;
+		this.gameLogic = gameLogic;
+		this.direction = "right";
 	}
 	
 	public abstract void attack();
