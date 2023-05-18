@@ -7,7 +7,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
@@ -75,6 +77,11 @@ public class GameScreen extends Canvas{
 			
 			}
 		}
+	}
+	
+	public void drawGamePauseOverlay() {
+		GraphicsContext gc = this.getGraphicsContext2D();
+		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252 );
 	}
 	
 	public GameScreen getGameScreen() {

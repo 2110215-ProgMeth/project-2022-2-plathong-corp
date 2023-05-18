@@ -128,13 +128,13 @@ public class Chicknight extends Entity {
 	}
 
 	public void initSolidArea() {
-		solidArea = new Rectangle(16, 0, 32, 64);
+		solidArea = new Rectangle(0, 0, 32, 64);
 	}
 
 	public void initAttackBlock() {
 //		screenX = worldX-gameLogic.getPlayer().worldX+gameLogic.getPlayer().screenX;
 //		screenY = worldY-gameLogic.getPlayer().worldY+gameLogic.getPlayer().screenY;
-		attackBlock = new Rectangle(screenX, screenY, 20 * 2, 20 * 2);
+		attackBlock = new Rectangle(screenX, screenY, 10 * 2, 7 * 2);
 //		attackOffset = (int)(*2);
 	}
 
@@ -179,7 +179,7 @@ public class Chicknight extends Entity {
 
 	public void drawAttackBlock(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
+		gc.strokeRect(attackBlock.getX()+solidArea.getWidth(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
 	}
 
 }

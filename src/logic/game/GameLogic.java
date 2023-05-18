@@ -5,6 +5,7 @@ import java.util.List;
 
 import drawing.GameScreen;
 import input.InputUtility;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import logic.entity.Chicknight;
 import logic.entity.Entity;
@@ -159,6 +160,7 @@ public class GameLogic {
 			
 			if(gameState == playState) {
 				gameState = pauseState;
+				gameScreen.drawGamePauseOverlay();
 			}
 			else if (gameState == pauseState) {
 				gameState = playState;

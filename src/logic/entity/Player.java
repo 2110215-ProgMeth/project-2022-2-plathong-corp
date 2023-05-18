@@ -183,7 +183,7 @@ public class Player extends Entity{
 	}
 	
 	public void initSolidArea() {
-		solidArea = new Rectangle(0,0,44,64);
+		solidArea = new Rectangle(0,0,32,64);
 	}
 	
 	public void initAttackBlock() {
@@ -195,7 +195,7 @@ public class Player extends Entity{
 			attackBlock.setX(screenX+(int)solidArea.getWidth());
 //			attackBlock.setLayoutX(0);
 		}else if(direction=="left") {
-			attackBlock.setX(screenX+(int)solidArea.getWidth()-(int)(42d*2));
+			attackBlock.setX(screenX+(int)solidArea.getWidth()-(int)(30*2));
 		}
 		attackBlock.setY(screenY+(int)(10*2));
 	}

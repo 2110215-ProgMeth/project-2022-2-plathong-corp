@@ -24,7 +24,7 @@ public class RenderableHolder {
 	public static Image blackStarTile;
 	public static Image blackTile;
 	public static Image CKLeft, CKLeftWalk1, CKLeftWalk2, CKLeftAtk, CKRight, CKRightWalk1, CKRightWalk2, CKRightAtk;
-	public static Image pauseMenu, soundButton, urm, volumeButton;
+	public static Image pauseOverlay,pauseMenu, soundButton, urm, volumeButton;
 	public static Image GELeft, GELeftWalk, GELeftWalk2, GERight, GERightWalk, GERightWalk2;
 	public static Image MTLeft1, MTLeft2, MTRight1, MTRight2;
 	public static Image moonSprite;
@@ -81,10 +81,11 @@ public class RenderableHolder {
 		MTRight2 = new Image(ClassLoader.getSystemResource("MagicalTortoise/MagicalTortoiseRight2.png").toString());
 
 		// Pause
-		pauseMenu = new Image(ClassLoader.getSystemResource("pause/pause_menu.png").toString());
-		soundButton = new Image(ClassLoader.getSystemResource("pause/sound_button.png").toString());
-		urm = new Image(ClassLoader.getSystemResource("pause/urm_buttons.png").toString());
-		volumeButton = new Image(ClassLoader.getSystemResource("pause/volume_buttons.png").toString());
+		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
+//		pauseMenu = new Image(ClassLoader.getSystemResource("pause/.png").toString());
+//		soundButton = new Image(ClassLoader.getSystemResource("pause/sound_button.png").toString());
+//		urm = new Image(ClassLoader.getSystemResource("pause/urm_buttons.png").toString());
+//		volumeButton = new Image(ClassLoader.getSystemResource("pause/volume_buttons.png").toString());
 
 		// StatusBar
 		healthBar = new Image(ClassLoader.getSystemResource("health_power_bar.png").toString());
