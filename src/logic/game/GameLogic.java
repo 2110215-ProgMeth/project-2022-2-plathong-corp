@@ -5,27 +5,31 @@ import java.util.List;
 
 import drawing.GameScreen;
 import input.InputUtility;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 import logic.entity.Chicknight;
 import logic.entity.Entity;
+import logic.entity.EyeOfQwifot;
 import logic.entity.GriszlyEye;
 import logic.entity.MagicalTortoise;
 import logic.entity.Player;
+import logic.entity.ShadowPot;
 import logic.field.Map1;
+import logic.field.WhiteMap;
 import sharedObject.RenderableHolder;
 
 public class GameLogic {
-	private List<Entity> gameObjectContainer;
+	private ArrayList<Entity> gameObjectContainer;
 	private static int counter = 0;
 	
 	private GameScreen gameScreen;
 	private  Player player;
-	private GriszlyEye ge;
 	private Chicknight ck1;
-	private MagicalTortoise mt;
+	private GriszlyEye ge1;
+	private MagicalTortoise mg;
 	private Map1 map;
 	
+	//GameState
 	public int gameState = 1;
 	public final int playState = 1;
 	public final int pauseState = 2;
@@ -37,13 +41,18 @@ public class GameLogic {
 		
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
-		ge = new GriszlyEye(200,200,this);
-		ck1 = new Chicknight(384,288,this);
-		mt = new MagicalTortoise(350,250,this);
+		
+		ck1 = new Chicknight(200,0,this);
+		mg = new MagicalTortoise(200,200,this);
+		ge1 = new GriszlyEye(200,200,this);
+		EyeOfQwifot eq = new EyeOfQwifot(500, 500, this);
+		ShadowPot sp = new ShadowPot(300, 200, this);
 		addNewObject(player);
 		addNewObject(ck1);
-		addNewObject(ge);
-		addNewObject(mt);
+		addNewObject(mg);
+		addNewObject(ge1);
+		addNewObject(eq);
+		addNewObject(sp);
 	}
 	
 	public GameScreen getGameScreen() {
@@ -113,12 +122,6 @@ public class GameLogic {
 		}
 		
 	}
-	public void logicUpdate(){
-		ck1.update();
-		player.update();
-		ge.update();
-		mt.update();
-	}
 	
 	public void update() {
 //		System.out.println(gameState);
@@ -130,6 +133,17 @@ public class GameLogic {
 		else if (gameState == pauseState) {
 //			System.out.println(500);
 		}
+	}
+	
+	public void logicUpdate(){
+		if (counter == 60){
+			counter = 0;}
+		ArrayList<Entity> objectContainer = getGameObjectContainer();
+		for (int i = 0 ;i<objectContainer.size();i++) {
+			(objectContainer.get(i)).update();
+			if (objectContainer.get(i).isDestroyed()) getGameObjectContainer().remove(objectContainer.get(i));
+		}
+		
 	}
 	
 	public Player getPlayer() {
@@ -145,23 +159,26 @@ public class GameLogic {
 		if(counter%10 == 0) {
 			System.out.println(counter);
 		}
-		if (counter == 60){
-			counter = 0;}
 	}
 	
 	public void checkGameState() {
-		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
+		if (InputUtility.getKeyPressed(KeyCode.ESCAPE)) {
 			
 			if(gameState == playState) {
 				gameState = pauseState;
+				gameScreen.drawGamePauseOverlay();
 			}
 			else if (gameState == pauseState) {
 				gameState = playState;
 				
 				
 			}
-			InputUtility.getKeyPressed().remove(KeyCode.SPACE );
+			InputUtility.getKeyPressed().remove(KeyCode.ESCAPE);
 		}
+	}
+	
+	public ArrayList<Entity> getGameObjectContainer(){
+		return gameObjectContainer;
 	}
 	
 }

@@ -11,12 +11,11 @@ public class GriszlyEye extends Entity{
 	public String currentState = "default";
 	public GriszlyEye(int x,int y,GameLogic gameLogic) {
 		super(x,y,gameLogic);
-		this.z = -100;
 		this.speed =3;
 		solidArea = new Rectangle(20,0,24,32);
+		image = RenderableHolder.GERight;
 	}
 	
-	private Image image = RenderableHolder.GERight;
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
@@ -50,7 +49,7 @@ public class GriszlyEye extends Entity{
 	
 
 	@Override
-	public void attack() {
+	public void attack(Entity p) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -92,7 +91,7 @@ public class GriszlyEye extends Entity{
 		
 		else {
 			currentState = "default";
-			attack();
+			attack(gameLogic.getPlayer());
 		}
 	}
 

@@ -3,19 +3,23 @@ package drawing;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
 public class GameScreen extends Canvas{
+	private boolean paused = false;
+	
 	public GameScreen(double width, double height) {
 		super(width, height);
 		this.setVisible(true);
-		this.
 		addListerner();
 	}
 
@@ -59,6 +63,7 @@ public class GameScreen extends Canvas{
 				InputUtility.mouseY = event.getY();
 			}
 		});
+		
 	}
 
 	public void paintComponent() {
@@ -72,5 +77,14 @@ public class GameScreen extends Canvas{
 			
 			}
 		}
+	}
+	
+	public void drawGamePauseOverlay() {
+		GraphicsContext gc = this.getGraphicsContext2D();
+		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252 );
+	}
+	
+	public GameScreen getGameScreen() {
+		return this;
 	}
 }

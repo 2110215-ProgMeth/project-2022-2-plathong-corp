@@ -1,7 +1,6 @@
 package logic.field;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.shape.Rectangle;
 import logic.entity.Player;
@@ -58,14 +57,14 @@ public class Map1 implements IRenderable{
 	public int getZ() {
 		return -9999;
 	}
+
 	@Override
 	public void draw(GraphicsContext gc) {
 		double width = field[0].length*tileSize;
 		double height = field.length*tileSize;
 		int worldCol = 0;
 		int worldRow = 0;
-		
-		gc.drawImage(RenderableHolder.moonSprite,500-gL.getPlayer().getWorldX() + gL.getPlayer().screenX,-500 - gL.getPlayer().getWorldY() + gL.getPlayer().screenY,500,500);
+
 		while (worldCol < field[0].length && worldRow < field.length) {
 			int worldX = worldCol * tileSize;
 			int worldY = worldRow * tileSize;

@@ -1,5 +1,6 @@
 package logic.entity;
 
+import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
@@ -14,6 +15,10 @@ public abstract class Entity implements IRenderable{
 	public Rectangle solidArea;
 	public boolean collisionOn = false;
 	public GameLogic gameLogic;
+	protected int maxHp;
+	protected int currentHealth;
+	protected int dmg;
+	protected Image image;
 	
 	public Entity(int x, int y,GameLogic gameLogic){
 		visible = true;
@@ -24,7 +29,7 @@ public abstract class Entity implements IRenderable{
 		this.direction = "right";
 	}
 	
-	public abstract void attack();
+	public abstract void attack(Entity t);
 	public abstract void update();
 	
 	public boolean canAttack(double x1,double y1,double x2,double y2,int attackRange) {
@@ -88,4 +93,9 @@ public abstract class Entity implements IRenderable{
 	public void setCollisionOn(boolean collisionOn) {
 		this.collisionOn = collisionOn;
 	}
+
+	public void setDestroyed(boolean destroyed) {
+		this.destroyed = destroyed;
+	}
+	
 }
