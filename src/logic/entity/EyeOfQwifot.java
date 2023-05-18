@@ -14,7 +14,7 @@ public class EyeOfQwifot extends MiniBoss{
         z = -100;
         image = RenderableHolder.EQ1;
         currentState = "alive";
-        initAttackBlock();
+//        initAttackBlock();
         initSolidArea();
         // TODO Auto-generated constructor stub
     }
@@ -53,22 +53,19 @@ public class EyeOfQwifot extends MiniBoss{
     @Override
     public void update() {
         // TODO Auto-generated method stub
-        screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;
-        screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
+        super.update();
     }
 
 	@Override
 	public void initSolidArea() {
 		// TODO Auto-generated method stub
 		solidArea = new Rectangle(0,0,256,256);
-		solidScreen = new Rectangle(screenX,screenY,8,8);
-
 	}
 
 	@Override
 	public void initAttackBlock() {
-		// TODO Auto-generated method stub
-		solidArea = new Rectangle(0,0,256,256);
+//		 TODO Auto-generated method stub
+//		attackBlock = new Rectangle(0,0,256,256);
 	}
 	
 	public void changeHealthTo(int health) {

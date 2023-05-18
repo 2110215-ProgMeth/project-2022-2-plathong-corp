@@ -71,8 +71,9 @@ public class Chicknight extends Enemy {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;
-		screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
+		super.update();
+
+		
 		Player player = gameLogic.getPlayer();
 		if (!canAttack(player.worldX, player.worldY, worldX, worldY, (int)(attackBlock.getWidth()+solidArea.getWidth()))) {
 			angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
@@ -106,14 +107,11 @@ public class Chicknight extends Enemy {
 			currentState = "attack";
 			attack(gameLogic.getPlayer());
 		}
-		solidArea.setX(screenX);
-		solidArea.setY(screenY);
 		updateAttackBlock();
 	}
 
 	public void initSolidArea() {
 		solidArea = new Rectangle(0, 0, 32, 64);
-		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),8,8);
 	}
 
 	public void initAttackBlock() {

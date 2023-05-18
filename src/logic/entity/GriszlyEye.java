@@ -68,8 +68,7 @@ public class GriszlyEye extends Enemy {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;
-		screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
+		super.update();
 		Player player = gameLogic.getPlayer();
 		if (!canAttack(player.worldX, player.worldY, worldX, worldY, 24)) {
 			angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
@@ -105,8 +104,6 @@ public class GriszlyEye extends Enemy {
 			currentState = "default";
 			attack(gameLogic.getPlayer());
 		}
-		solidArea.setX(screenX);
-		solidArea.setY(screenY);
 		updateAttackBlock();
 	}
 

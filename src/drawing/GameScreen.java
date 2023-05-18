@@ -84,6 +84,10 @@ public class GameScreen extends Canvas{
 		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252 );
 	}
 	
+	public void drawGameOverOverlay() {
+		GraphicsContext gc = this.getGraphicsContext2D();
+		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252 );
+	}
 	public GameScreen getGameScreen() {
 		return this;
 	}

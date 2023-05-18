@@ -34,7 +34,7 @@ public abstract class Enemy extends Entity{
 		int y = (int) p.getScreenY();
 		int width = (int) p.getSolidArea().getWidth();
 		int height = (int) p.getSolidArea().getHeight();
-		boolean overlap = solidArea.intersects(x,y,width,height);
+		boolean overlap = solidScreen.intersects(x,y,width,height);
 //		System.out.println("Overlap = " + overlap);
 //		System.out.println("X = " + x + " Y = " + y);
 		return overlap;
@@ -55,7 +55,7 @@ public abstract class Enemy extends Entity{
 	public void drawHitbox(GraphicsContext gc) {
 		gc.setLineWidth(2);
 		gc.setFill(Color.PINK);
-		gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidArea.getWidth(), solidArea.getHeight());
+		gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidScreen.getWidth(), solidScreen.getHeight());
 	}
 
 	public void drawAttackBlock(GraphicsContext gc) {
@@ -69,7 +69,20 @@ public abstract class Enemy extends Entity{
 		attackBlock.setY(screenY);
 	}
 	
-	public abstract void update();
+	public void update() {
+		super.update();
+		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
+	}
+	
+	public void reset() {		
+		visible = true;
+		destroyed = false;
+		worldX = getWorldX();
+		worldY = getWorldY();
+		this.currentHealth = maxHp;
+		this.direction = "right";
+		}
+	
 	public abstract void initSolidArea();
 	public abstract void initAttackBlock();
 }

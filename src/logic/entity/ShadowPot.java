@@ -54,8 +54,7 @@ public class ShadowPot extends Enemy{
     @Override
     public void update() {
         // TODO Auto-generated method stub
-        screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;
-        screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
+        super.update();
         Player player = gameLogic.getPlayer();
         angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
         double xDirection =  Math.cos(Math.atan2(player.worldY-worldY,player.worldX-worldX));

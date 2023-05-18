@@ -94,7 +94,7 @@ public class Player extends Entity{
 		((Enemy)e).changeHealthTo(((Enemy)e).getCurrentHealth()-dmg);
 		
 	}
-
+	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		direction = "";
@@ -147,6 +147,9 @@ public class Player extends Entity{
 					boolean canAtk = canAttack(worldX,worldY,enemy.getWorldX(),enemy.getWorldY(),(int) (solidArea.getWidth()+attackBlock.getWidth()));
 					if (canAtk) {
 						attack(entity);
+					}
+					if(enemy instanceof EyeOfQwifot) {
+						System.out.println(enemy.solidScreen.getWidth()+" "+enemy.solidScreen.getHeight());
 					}
 					
 				}
@@ -210,4 +213,12 @@ public class Player extends Entity{
 	public void setCurrentHealth(int currentHealth) {
 		this.currentHealth = currentHealth;
 	}
+	
+	public void reset() {		
+		visible = true;
+		destroyed = false;
+		worldX = getWorldX();
+		worldY = getWorldY();
+		this.currentHealth = maxHp;
+		}
 }

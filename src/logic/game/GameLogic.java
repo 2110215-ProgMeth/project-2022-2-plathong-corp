@@ -9,6 +9,7 @@ import input.InputUtility;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import logic.entity.Chicknight;
+import logic.entity.Enemy;
 import logic.entity.Entity;
 import logic.entity.EyeOfQwifot;
 import logic.entity.GriszlyEye;
@@ -37,6 +38,7 @@ public class GameLogic {
 	public int gameState = 1;
 	public final int playState = 1;
 	public final int pauseState = 2;
+	public final int gameOverState = 3;
 	
 	public GameLogic(GameScreen gameScreen){
 		this.gameObjectContainer = new ArrayList<Entity>();
@@ -138,14 +140,29 @@ public class GameLogic {
 //		System.out.println(gameState);
 		if(gameState == playState) {
 		logicUpdate();
-
+		
 		gameScreen.paintComponent();
 		}
 		else if (gameState == pauseState) {
+			gameScreen.drawGamePauseOverlay();
 //			System.out.println(500);
+		}else if (gameState == gameOverState) {
+			getGameScreen().drawGameOverOverlay();
+			if (InputUtility.getKeyPressed(KeyCode.R)) {
+				gameState = playState;
+				reset();
+			}
 		}
 	}
 	
+	private void reset() {
+		// TODO Auto-generated method stub
+		getPlayer().reset();
+		for (Entity e:gameObjectContainer) {
+			((Enemy)e).reset();
+		}
+	}
+
 	public void logicUpdate(){
 		if (counter == 60){
 			counter = 0;}
@@ -182,7 +199,7 @@ public class GameLogic {
 			
 			if(gameState == playState) {
 				gameState = pauseState;
-				gameScreen.drawGamePauseOverlay();
+				
 			}
 			else if (gameState == pauseState) {
 				gameState = playState;
@@ -190,6 +207,9 @@ public class GameLogic {
 				
 			}
 			InputUtility.getKeyPressed().remove(KeyCode.ESCAPE);
+		}
+		if (getPlayer().getCurrentHealth()==0) {
+			gameState = gameOverState;
 		}
 	}
 	
