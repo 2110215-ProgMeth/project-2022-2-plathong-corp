@@ -7,6 +7,7 @@ import java.util.List;
 
 import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
+import logic.entity.Entity;
 import logic.entity.Player;
 
 public class RenderableHolder {
@@ -27,6 +28,8 @@ public class RenderableHolder {
 	public static Image pauseOverlay,pauseMenu, soundButton, urm, volumeButton;
 	public static Image GELeft, GELeftWalk, GELeftWalk2, GERight, GERightWalk, GERightWalk2;
 	public static Image MTLeft1, MTLeft2, MTRight1, MTRight2;
+	public static Image SPLeft1,SPLeft2,SPRight2,SPRight1,SPLeftAtk,SPRightAtk,ball;
+	public static Image EQ1,EQ2,EQDead1,EQDead2;
 	public static Image moonSprite;
 	public static Image healthBar;
 
@@ -35,13 +38,20 @@ public class RenderableHolder {
 	}
 
 	public RenderableHolder() {
-		entities = new ArrayList<IRenderable>();
-		comparator = (IRenderable o1, IRenderable o2) -> {
-			if (o1.getZ() > o2.getZ())
-				return 1;
-			return -1;
-		};
-	}
+        entities = new ArrayList<IRenderable>();
+        comparator = (IRenderable o1, IRenderable o2) -> {
+            if (o1.getZ() > o2.getZ())
+                return 1;
+            else if (o1.getZ() == o2.getZ()) {
+                if(o1 instanceof Entity && o2 instanceof Entity){
+                    if (((Entity) o1).getWorldY()>((Entity) o2).getWorldY()) {
+                        return 1;
+                    }
+                }
+            }
+            return -1;
+        };
+    }
 
 	public static RenderableHolder getInstance() {
 		return instance;
@@ -51,7 +61,6 @@ public class RenderableHolder {
 		playerLeft = new Image(ClassLoader.getSystemResource("player/RabbiLeft.png").toString());
 		playerRight = new Image(ClassLoader.getSystemResource("player/Rabbi.png").toString());
 		playerRightAtk = new Image(ClassLoader.getSystemResource("player/RabbiRightAtk.png").toString());
-		johnSprite = new Image(ClassLoader.getSystemResource("John.png").toString());
 		whiteTile = new Image(ClassLoader.getSystemResource("Tiles/WhiteTile.png").toString());
 		grayTile = new Image(ClassLoader.getSystemResource("Tiles/GrayTile.png").toString());
 		pathTile = new Image(ClassLoader.getSystemResource("Tiles/pathTile.png").toString());
@@ -79,7 +88,19 @@ public class RenderableHolder {
 		MTLeft2 = new Image(ClassLoader.getSystemResource("MagicalTortoise/MagicalTortoiseLeft2.png").toString());
 		MTRight1 = new Image(ClassLoader.getSystemResource("MagicalTortoise/MagicalTortoiseRight1.png").toString());
 		MTRight2 = new Image(ClassLoader.getSystemResource("MagicalTortoise/MagicalTortoiseRight2.png").toString());
-
+		// ShadowPot
+		SPLeft1 =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotLeft1.png").toString());
+		SPLeft2 =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotLeft2.png").toString());
+		SPLeftAtk =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotLeftAtk.png").toString());
+		SPRight1 =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotRight1.png").toString());
+		SPRight2 =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotRight2.png").toString());
+		SPRightAtk =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotRightAtk.png").toString());
+		ball = new Image(ClassLoader.getSystemResource("ShadowPot/ball.png").toString());
+		//Eye of Qwifot
+		EQ1 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifot1.png").toString());
+		EQ2 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifot2.png").toString());
+		EQDead1 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifotDead1.png").toString());
+		EQDead2 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifotDead2.png").toString());
 		// Pause
 		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
 //		pauseMenu = new Image(ClassLoader.getSystemResource("pause/.png").toString());
@@ -104,11 +125,12 @@ public class RenderableHolder {
 	}
 
 	public void update() {
-		for (int i = entities.size() - 1; i >= 0; i--) {
-			if (entities.get(i).isDestroyed())
-				entities.remove(i);
-		}
-	}
+        for (int i = entities.size() - 1; i >= 0; i--) {
+            if (entities.get(i).isDestroyed())
+                entities.remove(i);
+        }
+        Collections.sort(entities, comparator);
+    }
 
 	public List<IRenderable> getEntities() {
 		return entities;

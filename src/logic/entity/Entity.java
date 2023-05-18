@@ -1,21 +1,31 @@
 package logic.entity;
 
+import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
 
-public abstract class Entity implements IRenderable{
-	protected double worldX,worldY;
-	public double screenX,screenY;
-	protected int z,radius;
-	protected boolean visible,destroyed;
+public abstract class Entity implements IRenderable {
+	protected double worldX, worldY;
+	public double screenX, screenY;
+	protected int z, radius;
+	protected boolean visible, destroyed;
 	protected int speed;
 	protected String direction;
-	public Rectangle solidArea;
+	protected Image image;
+	public Rectangle solidArea,solidScreen;
 	public boolean collisionOn = false;
 	public GameLogic gameLogic;
-	
-	public Entity(int x, int y,GameLogic gameLogic){
+
+	// Status
+	protected int maxHp;
+	protected int currentHealth;
+	protected int dmg;
+
+	// AttackBlock
+	protected Rectangle attackBlock;
+
+	public Entity(int x, int y, GameLogic gameLogic) {
 		visible = true;
 		destroyed = false;
 		worldX = x;
@@ -23,14 +33,15 @@ public abstract class Entity implements IRenderable{
 		this.gameLogic = gameLogic;
 		this.direction = "right";
 	}
-	
+
 	public abstract void attack(Entity t);
+
 	public abstract void update();
-	
-	public boolean canAttack(double x1,double y1,double x2,double y2,int attackRange) {
-		return (Math.abs(x1-x2) < attackRange && Math.abs(y1-y2) < attackRange);
+
+	public boolean canAttack(double x1, double y1, double x2, double y2, int attackRange) {
+		return (Math.abs(x1 - x2) < attackRange && Math.abs(y1 - y2) < attackRange);
 	}
-	
+
 	@Override
 	public int getZ() {
 		// TODO Auto-generated method stub
@@ -55,8 +66,8 @@ public abstract class Entity implements IRenderable{
 
 	public double getWorldY() {
 		return worldY;
-	}	
-	
+	}
+
 	public String getDirection() {
 		return direction;
 	}
@@ -84,7 +95,7 @@ public abstract class Entity implements IRenderable{
 	public boolean isCollisionOn() {
 		return collisionOn;
 	}
-	
+
 	public void setCollisionOn(boolean collisionOn) {
 		this.collisionOn = collisionOn;
 	}
@@ -92,5 +103,5 @@ public abstract class Entity implements IRenderable{
 	public void setDestroyed(boolean destroyed) {
 		this.destroyed = destroyed;
 	}
-	
+
 }

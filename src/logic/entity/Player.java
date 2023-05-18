@@ -87,10 +87,11 @@ public class Player extends Entity{
 		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(),attackBlock.getHeight());
 	}
 	
-	public void attack(Entity enemy) {
+	public void attack(Entity e) {
 
 		attackState = "yes";
-		((Chicknight)enemy).changeHealthTo(((Chicknight)enemy).getCurrentHealth()-dmg);
+		System.out.println("Player Attack "+e.getClass().getSimpleName());
+		((Enemy)e).changeHealthTo(((Enemy)e).getCurrentHealth()-dmg);
 		
 	}
 
@@ -141,8 +142,8 @@ public class Player extends Entity{
 		}
 		if (InputUtility.isLeftClickTriggered()) {
 			for (Entity entity: gameLogic.getGameObjectContainer()) {
-				if ((entity instanceof Chicknight)) {
-					Chicknight enemy = ((Chicknight)entity);
+				if ((entity instanceof Enemy)) {
+					Enemy enemy = ((Enemy)entity);
 					boolean canAtk = canAttack(worldX,worldY,enemy.getWorldX(),enemy.getWorldY(),(int) (solidArea.getWidth()+attackBlock.getWidth()));
 					if (canAtk) {
 						attack(entity);
