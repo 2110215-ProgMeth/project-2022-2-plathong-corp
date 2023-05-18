@@ -28,7 +28,7 @@ public class RenderableHolder {
 	public static Image pauseOverlay,pauseMenu, soundButton, urm, volumeButton;
 	public static Image GELeft, GELeftWalk, GELeftWalk2, GERight, GERightWalk, GERightWalk2;
 	public static Image MTLeft1, MTLeft2, MTRight1, MTRight2;
-	public static Image SPLeft1,SPLeft2,SPRight2,SPRight1,SPLeftAtk,SPRightAtk;
+	public static Image SPLeft1,SPLeft2,SPRight2,SPRight1,SPLeftAtk,SPRightAtk,ball;
 	public static Image EQ1,EQ2,EQDead1,EQDead2;
 	public static Image moonSprite;
 	public static Image healthBar;
@@ -95,6 +95,7 @@ public class RenderableHolder {
 		SPRight1 =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotRight1.png").toString());
 		SPRight2 =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotRight2.png").toString());
 		SPRightAtk =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotRightAtk.png").toString());
+		ball = new Image(ClassLoader.getSystemResource("ShadowPot/ball.png").toString());
 		//Eye of Qwifot
 		EQ1 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifot1.png").toString());
 		EQ2 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifot2.png").toString());

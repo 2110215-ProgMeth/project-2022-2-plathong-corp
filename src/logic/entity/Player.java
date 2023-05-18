@@ -28,8 +28,10 @@ public class Player extends Entity{
 	private int healthBarY = (int) (11*1.5);
 	
 	//Status
+	protected int maxHp = 100;
+	protected int currentHealth = maxHp;
 	protected float healthWidth = healthBarWidth;
-
+	protected int dmg = 5;
 	protected int iframe = 0;
 	
 	//AttackBlock
@@ -40,13 +42,7 @@ public class Player extends Entity{
 		super(x,y,gameLogic);
 		this.speed = 3;
 		this.radius = 32;
-		
-		maxHp = 100;
-		currentHealth = maxHp;
-		dmg = 5;
-		
-		image = RenderableHolder.playerRight;
-		
+
 		screenX = gameLogic.getGameScreen().getWidth()/2-radius;
 		screenY = gameLogic.getGameScreen().getHeight()/2-radius;
 		initSolidArea();
@@ -55,17 +51,18 @@ public class Player extends Entity{
 	@Override
 	public void draw(GraphicsContext gc) {
 		int count = 0;
+		Image playerImage = RenderableHolder.playerRight;
 		// TODO Auto-generated method stub
 		switch(direction) {
 		case "left":
-			image = (RenderableHolder.playerLeft);
+			playerImage = (RenderableHolder.playerLeft);
 			break;
 		case "right":
-			image = RenderableHolder.playerRight;
+			playerImage = RenderableHolder.playerRight;
 			break;
 
 		}	
-		gc.drawImage(image , screenX, screenY);
+		gc.drawImage(playerImage , screenX, screenY);
 		drawUI(gc);
 		
 		//Debugging
@@ -90,13 +87,14 @@ public class Player extends Entity{
 		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(),attackBlock.getHeight());
 	}
 	
-	public void attack(Entity enemy) {
+	public void attack(Entity e) {
 
 		attackState = "yes";
-		((Chicknight)enemy).changeHealthTo(((Chicknight)enemy).getCurrentHealth()-dmg);
+		System.out.println("Player Attack "+e.getClass().getSimpleName());
+		((Enemy)e).changeHealthTo(((Enemy)e).getCurrentHealth()-dmg);
 		
 	}
-
+	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		direction = "";
@@ -144,11 +142,14 @@ public class Player extends Entity{
 		}
 		if (InputUtility.isLeftClickTriggered()) {
 			for (Entity entity: gameLogic.getGameObjectContainer()) {
-				if ((entity instanceof Chicknight)) {
-					Chicknight enemy = ((Chicknight)entity);
+				if ((entity instanceof Enemy)) {
+					Enemy enemy = ((Enemy)entity);
 					boolean canAtk = canAttack(worldX,worldY,enemy.getWorldX(),enemy.getWorldY(),(int) (solidArea.getWidth()+attackBlock.getWidth()));
 					if (canAtk) {
 						attack(entity);
+					}
+					if(enemy instanceof EyeOfQwifot) {
+						System.out.println(enemy.solidScreen.getWidth()+" "+enemy.solidScreen.getHeight());
 					}
 					
 				}

@@ -6,9 +6,9 @@ import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
 public class MagicalTortoise extends Entity{
+	private Image image = RenderableHolder.MTRight1;
 	public MagicalTortoise(int x, int y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
-		image = RenderableHolder.MTRight1;
 		// TODO Auto-generated constructor stub
 	}
 

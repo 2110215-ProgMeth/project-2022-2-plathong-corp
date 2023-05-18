@@ -3,6 +3,7 @@ package logic.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import Object.Projectile;
 import drawing.GameScreen;
 import input.InputUtility;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,13 +21,16 @@ import sharedObject.RenderableHolder;
 
 public class GameLogic {
 	private ArrayList<Entity> gameObjectContainer;
+	private ArrayList<Projectile> projectilesContainer;
 	private static int counter = 0;
 	
 	private GameScreen gameScreen;
 	private  Player player;
 	private Chicknight ck1;
-	private GriszlyEye ge1;
-	private MagicalTortoise mg;
+	private GriszlyEye GE1;
+	private MagicalTortoise MG;
+	private EyeOfQwifot EQ;
+	private ShadowPot SP;
 	private Map1 map;
 	
 	//GameState
@@ -36,6 +40,7 @@ public class GameLogic {
 	
 	public GameLogic(GameScreen gameScreen){
 		this.gameObjectContainer = new ArrayList<Entity>();
+		this.projectilesContainer = new ArrayList<Projectile>();
 		this.gameScreen = gameScreen;
 		player = new Player(384,288,this);
 		
@@ -43,16 +48,16 @@ public class GameLogic {
 		RenderableHolder.getInstance().add(map);
 		
 		ck1 = new Chicknight(200,0,this);
-		mg = new MagicalTortoise(200,200,this);
-		ge1 = new GriszlyEye(200,200,this);
-		EyeOfQwifot eq = new EyeOfQwifot(500, 500, this);
-		ShadowPot sp = new ShadowPot(300, 200, this);
+		MG = new MagicalTortoise(200,200,this);
+		GE1 = new GriszlyEye(200,200,this);
+		EQ = new EyeOfQwifot(780, 780  , this);
+		SP = new ShadowPot(300, 500, this);
 		addNewObject(player);
 		addNewObject(ck1);
-		addNewObject(mg);
-		addNewObject(ge1);
-		addNewObject(eq);
-		addNewObject(sp);
+		addNewObject(MG);
+		addNewObject(GE1);
+		addNewObject(EQ);
+		addNewObject(SP);
 	}
 	
 	public GameScreen getGameScreen() {
@@ -63,6 +68,12 @@ public class GameLogic {
 		gameObjectContainer.add(entity);
 		RenderableHolder.getInstance().add(entity);
 	}
+	
+	public void addNewProjectile(Projectile p){
+		projectilesContainer.add(p);
+		RenderableHolder.getInstance().add(p);
+	}
+	
 	public void checkTile(Entity entity) {
 		int entityLeftWorldX = (int) (entity.getWorldX() + entity.solidArea.getX());
 		int entityRightWorldX = (int) (entity.getWorldX() + entity.solidArea.getX() + entity.solidArea.getWidth());
@@ -144,6 +155,11 @@ public class GameLogic {
 			if (objectContainer.get(i).isDestroyed()) getGameObjectContainer().remove(objectContainer.get(i));
 		}
 		
+		ArrayList<Projectile> projectileContainer = getProjectileContainer();
+		for (int i = 0 ;i<projectileContainer.size();i++) {
+			(projectileContainer.get(i)).update();
+			if (projectileContainer.get(i).isDestroyed()) getProjectileContainer().remove(projectileContainer.get(i));
+		}
 	}
 	
 	public Player getPlayer() {
@@ -179,6 +195,10 @@ public class GameLogic {
 	
 	public ArrayList<Entity> getGameObjectContainer(){
 		return gameObjectContainer;
+	}
+	
+	public ArrayList<Projectile> getProjectileContainer(){
+		return projectilesContainer;
 	}
 	
 }
