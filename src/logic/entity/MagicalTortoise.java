@@ -14,6 +14,7 @@ public class MagicalTortoise extends Entity{
     public MagicalTortoise(double x, double y, GameLogic gameLogic) {
         super(x, y, gameLogic);
         this.dialogues = new ArrayList<String>();
+        z = -100;
         // TODO Auto-generated constructor stub
         setDialogues();
     }
@@ -68,7 +69,7 @@ public class MagicalTortoise extends Entity{
         int rangeX = (int) Math.abs(worldX-gameLogic.getPlayer().getWorldX());
         int rangeY = (int) Math.abs(worldY-gameLogic.getPlayer().getWorldY());
         int range = (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2));
-        return range<30;
+        return range<100;
     }
     public String getDialogues(int i) {
         return dialogues.get(i);

@@ -47,10 +47,8 @@ public class ShadowPot extends Enemy{
         drawHitbox(gc);
     }
 
-    @Override
-    public void attack(Entity t) {
+    public void attack() {
         // TODO Auto-generated method stub
-
     		Projectile projectile = new Projectile(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic);
         	gameLogic.addNewProjectile(projectile);
     }
@@ -64,9 +62,7 @@ public class ShadowPot extends Enemy{
 		else
 			currentState = "default";
 		if(currentState == "attacking") {
-        Player player = gameLogic.getPlayer();
-        angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
-        double xDirection =  Math.cos(Math.atan2(player.worldY-worldY,player.worldX-worldX));
+        double xDirection =  Math.cos(angle);
         if(xDirection<0)
             direction = "left";
         else
@@ -74,7 +70,7 @@ public class ShadowPot extends Enemy{
         
         if(delay==0) {
         	
-        	attack(gameLogic.getPlayer());
+        	attack();
         	delay = 1*60;
         }
         delay--;

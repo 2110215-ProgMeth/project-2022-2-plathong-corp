@@ -34,11 +34,11 @@ public class RenderableHolder {
 	// EyeOfQwifot Sprite
 	public static Image EQ1, EQ2, EQDead1, EQDead2;
 	//MoleDerKaiser
-	public static Image mole,moleDerKaiser;
+	public static Image mole,moleDerKaiser,moleDead,moleDerKaiserDead;
 	public static Image moonSprite;
 	public static Image healthBar;
-	//Song
-	public static AudioClip inGameSong;
+	//Song & Effect
+	public static AudioClip inGameSong,sword1;
 	// Map Tile
 	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,topLeftMapTile,topMapTile,topRightMapTile,
 	rightMapTile,bottomRightMapTile,bottomMapTile,bottomLeftMapTile,leftMapTile,tombTile,spawn1Tile,spawn2Tile;
@@ -81,6 +81,7 @@ public class RenderableHolder {
 		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
 		gameOverOverlay = new Image(ClassLoader.getSystemResource("pause/GameOver.png").toString());
 		inGameSong = new AudioClip(ClassLoader.getSystemResource("IngameSong.wav").toString());
+		sword1 = new AudioClip(ClassLoader.getSystemResource("Sword1.mp3").toString());
 		// StatusBar
 		healthBar = new Image(ClassLoader.getSystemResource("health_power_bar.png").toString());
 
@@ -151,6 +152,8 @@ public class RenderableHolder {
 	public static void loadMoleDerKaiser() {
 		mole = new Image(ClassLoader.getSystemResource("MoleDerKaiser/normalMole.png").toString());
 		moleDerKaiser = new Image(ClassLoader.getSystemResource("MoleDerKaiser/moleDerKaiser.png").toString());
+		moleDead = new Image(ClassLoader.getSystemResource("MoleDerKaiser/normalMoleDead.png").toString());
+		moleDerKaiserDead = new Image(ClassLoader.getSystemResource("MoleDerKaiser/moleDerKaiserDead.png").toString());
 	}
 	public void add(IRenderable entity) {
 		System.out.println("add");

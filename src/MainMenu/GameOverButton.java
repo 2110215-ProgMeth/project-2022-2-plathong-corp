@@ -29,7 +29,7 @@ public class GameOverButton {
 		gc.strokeRect(x,y,width,height);
 		gc.setFill(Color.BLACK);
 		gc.setFont(Font.font("Times New Roman", FontWeight.BOLD, 32));
-		gc.fillText(text.getText(), (x+width/2-55), (y+height/1.3));
+		gc.fillText(text.getText(), (x+width/2-75), (y+height/1.3));
 	}
 
 	public int getX() {

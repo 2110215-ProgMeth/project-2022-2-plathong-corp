@@ -8,7 +8,6 @@ import logic.game.GameLogic;
 public abstract class Enemy extends Entity{
 	protected double angle = 0;
 	protected String currentState = "default";
-	protected double delay = 0;
 	protected boolean canAttack;
 	protected double xspeed,yspeed;
 

@@ -21,6 +21,8 @@ import logic.entity.Entity;
 import logic.entity.EyeOfQwifot;
 import logic.entity.GriszlyEye;
 import logic.entity.MagicalTortoise;
+import logic.entity.Mole;
+import logic.entity.MoleDerKaiser;
 import logic.entity.Player;
 import logic.entity.ShadowPot;
 import logic.field.Map1;
@@ -37,7 +39,7 @@ public class GameLogic {
 	private EyeOfQwifot eQ;
 	private Map1 map;
 	private MagicalTortoise mT;
-
+	private MoleDerKaiser mDK;
 	// GameState
 	public int gameState = 1;
 	public final int playState = 1;
@@ -45,6 +47,7 @@ public class GameLogic {
 	public final int npcState = 3;
 	public final int gameOverState = 4;
 
+	public int dialogueIndex = 0;
 	public GameLogic(GameScreen gameScreen) {
 		this.gameScreen = gameScreen;
 		startNewGame();
@@ -74,16 +77,20 @@ public class GameLogic {
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
 		
-		player = new Player(384, 288, this);
-		eQ = new EyeOfQwifot(3456, 512, this);
-		mT = new MagicalTortoise(200, 200, this);
+		player = new Player(3300, 288, this);
+//		eQ = new EyeOfQwifot(3456, 512, this);
+		mT = new MagicalTortoise(3300, 200, this);
 		addNewObject(player);
-		addNewObject(new Chicknight(200, 200, this));
+//		addNewObject(new Chicknight(3200, 200, this));
 		addNewObject(mT);
-		addNewObject(new GriszlyEye(200, 200, this));
-		addNewObject(eQ);
-		addNewObject(new ShadowPot(300, 500, this));
-		
+//		addNewObject(new GriszlyEye(3000, 200, this));
+//		addNewObject(eQ);
+//		addNewObject(new ShadowPot(3000, 500, this));
+		mDK = new MoleDerKaiser(3000, 300, this,448,448);
+		addNewObject(mDK);
+		for(Mole m:mDK.getMoles()) {
+			addNewObject(m);
+		}
 		gameState = playState;
 		System.out.println("New Game");
 	}
@@ -106,9 +113,6 @@ public class GameLogic {
 			entityTopRow = (entityTopWorldY - entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
 			tile2 = map.getTileIndex(entityRightCol, entityTopRow);
-//			tile1 = map.field[entityLeftCol][entityTopRow];
-//			tile2 = map.field[entityRightCol][entityTopRow];
-
 			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
 				entity.setCollisionOn(true);
 			}
@@ -117,8 +121,6 @@ public class GameLogic {
 			entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityBottomRow);
 			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
-//			tile1 = map.field[entityLeftCol][entityBottomRow];
-//			tile2 = map.field[entityRightCol][entityBottomRow];
 			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
 				entity.setCollisionOn(true);
 			}
@@ -127,8 +129,6 @@ public class GameLogic {
 			entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
 			tile2 = map.getTileIndex(entityLeftCol, entityBottomRow);
-//			tile1 = map.field[entityLeftCol][entityTopRow];
-//			tile2 = map.field[entityLeftCol][entityBottomRow];
 			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
 				entity.setCollisionOn(true);
 			}
@@ -137,8 +137,6 @@ public class GameLogic {
 			entityRightCol = (entityRightWorldX + entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityRightCol, entityTopRow);
 			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
-//			tile1 = map.field[entityRightCol][entityTopRow];
-//			tile2 = map.field[entityRightCol][entityBottomRow];
 			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
 				entity.setCollisionOn(true);
 			}
@@ -171,11 +169,17 @@ public class GameLogic {
 				Main.GoToMenu();
 			}
 		}
-		else if (gameState == npcState) {
-			drawDialogueScreen(0);
-			logicUpdate();
-			gameScreen.paintComponent();
-		}
+		else if (gameState == npcState ) {
+            if (!getMagicalTortoise().playerfound()) {
+                gameState = playState;
+                dialogueIndex =0;
+            }
+            logicUpdate();
+            gameScreen.paintComponent();
+            drawDialogueScreen(dialogueIndex);
+            if (InputUtility.isLeftClickTriggered()) dialogueIndex++;
+            if (getMagicalTortoise().getDialoguesSize()-1<dialogueIndex) dialogueIndex=0;
+        }
 	}
 
 

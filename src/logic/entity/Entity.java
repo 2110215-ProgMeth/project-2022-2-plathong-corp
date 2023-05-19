@@ -6,6 +6,7 @@ import logic.game.GameLogic;
 import sharedObject.IRenderable;
 
 public abstract class Entity implements IRenderable {
+	protected double delay = 0;
 	protected double worldX, worldY;
 	public double screenX, screenY;
 	protected int z, radius;

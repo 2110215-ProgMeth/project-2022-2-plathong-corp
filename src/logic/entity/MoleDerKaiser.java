@@ -5,39 +5,35 @@ import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
-public class MoleDerKaiser extends Enemy{
-	private int width = 7;
-	private int height  = 7;
-	public MoleDerKaiser(double x, double y, GameLogic gameLogic) {
-		super(x, y, gameLogic);
-		this.maxHp = 100;
-		this.currentHealth = maxHp;
-		this.z = -100;
-		image = RenderableHolder.CKRight;
-
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void draw(GraphicsContext gc) {
-		// TODO Auto-generated method stub
-		
-	}
+public class MoleDerKaiser extends Mole{
+	private Mole[] moles = new Mole [3];
 	
-	@Override
-	public void update() {
-		
+	public MoleDerKaiser(double x,double y,GameLogic gameLogic,int width,int height) {
+		super(x, y, gameLogic, "DerKaiser", width, height);
+		this.maxHp = 100;
+		this.gameLogic =gameLogic;
+		for(int i = 0;i<3;i++) {
+			moles[i] = new Mole(x,y,gameLogic,"",width,height);
+		}
 	}
-	@Override
-	public void initSolidArea() {
-		// TODO Auto-generated method stub
-		solidArea = new Rectangle(16, 8, 32, 48);
+		
+	public Mole[] getMoles() {
+		return moles;
 	}
 
-	@Override
-	public void initAttackBlock() {
-		attackBlock = new Rectangle(0,0,0,0);
-		
+	public void changeHealthTo(int health) {
+		if (health>=maxHp) {
+			currentHealth = maxHp;
+		}
+		else if (health<=0) {
+			currentHealth = 0;
+			currentState = "dead";
+			for(int i = 0;i<3;i++) {
+				moles[i].currentState = "dead";
+			}
+		}
+		else {
+			currentHealth = health;
+		}
 	}
-
 }

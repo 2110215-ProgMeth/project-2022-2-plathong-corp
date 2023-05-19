@@ -58,8 +58,8 @@ public class Projectile implements IRenderable {
 		int width = (int) p.getSolidArea().getWidth();
 		int height = (int) p.getSolidArea().getHeight();
 		boolean overlap = solidArea.intersects(x,y,width,height);
-		System.out.println("Overlap = " + overlap);
-		System.out.println("X = " + x + " Y = " + y);
+//		System.out.println("Overlap = " + overlap);
+//		System.out.println("X = " + x + " Y = " + y);
 		if (overlap) {
 			p.changeHealthTo(p.getCurrentHealth() - dmg);
 			destroyed = true;
