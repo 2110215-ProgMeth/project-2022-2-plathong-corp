@@ -81,4 +81,10 @@ public class MagicalTortoise extends Entity{
     public void speak() {
 
     }
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
 }

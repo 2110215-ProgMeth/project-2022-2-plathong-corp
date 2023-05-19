@@ -78,10 +78,10 @@ public class GameLogic {
 		mT = new MagicalTortoise(3400, 200, this);
 		addNewObject(player);
 		addNewObject(new Chicknight(3400, 200, this));
-		addNewObject(mT);
-		addNewObject(new GriszlyEye(3400, 200, this));
+//		addNewObject(mT);
+//		addNewObject(new GriszlyEye(3400, 200, this));
 		addNewObject(eQ);
-		addNewObject(new ShadowPot(3400, 500, this));
+//		addNewObject(new ShadowPot(3400, 500, this));
 		
 		gameState = playState;
 		System.out.println("New Game");

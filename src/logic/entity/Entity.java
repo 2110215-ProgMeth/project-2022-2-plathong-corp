@@ -36,6 +36,7 @@ public abstract class Entity implements IRenderable {
 	}
 
 	public abstract void attack(Entity t);
+	public abstract void move();
 
 	public void update() {
 		screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;

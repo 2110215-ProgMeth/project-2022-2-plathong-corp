@@ -46,7 +46,7 @@ public abstract class Enemy extends Entity{
 	
 	public void attack(Entity p) {
 		// TODO Auto-generated method stub
-		System.out.println(this.getClass().getSimpleName()+"Attack");
+//		System.out.println(this.getClass().getSimpleName()+"Attack");
 		if (checkEnemyHit()) {
 			((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
 		}
@@ -67,9 +67,9 @@ public abstract class Enemy extends Entity{
 	
 	public void updateAttackBlock() {
 		if (direction == "right")
-			attackBlock.setX(solidScreen.getX()+solidArea.getWidth());
+			attackBlock.setX(solidScreen.getX());
 		else if (direction == "left")
-			attackBlock.setX(screenX);
+			attackBlock.setX(solidScreen.getX()+solidScreen.getWidth()-attackBlock.getWidth());
 		attackBlock.setY(screenY);
 
 	}

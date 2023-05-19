@@ -121,7 +121,7 @@ public class Chicknight extends Enemy {
 	}
 
 	public void initAttackBlock() {
-		attackBlock = new Rectangle(screenX+solidArea.getWidth(), screenY, 10 * 2, 64);
+		attackBlock = new Rectangle(screenX+solidArea.getWidth(), screenY, solidArea.getWidth()+10 * 2, 64);
 	}
 	
 //	Debug Chick

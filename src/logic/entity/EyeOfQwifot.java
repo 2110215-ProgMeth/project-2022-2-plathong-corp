@@ -9,7 +9,7 @@ public class EyeOfQwifot extends Enemy{
 
     public EyeOfQwifot(double x, double y, GameLogic gameLogic) {
         super(x, y, gameLogic);
-        maxHp = 10;
+        maxHp = 100;
         currentHealth = maxHp;
         z = 100;
         image = RenderableHolder.EQ1;
@@ -51,6 +51,7 @@ public class EyeOfQwifot extends Enemy{
     public void update() {
         // TODO Auto-generated method stub
         super.update();
+        if(currentState != "dead") {
 		if (playerfound(768)) 
 			currentState = "attacking";
 		else
@@ -65,6 +66,7 @@ public class EyeOfQwifot extends Enemy{
         	gameLogic.addNewObject(new GriszlyEye(worldX+20, worldY, gameLogic));
         	}
         	delay--;
+        }
         }
         
         
