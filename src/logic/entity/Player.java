@@ -28,17 +28,17 @@ public class Player extends Entity{
 	private int healthBarY = (int) (11*1.5);
 	
 	//Status
-	protected int maxHp = 50;
+	protected int maxHp = 200;
 	protected int currentHealth = maxHp;
 	protected float healthWidth = healthBarWidth;
-	protected int dmg = 5;
+	protected int dmg = 1;
 	protected int iframe = 0;
 	
 	//AttackBlock
 	private Rectangle attackBlock;
 	
 	int counter;
-	public Player(int x, int y,GameLogic gameLogic) {
+	public Player(double x, double y,GameLogic gameLogic) {
 		super(x,y,gameLogic);
 		this.speed = 5;
 
@@ -87,10 +87,12 @@ public class Player extends Entity{
 	}
 	
 	public void attack(Entity e) {
-
+		
 		attackState = "yes";
+		Enemy enemy = (Enemy)e;
 		System.out.println("Player Attack "+e.getClass().getSimpleName());
-		((Enemy)e).changeHealthTo(((Enemy)e).getCurrentHealth()-dmg);
+		enemy.changeHealthTo(enemy.getCurrentHealth()-dmg);
+		
 		
 	}
 	@Override

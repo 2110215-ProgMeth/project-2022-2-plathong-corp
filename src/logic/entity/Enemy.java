@@ -6,13 +6,13 @@ import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 
 public abstract class Enemy extends Entity{
-	
 	protected double angle = 0;
 	protected String currentState = "default";
 	protected double delay = 0;
 	protected boolean canAttack;
+	protected double xspeed,yspeed;
 
-	public Enemy(int x, int y, GameLogic gameLogic) {
+	public Enemy(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
 		// TODO Auto-generated constructor stub
 	}
@@ -27,7 +27,7 @@ public abstract class Enemy extends Entity{
 		}
 		else {
 			currentHealth = health;
-//			System.out.println("Plathong" + currentHealth);
+
 		}
 	}
 	public boolean checkEnemyHit() {
@@ -36,9 +36,6 @@ public abstract class Enemy extends Entity{
 		int y = (int) p.getScreenY();
 		int width = (int) p.getSolidArea().getWidth();
 		int height = (int) p.getSolidArea().getHeight();
-		boolean overlap = solidScreen.intersects(x,y,width,height);
-//		System.out.println("Overlap = " + overlap);
-//		System.out.println("X = " + x + " Y = " + y);
 		return solidScreen.intersects(x,y,width,height) || attackBlock.intersects(x,y,width,height);
 		
 	}
@@ -50,7 +47,9 @@ public abstract class Enemy extends Entity{
 	public void attack(Entity p) {
 		// TODO Auto-generated method stub
 		System.out.println(this.getClass().getSimpleName()+"Attack");
-		if (checkEnemyHit()) ((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
+		if (checkEnemyHit()) {
+			((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
+		}
 	}
 	
 	//Debugger
@@ -77,14 +76,36 @@ public abstract class Enemy extends Entity{
 	
 	public void update() {
 		super.update();
-
 		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
-		if (playerfound()) 
-			currentState = "attacking";
-		else
-			currentState = "default";
+		Player player = gameLogic.getPlayer();
+		canAttack = canAttack(player.solidScreen.getX()+solidScreen.getWidth()/2, player.solidScreen.getY()+solidScreen.getHeight()/2, solidScreen.getX()+solidScreen.getWidth()/2, solidScreen.getY()+solidScreen.getHeight()/2,
+				(int) (attackBlock.getWidth() + solidArea.getWidth()));
+		angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
 	}
 
+	public void move() {
+		if (yspeed < 0)
+			direction = "up";
+		else
+			direction = "down";
+		setCollisionOn(false);
+		gameLogic.checkTile(this);
+		if (collisionOn == false) {
+			worldY += yspeed;
+
+		}
+
+		if (xspeed < 0)
+			direction = "left";
+		else
+			direction = "right";
+
+		setCollisionOn(false);
+		gameLogic.checkTile(this);
+		if (collisionOn == false) {
+			worldX += xspeed;
+		}
+	}
 	
 	public void reset() {		
 		visible = true;
@@ -95,17 +116,13 @@ public abstract class Enemy extends Entity{
 		this.direction = "right";
 		}
 	
-	public boolean playerfound() {
+	public boolean playerfound(int range) {
 		int rangeX = (int) Math.abs(worldX-gameLogic.getPlayer().getWorldX());
 		int rangeY = (int) Math.abs(worldY-gameLogic.getPlayer().getWorldY());
-		int range = (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2));
-		if (this instanceof Chicknight) {
-//			System.out.println("X = " + worldX +" Y = " + worldY);
-//			System.out.println("X = " + gameLogic.getPlayer().getWorldX() +" Y = " + gameLogic.getPlayer().getWorldY() + "Range =" +range);
-		}
-		return range<300;
+		return (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2)) < range;
 	}
-	
+
+
 	public abstract void initSolidArea();
 	public abstract void initAttackBlock();
 }

@@ -11,7 +11,7 @@ public class MagicalTortoise extends Entity{
     private Image image = RenderableHolder.MTRight1;
     protected ArrayList<String> dialogues;
 
-    public MagicalTortoise(int x, int y, GameLogic gameLogic) {
+    public MagicalTortoise(double x, double y, GameLogic gameLogic) {
         super(x, y, gameLogic);
         this.dialogues = new ArrayList<String>();
         // TODO Auto-generated constructor stub

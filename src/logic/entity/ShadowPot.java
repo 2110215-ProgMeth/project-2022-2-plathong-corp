@@ -9,7 +9,7 @@ import sharedObject.RenderableHolder;
 public class ShadowPot extends Enemy{
 	
 	private int cooldown;
-    public ShadowPot(int x, int y, GameLogic gameLogic) {
+    public ShadowPot(double x, double y, GameLogic gameLogic) {
         super(x, y, gameLogic);
         image = RenderableHolder.SPRight1;
         maxHp = 10;
@@ -55,6 +55,10 @@ public class ShadowPot extends Enemy{
     public void update() {
         // TODO Auto-generated method stub
         super.update();
+		if (playerfound(768)) 
+			currentState = "attacking";
+		else
+			currentState = "default";
         Player player = gameLogic.getPlayer();
         angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
         double xDirection =  Math.cos(Math.atan2(player.worldY-worldY,player.worldX-worldX));

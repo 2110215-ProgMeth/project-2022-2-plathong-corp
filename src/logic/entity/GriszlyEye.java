@@ -8,15 +8,15 @@ import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
 public class GriszlyEye extends Enemy {
-	private double angle = 0;
 
-	public GriszlyEye(int x, int y, GameLogic gameLogic) {
+	private int normalSpeed = 3;
+	public GriszlyEye(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
 		this.maxHp = 10;
 		this.currentHealth = maxHp;
 		this.dmg = 3;
 		this.z = -100;
-		this.speed = 3;
+		this.speed = normalSpeed;
 		this.dmg = 3;
 		this.image = RenderableHolder.GERight;
 		initSolidArea();
@@ -37,6 +37,7 @@ public class GriszlyEye extends Enemy {
 				if (gameLogic.getCounter() / 10 % 2 == 1) {
 					image = RenderableHolder.GERightWalk;
 				} else
+					
 					image = RenderableHolder.GERightWalk2;
 			}
 			break;
@@ -51,83 +52,47 @@ public class GriszlyEye extends Enemy {
 			}
 			break;
 		}
-		if (!playerfound()) image = RenderableHolder.GERight;
 		gc.drawImage(image, screenX, screenY);
 		drawHitbox(gc);
-//		drawAttackBlock(gc);
 	}
 
-//	@Override
-//	public void attack(Entity p) {
-//		// TODO Auto-generated method stub
-//		System.out.println("GrsizlyEye Attack");
-//
-//		((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
-//	}
 
-	public void attack(Entity p) {
-		super.attack(p);
-		if (delay==0) {
-			if (direction == "right") worldX+=40;
-			else if (direction == "left") worldX-=60;
-			
-			delay =60;
-		}
-		
-	}
-	
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		super.update();
+		if (playerfound(500)) 
+			currentState = "attacking";
+		else
+			currentState = "default";
 		Player player = gameLogic.getPlayer();
 		canAttack = canAttack(player.worldX, player.worldY, worldX+radius, worldY+radius,
-				(int) (attackBlock.getWidth() + solidArea.getWidth()));
-		if (currentState=="attacking") {
-		if (!canAttack(player.worldX, player.worldY, worldX, worldY, 24)) {
-			angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
-			double xspeed = Math.cos(angle) * speed;
-			double yspeed = Math.sin(angle) * speed;
-			currentState = "walking";
-
-			if (yspeed < 0)
-				direction = "up";
-			else
-				direction = "down";
-			setCollisionOn(false);
-			gameLogic.checkTile(this);
-			if (collisionOn == false) {
-				worldY += yspeed;
-
+				128);
+		if (currentState=="attacking") {	
+			if (delay==0) {
+				speed = normalSpeed;			
+				delay =120;
 			}
-
-			if (xspeed < 0)
-				direction = "left";
-			else
-				direction = "right";
-
-			setCollisionOn(false);
-			gameLogic.checkTile(this);
-			if (collisionOn == false) {
+			if (delay ==30) {
+				speed = normalSpeed*3;
+				xspeed = Math.cos(angle) * speed;
+				yspeed = Math.sin(angle) * speed;
+			}
+			
+			if(delay>30) {			
+				xspeed = Math.cos(angle) * speed;
+				yspeed = Math.sin(angle) * speed;
+				move();
+		}
+			else {
 				worldX += xspeed;
+				worldY += yspeed;
 			}
-
-		}
-
-		else {
-//			currentState = "default";
+				
 			attack(gameLogic.getPlayer());
-		}
-		}
-		if (delay<=0) {
-			delay =0;
-		}
-		else {
 			delay--;
-//			speed-=(5/60);
 		}
-
-		
+	
 		updateAttackBlock();
 	}
 
@@ -139,7 +104,7 @@ public class GriszlyEye extends Enemy {
 	}
 
 	public void initAttackBlock() {
-		attackBlock = new Rectangle(20, 0, 24, 32);
+		attackBlock = new Rectangle(0,0,0,0);
 
 	}
 	

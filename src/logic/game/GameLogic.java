@@ -1,6 +1,5 @@
 package logic.game;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class GameLogic {
 		return gameScreen;
 	}
 
-	protected void addNewObject(Entity entity) {
+	public void addNewObject(Entity entity) {
 		gameObjectContainer.add(entity);
 		RenderableHolder.getInstance().add(entity);
 	}
@@ -66,6 +65,7 @@ public class GameLogic {
 	}
 
 	public void startNewGame() {
+		RenderableHolder.inGameSong.play();
 		this.gameObjectContainer = new ArrayList<Entity>();
 		this.projectilesContainer = new ArrayList<Projectile>();
 		RenderableHolder.getInstance().getEntities().clear();
@@ -73,15 +73,15 @@ public class GameLogic {
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
 		
-		player = new Player(384, 288, this);
+		player = new Player(3400, 100, this);
 		eQ = new EyeOfQwifot(3456, 512, this);
-		mT = new MagicalTortoise(200, 200, this);
+		mT = new MagicalTortoise(3400, 200, this);
 		addNewObject(player);
-		addNewObject(new Chicknight(200, 0, this));
+		addNewObject(new Chicknight(3400, 200, this));
 		addNewObject(mT);
-		addNewObject(new GriszlyEye(200, 200, this));
+		addNewObject(new GriszlyEye(3400, 200, this));
 		addNewObject(eQ);
-		addNewObject(new ShadowPot(300, 500, this));
+		addNewObject(new ShadowPot(3400, 500, this));
 		
 		gameState = playState;
 		System.out.println("New Game");
@@ -148,6 +148,9 @@ public class GameLogic {
 
 	public void update() {
 //		System.out.println(gameState);
+		if (!RenderableHolder.inGameSong.isPlaying()) {
+			RenderableHolder.inGameSong.play();
+		}
 		if(gameState == playState) {
 		logicUpdate();
 		gameScreen.paintComponent();
@@ -157,8 +160,9 @@ public class GameLogic {
 //			System.out.println(500);
 		}else if (gameState == gameOverState) {
 			drawGameOverOverlay();
+			RenderableHolder.inGameSong.stop();
 			if (InputUtility.getKeyPressed(KeyCode.R)) {
-				gameState = playState;
+				startNewGame();
 //				reset();
 			}
 		}
@@ -212,14 +216,8 @@ public class GameLogic {
 	}
 
 	public void drawGameOverOverlay() {
-		GameOverButton retry = new GameOverButton((int) (1280 / 3.5), (int) (720 / 1.5), 200, 40, "RETRY");
-	
-		retry.getBounds().setOnMouseClicked(e -> {
-			startNewGame();
-		});
-
-
-		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 320, (int) (720 / 1.5), 200, 40, "  Menu");
+		GameOverButton retry = new GameOverButton((int) (1280 / 3.5), (int) (720 / 1.5), 200, 40, "RETRY(R)");
+		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 320, (int) (720 / 1.5), 200, 40, " Menu(M)");
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
 		gc.drawImage(RenderableHolder.gameOverOverlay, 0, 0);
 		retry.draw(gc);

@@ -35,6 +35,8 @@ public class RenderableHolder {
 	public static Image EQ1, EQ2, EQDead1, EQDead2;
 	public static Image moonSprite;
 	public static Image healthBar;
+	//Song
+	public static AudioClip inGameSong;
 	// Map Tile
 	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,topLeftMapTile,topMapTile,topRightMapTile,
 	rightMapTile,bottomRightMapTile,bottomMapTile,bottomLeftMapTile,leftMapTile,tombTile,spawn1Tile,spawn2Tile;
@@ -125,11 +127,7 @@ public class RenderableHolder {
 		//Game State
 		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
 		gameOverOverlay = new Image(ClassLoader.getSystemResource("pause/GameOver.png").toString());
-//		pauseMenu = new Image(ClassLoader.getSystemResource("pause/.png").toString());
-//		soundButton = new Image(ClassLoader.getSystemResource("pause/sound_button.png").toString());
-//		urm = new Image(ClassLoader.getSystemResource("pause/urm_buttons.png").toString());
-//		volumeButton = new Image(ClassLoader.getSystemResource("pause/volume_buttons.png").toString());
-
+		inGameSong = new AudioClip(ClassLoader.getSystemResource("IngameSong.wav").toString());
 		// StatusBar
 		healthBar = new Image(ClassLoader.getSystemResource("health_power_bar.png").toString());
 

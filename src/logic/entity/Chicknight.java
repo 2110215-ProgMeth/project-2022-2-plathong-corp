@@ -10,7 +10,7 @@ import sharedObject.RenderableHolder;
 public class Chicknight extends Enemy {
 
 
-	public Chicknight(int x, int y, GameLogic gameLogic) {
+	public Chicknight(double x, double y, GameLogic gameLogic) {
 		super(x,y,gameLogic);
 		this.maxHp = 10;
 		this.currentHealth = maxHp;
@@ -61,8 +61,7 @@ public class Chicknight extends Enemy {
 		}
 
 		gc.drawImage(image, screenX, screenY);
-		// debugging
-//		gc.drawImage(RenderableHolder.pauseMenu,screenX,screenY);
+
 		drawHitbox(gc);
 		drawAttackBlock(gc);
 	}
@@ -73,16 +72,21 @@ public class Chicknight extends Enemy {
 	public void update() {
 		// TODO Auto-generated method stub
 		super.update();
-//		System.out.println(playerfound()+" "+canAttack+" "+direction);
+		if (playerfound(500)) 
+			currentState = "attacking";
+		else
+			currentState = "default";
 		Player player = gameLogic.getPlayer();
 		canAttack = canAttack(player.solidScreen.getX()+solidScreen.getWidth()/2, player.solidScreen.getY()+solidScreen.getHeight()/2, solidScreen.getX()+solidScreen.getWidth()/2, solidScreen.getY()+solidScreen.getHeight()/2,
-				(int) (attackBlock.getWidth() + solidArea.getWidth()));
+				(int) (32));
 		if (currentState == "attacking") {
-			if (!canAttack) {
-				angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
+			if(canAttack) {
+				attack(gameLogic.getPlayer());
+			}
+			else {
 				double xspeed = Math.cos(angle) * speed;
 				double yspeed = Math.sin(angle) * speed;
-				currentState = "walking";
+				
 
 				if (yspeed < 0)
 					direction = "up";
@@ -107,10 +111,7 @@ public class Chicknight extends Enemy {
 				}
 			}
 
-			else {
-//				currentState = "attack";
-				attack(gameLogic.getPlayer());
-			}
+
 		}
 		updateAttackBlock();
 	}
