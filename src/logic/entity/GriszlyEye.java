@@ -19,8 +19,6 @@ public class GriszlyEye extends Enemy {
 		this.speed = normalSpeed;
 		this.dmg = 3;
 		this.image = RenderableHolder.GERight;
-		initSolidArea();
-		initAttackBlock();
 	}
 
 	
@@ -99,7 +97,6 @@ public class GriszlyEye extends Enemy {
 		
 	public void initSolidArea() {
 		solidArea = new Rectangle(20, 0, 24, 32);
-		solidScreen = new Rectangle(screenX,screenY,8,8);
 
 	}
 

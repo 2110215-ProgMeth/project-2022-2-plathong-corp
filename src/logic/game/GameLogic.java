@@ -5,6 +5,7 @@ import java.util.List;
 
 import MainMenu.GameOverButton;
 import Object.Projectile;
+import application.Main;
 import drawing.GameScreen;
 import input.InputUtility;
 import javafx.event.ActionEvent;
@@ -73,15 +74,15 @@ public class GameLogic {
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
 		
-		player = new Player(3400, 100, this);
+		player = new Player(384, 288, this);
 		eQ = new EyeOfQwifot(3456, 512, this);
-		mT = new MagicalTortoise(3400, 200, this);
+		mT = new MagicalTortoise(200, 200, this);
 		addNewObject(player);
-		addNewObject(new Chicknight(3400, 200, this));
-//		addNewObject(mT);
-//		addNewObject(new GriszlyEye(3400, 200, this));
+		addNewObject(new Chicknight(200, 200, this));
+		addNewObject(mT);
+		addNewObject(new GriszlyEye(200, 200, this));
 		addNewObject(eQ);
-//		addNewObject(new ShadowPot(3400, 500, this));
+		addNewObject(new ShadowPot(300, 500, this));
 		
 		gameState = playState;
 		System.out.println("New Game");
@@ -147,7 +148,7 @@ public class GameLogic {
 	}
 
 	public void update() {
-//		System.out.println(gameState);
+		System.out.println(gameState);
 		if (!RenderableHolder.inGameSong.isPlaying()) {
 			RenderableHolder.inGameSong.play();
 		}
@@ -164,6 +165,10 @@ public class GameLogic {
 			if (InputUtility.getKeyPressed(KeyCode.R)) {
 				startNewGame();
 //				reset();
+			}
+			else if ( InputUtility.getKeyPressed(KeyCode.M)) {
+				InputUtility.getKeyPressed().remove(KeyCode.M);
+				Main.GoToMenu();
 			}
 		}
 		else if (gameState == npcState) {

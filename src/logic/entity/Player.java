@@ -28,7 +28,7 @@ public class Player extends Entity{
 	private int healthBarY = (int) (11*1.5);
 	
 	//Status
-	protected int maxHp = 200;
+	protected int maxHp = 50;
 	protected int currentHealth = maxHp;
 	protected float healthWidth = healthBarWidth;
 	protected int dmg = 10;

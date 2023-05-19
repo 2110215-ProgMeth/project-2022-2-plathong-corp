@@ -18,8 +18,6 @@ public class Chicknight extends Enemy {
 		this.z = -100;
 		this.speed = 1;
 		image = RenderableHolder.CKRight;
-		initSolidArea();
-		initAttackBlock();
 	}
 
 	@Override

@@ -14,6 +14,8 @@ public abstract class Enemy extends Entity{
 
 	public Enemy(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
+		initSolidArea();
+		initAttackBlock();
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -78,8 +80,6 @@ public abstract class Enemy extends Entity{
 		super.update();
 		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
 		Player player = gameLogic.getPlayer();
-		canAttack = canAttack(player.solidScreen.getX()+solidScreen.getWidth()/2, player.solidScreen.getY()+solidScreen.getHeight()/2, solidScreen.getX()+solidScreen.getWidth()/2, solidScreen.getY()+solidScreen.getHeight()/2,
-				(int) (attackBlock.getWidth() + solidArea.getWidth()));
 		angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
 	}
 

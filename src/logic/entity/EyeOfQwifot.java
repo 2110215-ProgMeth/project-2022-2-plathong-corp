@@ -13,8 +13,6 @@ public class EyeOfQwifot extends Enemy{
         currentHealth = maxHp;
         z = 100;
         image = RenderableHolder.EQ1;
-        initAttackBlock();
-        initSolidArea();
         // TODO Auto-generated constructor stub
     }
 
