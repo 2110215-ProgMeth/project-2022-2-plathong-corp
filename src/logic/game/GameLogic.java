@@ -5,8 +5,11 @@ import java.util.List;
 
 import MainMenu.GameOverButton;
 import Object.Projectile;
+import application.Main;
 import drawing.GameScreen;
 import input.InputUtility;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -31,12 +34,9 @@ public class GameLogic {
 
 	private GameScreen gameScreen;
 	private Player player;
-	private Chicknight ck1;
-	private GriszlyEye GE1;
-	private MagicalTortoise MG;
-	private EyeOfQwifot EQ;
-	private ShadowPot SP;
+	private EyeOfQwifot eQ;
 	private Map1 map;
+	private MagicalTortoise mT;
 
 	// GameState
 	public int gameState = 1;
@@ -46,32 +46,16 @@ public class GameLogic {
 	public final int gameOverState = 4;
 
 	public GameLogic(GameScreen gameScreen) {
-		this.gameObjectContainer = new ArrayList<Entity>();
-		this.projectilesContainer = new ArrayList<Projectile>();
 		this.gameScreen = gameScreen;
-		player = new Player(384, 288, this);
+		startNewGame();
 
-		map = new Map1(this);
-		RenderableHolder.getInstance().add(map);
-
-		ck1 = new Chicknight(200, 0, this);
-		MG = new MagicalTortoise(200, 200, this);
-		GE1 = new GriszlyEye(200, 200, this);
-		EQ = new EyeOfQwifot(780, 780, this);
-		SP = new ShadowPot(300, 500, this);
-		addNewObject(player);
-		addNewObject(ck1);
-		addNewObject(MG);
-		addNewObject(GE1);
-		addNewObject(EQ);
-		addNewObject(SP);
 	}
 
 	public GameScreen getGameScreen() {
 		return gameScreen;
 	}
 
-	protected void addNewObject(Entity entity) {
+	public void addNewObject(Entity entity) {
 		gameObjectContainer.add(entity);
 		RenderableHolder.getInstance().add(entity);
 	}
@@ -81,6 +65,28 @@ public class GameLogic {
 		RenderableHolder.getInstance().add(p);
 	}
 
+	public void startNewGame() {
+		RenderableHolder.inGameSong.play();
+		this.gameObjectContainer = new ArrayList<Entity>();
+		this.projectilesContainer = new ArrayList<Projectile>();
+		RenderableHolder.getInstance().getEntities().clear();
+		
+		map = new Map1(this);
+		RenderableHolder.getInstance().add(map);
+		
+		player = new Player(384, 288, this);
+		eQ = new EyeOfQwifot(3456, 512, this);
+		mT = new MagicalTortoise(200, 200, this);
+		addNewObject(player);
+		addNewObject(new Chicknight(200, 200, this));
+		addNewObject(mT);
+		addNewObject(new GriszlyEye(200, 200, this));
+		addNewObject(eQ);
+		addNewObject(new ShadowPot(300, 500, this));
+		
+		gameState = playState;
+		System.out.println("New Game");
+	}
 	public void checkTile(Entity entity) {
 		int entityLeftWorldX = (int) (entity.getWorldX() + entity.solidArea.getX());
 		int entityRightWorldX = (int) (entity.getWorldX() + entity.solidArea.getX() + entity.solidArea.getWidth());
@@ -142,7 +148,10 @@ public class GameLogic {
 	}
 
 	public void update() {
-//		System.out.println(gameState);
+		System.out.println(gameState);
+		if (!RenderableHolder.inGameSong.isPlaying()) {
+			RenderableHolder.inGameSong.play();
+		}
 		if(gameState == playState) {
 		logicUpdate();
 		gameScreen.paintComponent();
@@ -152,9 +161,14 @@ public class GameLogic {
 //			System.out.println(500);
 		}else if (gameState == gameOverState) {
 			drawGameOverOverlay();
+			RenderableHolder.inGameSong.stop();
 			if (InputUtility.getKeyPressed(KeyCode.R)) {
-				gameState = playState;
-				reset();
+				startNewGame();
+//				reset();
+			}
+			else if ( InputUtility.getKeyPressed(KeyCode.M)) {
+				InputUtility.getKeyPressed().remove(KeyCode.M);
+				Main.GoToMenu();
 			}
 		}
 		else if (gameState == npcState) {
@@ -164,11 +178,6 @@ public class GameLogic {
 		}
 	}
 
-	private void reset() {
-		// TODO Auto-generated method stub
-		getPlayer().reset();
-
-	}
 
 	public void logicUpdate() {
 		if (counter == 60) {
@@ -190,7 +199,7 @@ public class GameLogic {
 	}
 
 	public MagicalTortoise getMagicalTortoise() {
-		return MG;
+		return mT;
 	}
 
 	public void drawDialogueScreen(int i) {
@@ -212,12 +221,8 @@ public class GameLogic {
 	}
 
 	public void drawGameOverOverlay() {
-		GameOverButton retry = new GameOverButton((int) (1280 / 3.5), (int) (720 / 1.5), 200, 40, "RETRY");
-		retry.getBounds().setOnMouseClicked(e -> {
-//			gameLogic.reset();
-		});
-
-		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 320, (int) (720 / 1.5), 200, 40, "  Menu");
+		GameOverButton retry = new GameOverButton((int) (1280 / 3.5), (int) (720 / 1.5), 200, 40, "RETRY(R)");
+		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 320, (int) (720 / 1.5), 200, 40, " Menu(M)");
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
 		gc.drawImage(RenderableHolder.gameOverOverlay, 0, 0);
 		retry.draw(gc);
@@ -235,7 +240,7 @@ public class GameLogic {
 	public void count() {
 		counter++;
 		if (counter % 10 == 0) {
-			System.out.println(counter);
+//			System.out.println(counter);
 		}
 	}
 

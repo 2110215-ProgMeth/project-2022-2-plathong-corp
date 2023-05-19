@@ -6,13 +6,16 @@ import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 
 public abstract class Enemy extends Entity{
-	
 	protected double angle = 0;
-	protected String currentState;
+	protected String currentState = "default";
 	protected double delay = 0;
+	protected boolean canAttack;
+	protected double xspeed,yspeed;
 
-	public Enemy(int x, int y, GameLogic gameLogic) {
+	public Enemy(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
+		initSolidArea();
+		initAttackBlock();
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -26,7 +29,7 @@ public abstract class Enemy extends Entity{
 		}
 		else {
 			currentHealth = health;
-//			System.out.println("Plathong" + currentHealth);
+
 		}
 	}
 	public boolean checkEnemyHit() {
@@ -35,29 +38,28 @@ public abstract class Enemy extends Entity{
 		int y = (int) p.getScreenY();
 		int width = (int) p.getSolidArea().getWidth();
 		int height = (int) p.getSolidArea().getHeight();
-		boolean overlap = solidScreen.intersects(x,y,width,height);
-//		System.out.println("Overlap = " + overlap);
-//		System.out.println("X = " + x + " Y = " + y);
-		return overlap;
+		return solidScreen.intersects(x,y,width,height) || attackBlock.intersects(x,y,width,height);
 		
 	}
-	
+
 	public int getCurrentHealth() {
 		return currentHealth;
 	}
 	
 	public void attack(Entity p) {
 		// TODO Auto-generated method stub
-		System.out.println(this.getClass().getSimpleName()+"Attack");
-		if (checkEnemyHit()) ((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
+//		System.out.println(this.getClass().getSimpleName()+"Attack");
+		if (checkEnemyHit()) {
+			((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
+		}
 	}
 	
 	//Debugger
 	public void drawHitbox(GraphicsContext gc) {
 		gc.setLineWidth(2);
-		gc.setFill(Color.BLACK);
+		gc.setFill(Color.PINK);
 		gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidScreen.getWidth(), solidScreen.getHeight());
-	} 
+	}
 
 	public void drawAttackBlock(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
@@ -66,14 +68,43 @@ public abstract class Enemy extends Entity{
 	}
 	
 	public void updateAttackBlock() {
-		attackBlock.setX(screenX);
+		if (direction == "right")
+			attackBlock.setX(solidScreen.getX());
+		else if (direction == "left")
+			attackBlock.setX(solidScreen.getX()+solidScreen.getWidth()-attackBlock.getWidth());
 		attackBlock.setY(screenY);
+
 	}
 	
 	public void update() {
 		super.update();
-//		System.out.println(getClass().getSimpleName()+playerfound());
 		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
+		Player player = gameLogic.getPlayer();
+		angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
+	}
+
+	public void move() {
+		if (yspeed < 0)
+			direction = "up";
+		else
+			direction = "down";
+		setCollisionOn(false);
+		gameLogic.checkTile(this);
+		if (collisionOn == false) {
+			worldY += yspeed;
+
+		}
+
+		if (xspeed < 0)
+			direction = "left";
+		else
+			direction = "right";
+
+		setCollisionOn(false);
+		gameLogic.checkTile(this);
+		if (collisionOn == false) {
+			worldX += xspeed;
+		}
 	}
 	
 	public void reset() {		
@@ -85,17 +116,13 @@ public abstract class Enemy extends Entity{
 		this.direction = "right";
 		}
 	
-	public boolean playerfound() {
+	public boolean playerfound(int range) {
 		int rangeX = (int) Math.abs(worldX-gameLogic.getPlayer().getWorldX());
 		int rangeY = (int) Math.abs(worldY-gameLogic.getPlayer().getWorldY());
-		int range = (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2));
-		if (this instanceof Chicknight) {
-//			System.out.println("X = " + worldX +" Y = " + worldY);
-//			System.out.println("X = " + gameLogic.getPlayer().getWorldX() +" Y = " + gameLogic.getPlayer().getWorldY() + "Range =" +range);
-		}
-		return range<300;
+		return (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2)) < range;
 	}
-	
+
+
 	public abstract void initSolidArea();
 	public abstract void initAttackBlock();
 }

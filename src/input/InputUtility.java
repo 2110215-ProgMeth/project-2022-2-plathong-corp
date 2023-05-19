@@ -2,7 +2,9 @@ package input;
 
 import java.util.ArrayList;
 
+import MainMenu.GameOverButton;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 
 public class InputUtility {
 	public static double mouseX,mouseY;
@@ -45,4 +47,7 @@ public class InputUtility {
 		return keyPressed;
 	}
 	
+	public boolean isIn(GameOverButton b,MouseEvent e) {
+		return b.getBounds().contains(e.getX(),e.getY());
+	}
 }

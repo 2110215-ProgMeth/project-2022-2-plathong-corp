@@ -28,52 +28,51 @@ public class Player extends Entity{
 	private int healthBarY = (int) (11*1.5);
 	
 	//Status
-	protected int maxHp = 100;
+	protected int maxHp = 50;
 	protected int currentHealth = maxHp;
 	protected float healthWidth = healthBarWidth;
-	protected int dmg = 5;
+	protected int dmg = 10;
 	protected int iframe = 0;
 	
 	//AttackBlock
 	private Rectangle attackBlock;
 	
 	int counter;
-	public Player(int x, int y,GameLogic gameLogic) {
+	public Player(double x, double y,GameLogic gameLogic) {
 		super(x,y,gameLogic);
 		this.speed = 5;
-		this.radius = 32;
 
 		screenX = gameLogic.getGameScreen().getWidth()/2-radius;
 		screenY = gameLogic.getGameScreen().getHeight()/2-radius;
+		image = RenderableHolder.playerRight;
 		initSolidArea();
 		initAttackBlock();
 	}
 	@Override
 	public void draw(GraphicsContext gc) {
-		int count = 0;
-		Image playerImage = RenderableHolder.playerRight;
+		image = RenderableHolder.playerRight;
 		// TODO Auto-generated method stub
 		switch(direction) {
 		case "left":
-			playerImage = (RenderableHolder.playerLeft);
+			image = (RenderableHolder.playerLeft);
 			break;
 		case "right":
-			playerImage = RenderableHolder.playerRight;
+			image = RenderableHolder.playerRight;
 			break;
 
 		}	
-		gc.drawImage(playerImage , screenX, screenY);
+		gc.drawImage(image , screenX, screenY);
 		drawUI(gc);
 		
 		//Debugging
-		drawHitbox(gc, 44, 64);
+		drawHitbox(gc);
 		drawAttackBlock(gc);
 	}
 	
-	public void drawHitbox(GraphicsContext gc,int width , int height) {
+	public void drawHitbox(GraphicsContext gc) {
 		gc.setLineWidth(2);
 		gc.setFill(Color.PINK);
-		gc.strokeRect(screenX,screenY,width,height);
+		gc.strokeRect(solidScreen.getX(),solidScreen.getY(),solidScreen.getWidth(),solidScreen.getHeight());
 	}
 	
 	public void drawUI(GraphicsContext gc) {
@@ -88,15 +87,68 @@ public class Player extends Entity{
 	}
 	
 	public void attack(Entity e) {
-
+		
 		attackState = "yes";
+		Enemy enemy = (Enemy)e;
 		System.out.println("Player Attack "+e.getClass().getSimpleName());
-		((Enemy)e).changeHealthTo(((Enemy)e).getCurrentHealth()-dmg);
+		enemy.changeHealthTo(enemy.getCurrentHealth()-dmg);
+		
 		
 	}
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
+		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
+		move();
+		if (InputUtility.isLeftClickTriggered()) {
+			for (Entity entity: gameLogic.getGameObjectContainer()) {
+				if ((entity instanceof Enemy)) {
+					Enemy enemy = ((Enemy)entity);
+					int x = (int) enemy.solidScreen.getX();
+					int y = (int) enemy.solidScreen.getY();
+					int width = (int) enemy.getSolidArea().getWidth();
+					int height = (int) enemy.getSolidArea().getHeight();
+					 attackBlock.intersects(x,y,width,height);
+					if (attackBlock.intersects(x,y,width,height)) {
+						attack(entity);
+					}
+					if(enemy instanceof EyeOfQwifot) {
+//						System.out.println(enemy.solidScreen.getWidth()+" "+enemy.solidScreen.getHeight());
+					}
+					
+				}
+			}
+			
+		}
+		
+		updateHealthBar();
+		updateAttackBlock();
+		if(iframe>0)iframe--;
+	}
+	
+	public void updateHealthBar() {
+		healthWidth = (float) (currentHealth/(float) maxHp) * healthBarWidth;
+	}
+	
+	public void changeHealthTo(int health) {
+		if(iframe == 0){
+			if (health>=maxHp) {
+				currentHealth = maxHp;
+			}
+			else if (health<=0) {
+				currentHealth = 0;
+//				GameOver();
+			}
+			else {
+				currentHealth = health;
+				System.out.println("Plathong" + currentHealth);
+			}
+			iframe = 30;
+		}
+		
+	}
+	
+	public void move() {
 		direction = "";
 		if (InputUtility.getKeyPressed(KeyCode.W)) {
 			direction = "up";
@@ -104,8 +156,7 @@ public class Player extends Entity{
 		if (InputUtility.getKeyPressed(KeyCode.S)) {
 			direction = "down";
 		}
-		
-		
+			
 		setCollisionOn(false);
 		gameLogic.checkTile(this);
 		
@@ -117,7 +168,6 @@ public class Player extends Entity{
 			case "down":
 				worldY += speed;
 				break;
-
 			}
 		}
 		
@@ -140,68 +190,22 @@ public class Player extends Entity{
 				break;
 			}
 		}
-		if (InputUtility.isLeftClickTriggered()) {
-			for (Entity entity: gameLogic.getGameObjectContainer()) {
-				if ((entity instanceof Enemy)) {
-					Enemy enemy = ((Enemy)entity);
-					boolean canAtk = canAttack(worldX,worldY,enemy.getWorldX(),enemy.getWorldY(),(int) (solidArea.getWidth()+attackBlock.getWidth()));
-					if (canAtk) {
-						attack(entity);
-					}
-					if(enemy instanceof EyeOfQwifot) {
-						System.out.println(enemy.solidScreen.getWidth()+" "+enemy.solidScreen.getHeight());
-					}
-					
-				}
-			}
-			
-		}
-		
-		updateHealthBar();
-		updateAttackBlock();
-		if(iframe>0)iframe--;
 	}
-	
-	public void updateHealthBar() {
-		healthWidth = (float) (currentHealth/(float) maxHp) * healthBarWidth;
-//		healthWidth = (int) (0.5 * healthBarWidth);
-//		System.out.println(healthWidth);
-	}
-	
-	public void changeHealthTo(int health) {
-		if(iframe == 0){
-			if (health>=maxHp) {
-				currentHealth = maxHp;
-			}
-			else if (health<=0) {
-				currentHealth = 0;
-//				GameOver();
-			}
-			else {
-				currentHealth = health;
-				System.out.println("Plathong" + currentHealth);
-			}
-			iframe = 30;
-		}
-		
-	}
-	
 	public void initSolidArea() {
-		solidArea = new Rectangle(0,0,32,64);
+		solidArea = new Rectangle(16,0,32,64);
+
 	}
 	
 	public void initAttackBlock() {
-		attackBlock = new Rectangle(worldX,worldY,20*2,20*2);
+		attackBlock = new Rectangle(screenX,screenY,solidArea.getWidth()+20*2,96);
 	}
 	
 	public void updateAttackBlock() {
-		if (direction=="right") {
-			attackBlock.setX(screenX+(int)solidArea.getWidth());
-//			attackBlock.setLayoutX(0);
-		}else if(direction=="left") {
-			attackBlock.setX(screenX+(int)solidArea.getWidth()-(int)(30*2));
-		}
-		attackBlock.setY(screenY+(int)(10*2));
+		if (direction == "right")
+			attackBlock.setX(solidScreen.getX());
+		else if (direction == "left")
+			attackBlock.setX(solidScreen.getX()+solidScreen.getWidth()-attackBlock.getWidth());
+		attackBlock.setY(screenY-16);
 	}
 	
 	public void GameOver() {

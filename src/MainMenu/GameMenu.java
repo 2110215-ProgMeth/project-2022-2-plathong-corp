@@ -1,6 +1,6 @@
 package MainMenu;
 
-import application.GameStart;
+import application.Main;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Parent;
@@ -54,9 +54,12 @@ public class GameMenu extends Parent{
 			ft.setToValue(0);
 			ft.setOnFinished(evt-> setVisible(false));
 			ft.play();
+			Main.isStart = true;
+			Main.GameStart();
 			
-			GameStart.start();
-			
+			gameMenu.getChildren().remove(playMenu);
+			gameMenu.getChildren().addAll(mainMenu);
+			transition(playMenu,mainMenu,640);
 		});
 		
 		MenuButton ContBtn = new MenuButton("CONTINUE");
