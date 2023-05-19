@@ -158,9 +158,7 @@ public class GameLogic {
 	private void reset() {
 		// TODO Auto-generated method stub
 		getPlayer().reset();
-		for (Entity e:gameObjectContainer) {
-			((Enemy)e).reset();
-		}
+		
 	}
 
 	public void logicUpdate(){

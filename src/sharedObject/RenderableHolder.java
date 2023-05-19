@@ -25,7 +25,7 @@ public class RenderableHolder {
 	public static Image blackStarTile;
 	public static Image blackTile;
 	public static Image CKLeft, CKLeftWalk1, CKLeftWalk2, CKLeftAtk, CKRight, CKRightWalk1, CKRightWalk2, CKRightAtk;
-	public static Image pauseOverlay,pauseMenu, soundButton, urm, volumeButton;
+	public static Image gameOverOverlay,pauseOverlay,pauseMenu, soundButton, urm, volumeButton;
 	public static Image GELeft, GELeftWalk, GELeftWalk2, GERight, GERightWalk, GERightWalk2;
 	public static Image MTLeft1, MTLeft2, MTRight1, MTRight2;
 	public static Image SPLeft1,SPLeft2,SPRight2,SPRight1,SPLeftAtk,SPRightAtk,ball;
@@ -101,8 +101,9 @@ public class RenderableHolder {
 		EQ2 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifot2.png").toString());
 		EQDead1 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifotDead1.png").toString());
 		EQDead2 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifotDead2.png").toString());
-		// Pause
+		//Game State
 		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
+		gameOverOverlay = new Image(ClassLoader.getSystemResource("pause/GameOver.png").toString());
 //		pauseMenu = new Image(ClassLoader.getSystemResource("pause/.png").toString());
 //		soundButton = new Image(ClassLoader.getSystemResource("pause/sound_button.png").toString());
 //		urm = new Image(ClassLoader.getSystemResource("pause/urm_buttons.png").toString());

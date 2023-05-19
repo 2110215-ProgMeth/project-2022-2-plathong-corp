@@ -9,6 +9,7 @@ public abstract class Enemy extends Entity{
 	
 	protected double angle = 0;
 	protected String currentState;
+	protected double delay = 0;
 
 	public Enemy(int x, int y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
@@ -71,6 +72,7 @@ public abstract class Enemy extends Entity{
 	
 	public void update() {
 		super.update();
+//		System.out.println(getClass().getSimpleName()+playerfound());
 		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
 	}
 	
@@ -82,6 +84,17 @@ public abstract class Enemy extends Entity{
 		this.currentHealth = maxHp;
 		this.direction = "right";
 		}
+	
+	public boolean playerfound() {
+		int rangeX = (int) Math.abs(worldX-gameLogic.getPlayer().getWorldX());
+		int rangeY = (int) Math.abs(worldY-gameLogic.getPlayer().getWorldY());
+		int range = (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2));
+		if (this instanceof Chicknight) {
+//			System.out.println("X = " + worldX +" Y = " + worldY);
+//			System.out.println("X = " + gameLogic.getPlayer().getWorldX() +" Y = " + gameLogic.getPlayer().getWorldY() + "Range =" +range);
+		}
+		return range<300;
+	}
 	
 	public abstract void initSolidArea();
 	public abstract void initAttackBlock();

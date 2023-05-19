@@ -59,6 +59,7 @@ public class Chicknight extends Enemy {
 			break;
 		
 		}
+		if (!playerfound()) image = RenderableHolder.CKRight;
 		gc.drawImage(image, screenX, screenY);
 		// debugging
 //		gc.drawImage(RenderableHolder.pauseMenu,screenX,screenY);
@@ -107,6 +108,8 @@ public class Chicknight extends Enemy {
 			currentState = "attack";
 			attack(gameLogic.getPlayer());
 		}
+		if (playerfound()) speed = 1;
+		else speed = 0;
 		updateAttackBlock();
 	}
 

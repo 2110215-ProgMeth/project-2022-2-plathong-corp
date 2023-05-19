@@ -1,5 +1,6 @@
 package drawing;
 
+import MainMenu.GameOverButton;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
@@ -85,8 +87,16 @@ public class GameScreen extends Canvas{
 	}
 	
 	public void drawGameOverOverlay() {
+		GameOverButton retry = new GameOverButton((int)(1280/3.5),(int)(720/1.5),200,40,"RETRY");
+		retry.getBounds().setOnMouseClicked(e->{
+//			gameLogic.reset();
+		});
+		
+		GameOverButton mainMenu = new GameOverButton((int)(1280/3.5)+320,(int)(720/1.5),200,40,"  Menu");
 		GraphicsContext gc = this.getGraphicsContext2D();
-		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252 );
+		gc.drawImage(RenderableHolder.gameOverOverlay, 0, 0 );
+		retry.draw(gc);
+		mainMenu.draw(gc);
 	}
 	public GameScreen getGameScreen() {
 		return this;

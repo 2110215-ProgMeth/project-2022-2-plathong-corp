@@ -31,7 +31,7 @@ public class Projectile implements IRenderable {
 		this.destroyed = false;
 		this.xspeed = Math.cos(angle) * speed;
 		this.yspeed = Math.sin(angle) * speed;
-		this.dmg = 20;
+		this.dmg = 10;
 		solidArea = new Rectangle(0, 0, 8, 8);
 		solidScreen = new Rectangle(screenX,screenY,8,8);
 	}

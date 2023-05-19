@@ -52,6 +52,7 @@ public class GriszlyEye extends Enemy {
 			}
 			break;
 		}
+		if (!playerfound()) image = RenderableHolder.GERight;
 		gc.drawImage(image, screenX, screenY);
 		drawHitbox(gc);
 //		drawAttackBlock(gc);
@@ -65,6 +66,17 @@ public class GriszlyEye extends Enemy {
 //		((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
 //	}
 
+	public void attack(Entity p) {
+		super.attack(p);
+		if (delay==0) {
+			if (direction == "right") worldX+=40;
+			else if (direction == "left") worldX-=60;
+			
+			delay =60;
+		}
+		
+	}
+	
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -104,6 +116,16 @@ public class GriszlyEye extends Enemy {
 			currentState = "default";
 			attack(gameLogic.getPlayer());
 		}
+		if (delay<=0) {
+			delay =0;
+		}
+		else {
+			delay--;
+//			speed-=(5/60);
+		}
+		if (playerfound()) speed=3;
+		else speed = 0;
+		
 		updateAttackBlock();
 	}
 
@@ -118,6 +140,8 @@ public class GriszlyEye extends Enemy {
 		attackBlock = new Rectangle(20, 0, 24, 32);
 
 	}
+	
+	
 
 
 }

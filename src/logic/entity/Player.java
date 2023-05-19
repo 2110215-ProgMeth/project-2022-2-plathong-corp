@@ -40,7 +40,7 @@ public class Player extends Entity{
 	int counter;
 	public Player(int x, int y,GameLogic gameLogic) {
 		super(x,y,gameLogic);
-		this.speed = 3;
+		this.speed = 5;
 		this.radius = 32;
 
 		screenX = gameLogic.getGameScreen().getWidth()/2-radius;
