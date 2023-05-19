@@ -55,9 +55,9 @@ public abstract class Enemy extends Entity{
 	//Debugger
 	public void drawHitbox(GraphicsContext gc) {
 		gc.setLineWidth(2);
-		gc.setFill(Color.PINK);
+		gc.setFill(Color.BLACK);
 		gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidScreen.getWidth(), solidScreen.getHeight());
-	}
+	} 
 
 	public void drawAttackBlock(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);

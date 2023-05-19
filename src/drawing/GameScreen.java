@@ -16,9 +16,9 @@ import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
-public class GameScreen extends Canvas{
+public class GameScreen extends Canvas {
 	private boolean paused = false;
-	
+
 	public GameScreen(double width, double height) {
 		super(width, height);
 		this.setVisible(true);
@@ -65,7 +65,7 @@ public class GameScreen extends Canvas{
 				InputUtility.mouseY = event.getY();
 			}
 		});
-		
+
 	}
 
 	public void paintComponent() {
@@ -76,28 +76,12 @@ public class GameScreen extends Canvas{
 			// System.out.println(entity.getZ());
 			if (entity.isVisible() && !entity.isDestroyed()) {
 				entity.draw(gc);
-			
+
 			}
 		}
 	}
-	
-	public void drawGamePauseOverlay() {
-		GraphicsContext gc = this.getGraphicsContext2D();
-		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252 );
-	}
-	
-	public void drawGameOverOverlay() {
-		GameOverButton retry = new GameOverButton((int)(1280/3.5),(int)(720/1.5),200,40,"RETRY");
-		retry.getBounds().setOnMouseClicked(e->{
-//			gameLogic.reset();
-		});
-		
-		GameOverButton mainMenu = new GameOverButton((int)(1280/3.5)+320,(int)(720/1.5),200,40,"  Menu");
-		GraphicsContext gc = this.getGraphicsContext2D();
-		gc.drawImage(RenderableHolder.gameOverOverlay, 0, 0 );
-		retry.draw(gc);
-		mainMenu.draw(gc);
-	}
+
+
 	public GameScreen getGameScreen() {
 		return this;
 	}
