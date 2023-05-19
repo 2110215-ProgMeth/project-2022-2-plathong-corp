@@ -28,7 +28,7 @@ public class Player extends Entity{
 	private int healthBarY = (int) (11*1.5);
 	
 	//Status
-	protected int maxHp = 100;
+	protected int maxHp = 50;
 	protected int currentHealth = maxHp;
 	protected float healthWidth = healthBarWidth;
 	protected int dmg = 5;
@@ -40,8 +40,7 @@ public class Player extends Entity{
 	int counter;
 	public Player(int x, int y,GameLogic gameLogic) {
 		super(x,y,gameLogic);
-		this.speed = 3;
-		this.radius = 32;
+		this.speed = 5;
 
 		screenX = gameLogic.getGameScreen().getWidth()/2-radius;
 		screenY = gameLogic.getGameScreen().getHeight()/2-radius;
@@ -97,6 +96,7 @@ public class Player extends Entity{
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
+		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
 		direction = "";
 		if (InputUtility.getKeyPressed(KeyCode.W)) {
 			direction = "up";
@@ -188,6 +188,7 @@ public class Player extends Entity{
 	
 	public void initSolidArea() {
 		solidArea = new Rectangle(0,0,32,64);
+
 	}
 	
 	public void initAttackBlock() {
@@ -213,4 +214,12 @@ public class Player extends Entity{
 	public void setCurrentHealth(int currentHealth) {
 		this.currentHealth = currentHealth;
 	}
+	
+	public void reset() {		
+		visible = true;
+		destroyed = false;
+		worldX = getWorldX();
+		worldY = getWorldY();
+		this.currentHealth = maxHp;
+		}
 }

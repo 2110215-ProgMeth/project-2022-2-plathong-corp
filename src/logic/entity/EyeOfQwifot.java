@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
-public class EyeOfQwifot extends Miniboss{
+public class EyeOfQwifot extends MiniBoss{
 
     public EyeOfQwifot(int x, int y, GameLogic gameLogic) {
         super(x, y, gameLogic);
@@ -13,7 +13,6 @@ public class EyeOfQwifot extends Miniboss{
         currentHealth = maxHp;
         z = -100;
         image = RenderableHolder.EQ1;
-        currentState = "alive";
 //        initAttackBlock();
         initSolidArea();
         // TODO Auto-generated constructor stub
@@ -23,7 +22,7 @@ public class EyeOfQwifot extends Miniboss{
     public void draw(GraphicsContext gc) {
         // TODO Auto-generated method stub
         switch(currentState) {
-        case "alive":
+        case "default":
             if (gameLogic.getCounter()/10%2==1) 
                 image = RenderableHolder.EQ1;
 
@@ -60,13 +59,12 @@ public class EyeOfQwifot extends Miniboss{
 	public void initSolidArea() {
 		// TODO Auto-generated method stub
 		solidArea = new Rectangle(0,0,256,256);
-
 	}
 
 	@Override
 	public void initAttackBlock() {
-		// TODO Auto-generated method stub
-//		solidArea = new Rectangle(0,0,256,256);
+//		 TODO Auto-generated method stub
+//		attackBlock = new Rectangle(0,0,256,256);
 	}
 	
 	public void changeHealthTo(int health) {

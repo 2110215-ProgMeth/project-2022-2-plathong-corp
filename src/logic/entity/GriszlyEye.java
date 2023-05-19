@@ -9,7 +9,6 @@ import sharedObject.RenderableHolder;
 
 public class GriszlyEye extends Enemy {
 	private double angle = 0;
-	public String currentState = "default";
 
 	public GriszlyEye(int x, int y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
@@ -52,6 +51,7 @@ public class GriszlyEye extends Enemy {
 			}
 			break;
 		}
+		if (!playerfound()) image = RenderableHolder.GERight;
 		gc.drawImage(image, screenX, screenY);
 		drawHitbox(gc);
 //		drawAttackBlock(gc);
@@ -65,11 +65,25 @@ public class GriszlyEye extends Enemy {
 //		((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
 //	}
 
+	public void attack(Entity p) {
+		super.attack(p);
+		if (delay==0) {
+			if (direction == "right") worldX+=40;
+			else if (direction == "left") worldX-=60;
+			
+			delay =60;
+		}
+		
+	}
+	
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		super.update();
 		Player player = gameLogic.getPlayer();
+		canAttack = canAttack(player.worldX, player.worldY, worldX+radius, worldY+radius,
+				(int) (attackBlock.getWidth() + solidArea.getWidth()));
+		if (currentState=="attacking") {
 		if (!canAttack(player.worldX, player.worldY, worldX, worldY, 24)) {
 			angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
 			double xspeed = Math.cos(angle) * speed;
@@ -101,9 +115,19 @@ public class GriszlyEye extends Enemy {
 		}
 
 		else {
-			currentState = "default";
+//			currentState = "default";
 			attack(gameLogic.getPlayer());
 		}
+		}
+		if (delay<=0) {
+			delay =0;
+		}
+		else {
+			delay--;
+//			speed-=(5/60);
+		}
+
+		
 		updateAttackBlock();
 	}
 
@@ -118,6 +142,8 @@ public class GriszlyEye extends Enemy {
 		attackBlock = new Rectangle(20, 0, 24, 32);
 
 	}
+	
+	
 
 
 }

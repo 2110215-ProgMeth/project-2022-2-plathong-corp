@@ -8,8 +8,7 @@ import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
 public class Chicknight extends Enemy {
-	private Image image = RenderableHolder.CKRight;
-	private String currentState = "default";
+
 
 	public Chicknight(int x, int y, GameLogic gameLogic) {
 		super(x,y,gameLogic);
@@ -18,6 +17,7 @@ public class Chicknight extends Enemy {
 		this.dmg = 5;
 		this.z = -100;
 		this.speed = 1;
+		image = RenderableHolder.CKRight;
 		initSolidArea();
 		initAttackBlock();
 	}
@@ -28,37 +28,38 @@ public class Chicknight extends Enemy {
 //		System.out.println(c);
 		switch (direction) {
 		case "right":
-			if (currentState == "attack")
+			if (currentState == "attacking")
 				if (gameLogic.getCounter() / 10 % 2 == 1) {
 					image = RenderableHolder.CKRight;
 				} else {
-					image = RenderableHolder.CKRightAtk;
+					if(canAttack)
+						image = RenderableHolder.CKRightAtk;
+					else
+						image =RenderableHolder.CKRightWalk1;
 				}
 					
 			else {
-				if (gameLogic.getCounter() / 10 % 2 == 1) {
-					image = RenderableHolder.CKRightWalk1;
-				} else
 					image = RenderableHolder.CKRight;
 			}
 			break;
 		case "left":
-			if (currentState == "attack")
+			if (currentState == "attacking")
 				if (gameLogic.getCounter() / 10 % 2 == 1) {
 					image = RenderableHolder.CKLeft;
 				} else {
-					image = RenderableHolder.CKLeftAtk;
+					if(canAttack)
+						image = RenderableHolder.CKLeftAtk;
+					else
+						image =RenderableHolder.CKLeftWalk1;
 				}
 					
 			else {
-				if (gameLogic.getCounter() / 10 % 2 == 1) {
-					image = RenderableHolder.CKLeftWalk1;
-				} else
 					image = RenderableHolder.CKLeft;
 			}
 			break;
 		
 		}
+
 		gc.drawImage(image, screenX, screenY);
 		// debugging
 //		gc.drawImage(RenderableHolder.pauseMenu,screenX,screenY);
@@ -72,56 +73,60 @@ public class Chicknight extends Enemy {
 	public void update() {
 		// TODO Auto-generated method stub
 		super.update();
-
-		
+//		System.out.println(playerfound()+" "+canAttack+" "+direction);
 		Player player = gameLogic.getPlayer();
-		if (!canAttack(player.worldX, player.worldY, worldX, worldY, (int)(attackBlock.getWidth()+solidArea.getWidth()))) {
-			angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
-			double xspeed = Math.cos(angle) * speed;
-			double yspeed = Math.sin(angle) * speed;
-			currentState = "walking";
+		canAttack = canAttack(player.solidScreen.getX()+solidScreen.getWidth()/2, player.solidScreen.getY()+solidScreen.getHeight()/2, solidScreen.getX()+solidScreen.getWidth()/2, solidScreen.getY()+solidScreen.getHeight()/2,
+				(int) (attackBlock.getWidth() + solidArea.getWidth()));
+		if (currentState == "attacking") {
+			if (!canAttack) {
+				angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
+				double xspeed = Math.cos(angle) * speed;
+				double yspeed = Math.sin(angle) * speed;
+				currentState = "walking";
 
-			if(yspeed<0)
-				direction = "up";
-			else
-				direction = "down";
-			setCollisionOn(false);
-			gameLogic.checkTile(this);
-			if (collisionOn == false) {
-				worldY += yspeed;
+				if (yspeed < 0)
+					direction = "up";
+				else
+					direction = "down";
+				setCollisionOn(false);
+				gameLogic.checkTile(this);
+				if (collisionOn == false) {
+					worldY += yspeed;
 
 				}
-			
-			if (xspeed<0)
-				direction = "left";
-			else direction = "right";
-			
-			setCollisionOn(false);
-			gameLogic.checkTile(this);
-			if (collisionOn == false) {
-			worldX += xspeed;
-			}
-		}
 
-		else {
-			currentState = "attack";
-			attack(gameLogic.getPlayer());
+				if (xspeed < 0)
+					direction = "left";
+				else
+					direction = "right";
+
+				setCollisionOn(false);
+				gameLogic.checkTile(this);
+				if (collisionOn == false) {
+					worldX += xspeed;
+				}
+			}
+
+			else {
+//				currentState = "attack";
+				attack(gameLogic.getPlayer());
+			}
 		}
 		updateAttackBlock();
 	}
 
 	public void initSolidArea() {
-		solidArea = new Rectangle(0, 0, 32, 64);
+		solidArea = new Rectangle(20, 0, 24, 64);
 	}
 
 	public void initAttackBlock() {
-		attackBlock = new Rectangle(screenX+solidArea.getWidth(), screenY, 10 * 2, 7 * 2);
+		attackBlock = new Rectangle(screenX+solidArea.getWidth(), screenY, 10 * 2, 64);
 	}
 	
 //	Debug Chick
 	public void drawAttackBlock(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		gc.strokeRect(attackBlock.getX()+solidArea.getWidth(), attackBlock.getY(), attackBlock.getWidth(),
+		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(),
 				attackBlock.getHeight());
 	}
 

@@ -8,7 +8,9 @@ import logic.game.GameLogic;
 public abstract class Enemy extends Entity{
 	
 	protected double angle = 0;
-	protected String currentState;
+	protected String currentState = "default";
+	protected double delay = 0;
+	protected boolean canAttack;
 
 	public Enemy(int x, int y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
@@ -37,10 +39,10 @@ public abstract class Enemy extends Entity{
 		boolean overlap = solidScreen.intersects(x,y,width,height);
 //		System.out.println("Overlap = " + overlap);
 //		System.out.println("X = " + x + " Y = " + y);
-		return overlap;
+		return solidScreen.intersects(x,y,width,height) || attackBlock.intersects(x,y,width,height);
 		
 	}
-	
+
 	public int getCurrentHealth() {
 		return currentHealth;
 	}
@@ -65,14 +67,45 @@ public abstract class Enemy extends Entity{
 	}
 	
 	public void updateAttackBlock() {
-		attackBlock.setX(screenX);
+		if (direction == "right")
+			attackBlock.setX(solidScreen.getX()+solidArea.getWidth());
+		else if (direction == "left")
+			attackBlock.setX(screenX);
 		attackBlock.setY(screenY);
+
 	}
 	
 	public void update() {
 		super.update();
+
 		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
+		if (playerfound()) 
+			currentState = "attacking";
+		else
+			currentState = "default";
 	}
+
+	
+	public void reset() {		
+		visible = true;
+		destroyed = false;
+		worldX = getWorldX();
+		worldY = getWorldY();
+		this.currentHealth = maxHp;
+		this.direction = "right";
+		}
+	
+	public boolean playerfound() {
+		int rangeX = (int) Math.abs(worldX-gameLogic.getPlayer().getWorldX());
+		int rangeY = (int) Math.abs(worldY-gameLogic.getPlayer().getWorldY());
+		int range = (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2));
+		if (this instanceof Chicknight) {
+//			System.out.println("X = " + worldX +" Y = " + worldY);
+//			System.out.println("X = " + gameLogic.getPlayer().getWorldX() +" Y = " + gameLogic.getPlayer().getWorldY() + "Range =" +range);
+		}
+		return range<300;
+	}
+	
 	public abstract void initSolidArea();
 	public abstract void initAttackBlock();
 }

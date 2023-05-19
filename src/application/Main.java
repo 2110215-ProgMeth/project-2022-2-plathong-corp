@@ -47,8 +47,6 @@ public class Main extends Application{
 				logic.checkGameState();
 				if (delta >= 1) {
 					logic.count();
-//					logic.logicUpdate();
-//					gameScreen.paintComponent();
 					logic.update();
 					RenderableHolder.getInstance().update();
 					InputUtility.updateInputState();

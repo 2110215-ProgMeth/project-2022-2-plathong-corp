@@ -32,6 +32,7 @@ public abstract class Entity implements IRenderable {
 		worldY = y;
 		this.gameLogic = gameLogic;
 		this.direction = "right";
+		radius =32;
 	}
 
 	public abstract void attack(Entity t);
@@ -40,7 +41,6 @@ public abstract class Entity implements IRenderable {
 		screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;
         screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
 	}
-
 	public boolean canAttack(double x1, double y1, double x2, double y2, int attackRange) {
 		return (Math.abs(x1 - x2) < attackRange && Math.abs(y1 - y2) < attackRange);
 	}

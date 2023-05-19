@@ -1,5 +1,6 @@
 package drawing;
 
+import MainMenu.GameOverButton;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,81 +11,78 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
-public class GameScreen extends Canvas{
-	private boolean paused = false;
-	
-	public GameScreen(double width, double height) {
-		super(width, height);
-		this.setVisible(true);
-		addListerner();
-	}
+public class GameScreen extends Canvas {
+    private boolean paused = false;
 
-	public void addListerner() {
-		this.setOnKeyPressed((KeyEvent event) -> {
-			InputUtility.setKeyPressed(event.getCode(), true);
-		});
+    public GameScreen(double width, double height) {
+        super(width, height);
+        this.setVisible(true);
+        addListerner();
+    }
 
-		this.setOnKeyReleased((KeyEvent event) -> {
-			InputUtility.setKeyPressed(event.getCode(), false);
-		});
+    public void addListerner() {
+        this.setOnKeyPressed((KeyEvent event) -> {
+            InputUtility.setKeyPressed(event.getCode(), true);
+        });
 
-		this.setOnMousePressed((MouseEvent event) -> {
-			if (event.getButton() == MouseButton.PRIMARY)
-				InputUtility.mouseLeftDown();
-		});
+        this.setOnKeyReleased((KeyEvent event) -> {
+            InputUtility.setKeyPressed(event.getCode(), false);
+        });
 
-		this.setOnMouseReleased((MouseEvent event) -> {
-			if (event.getButton() == MouseButton.PRIMARY)
-				InputUtility.mouseLeftRelease();
-		});
+        this.setOnMousePressed((MouseEvent event) -> {
+            if (event.getButton() == MouseButton.PRIMARY)
+                InputUtility.mouseLeftDown();
+        });
 
-		this.setOnMouseEntered((MouseEvent event) -> {
-			InputUtility.mouseOnScreen = true;
-		});
+        this.setOnMouseReleased((MouseEvent event) -> {
+            if (event.getButton() == MouseButton.PRIMARY)
+                InputUtility.mouseLeftRelease();
+        });
 
-		this.setOnMouseExited((MouseEvent event) -> {
-			InputUtility.mouseOnScreen = false;
-		});
+        this.setOnMouseEntered((MouseEvent event) -> {
+            InputUtility.mouseOnScreen = true;
+        });
 
-		this.setOnMouseMoved((MouseEvent event) -> {
-			if (InputUtility.mouseOnScreen) {
-				InputUtility.mouseX = event.getX();
-				InputUtility.mouseY = event.getY();
-			}
-		});
+        this.setOnMouseExited((MouseEvent event) -> {
+            InputUtility.mouseOnScreen = false;
+        });
 
-		this.setOnMouseDragged((MouseEvent event) -> {
-			if (InputUtility.mouseOnScreen) {
-				InputUtility.mouseX = event.getX();
-				InputUtility.mouseY = event.getY();
-			}
-		});
-		
-	}
+        this.setOnMouseMoved((MouseEvent event) -> {
+            if (InputUtility.mouseOnScreen) {
+                InputUtility.mouseX = event.getX();
+                InputUtility.mouseY = event.getY();
+            }
+        });
 
-	public void paintComponent() {
-		GraphicsContext gc = this.getGraphicsContext2D();
-		gc.setFill(Color.BLACK);
-		gc.fillRect(0, 0, getWidth(), getHeight());
-		for (IRenderable entity : RenderableHolder.getInstance().getEntities()) {
-			// System.out.println(entity.getZ());
-			if (entity.isVisible() && !entity.isDestroyed()) {
-				entity.draw(gc);
-			
-			}
-		}
-	}
-	
-	public void drawGamePauseOverlay() {
-		GraphicsContext gc = this.getGraphicsContext2D();
-		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252 );
-	}
-	
-	public GameScreen getGameScreen() {
-		return this;
-	}
+        this.setOnMouseDragged((MouseEvent event) -> {
+            if (InputUtility.mouseOnScreen) {
+                InputUtility.mouseX = event.getX();
+                InputUtility.mouseY = event.getY();
+            }
+        });
+
+    }
+
+    public void paintComponent() {
+        GraphicsContext gc = this.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, getWidth(), getHeight());
+        for (IRenderable entity : RenderableHolder.getInstance().getEntities()) {
+            // System.out.println(entity.getZ());
+            if (entity.isVisible() && !entity.isDestroyed()) {
+                entity.draw(gc);
+
+            }
+        }
+    }
+
+
+    public GameScreen getGameScreen() {
+        return this;
+    }
 }
