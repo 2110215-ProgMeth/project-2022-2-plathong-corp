@@ -14,6 +14,7 @@ public class MagicalTortoise extends Entity{
     public MagicalTortoise(double x, double y, GameLogic gameLogic) {
         super(x, y, gameLogic);
         this.dialogues = new ArrayList<String>();
+        z = -100;
         // TODO Auto-generated constructor stub
         setDialogues();
     }
@@ -60,15 +61,27 @@ public class MagicalTortoise extends Entity{
     }
 
     public void setDialogues() {
-        dialogues.add("Hi , I'm GAY");
-        dialogues.add("This is GayZone So u r Gay");
+    	dialogues.add("Goodluck Traveller!");
+        dialogues.add("Hi , I'm Magical Tortoise");
+        dialogues.add("You would be \"THE TRAVELLER\" \n in my prophecy");
+        dialogues.add("This world will collapse soon");
+        dialogues.add("Everything will be colorless");
+        dialogues.add("People have no emotion");
+        dialogues.add("You are the only one");
+        dialogues.add("Please, save this world");
+        dialogues.add("For the color of the world");
+        dialogues.add("For the emotion of people");
+        dialogues.add("Please, get rid of all 3 inverders");
+        dialogues.add("The Eye of QWIFOT");
+        dialogues.add("MoleDerKaiser");
+        dialogues.add("LaristicKnight");
     }
 
     public boolean playerfound(){
         int rangeX = (int) Math.abs(worldX-gameLogic.getPlayer().getWorldX());
         int rangeY = (int) Math.abs(worldY-gameLogic.getPlayer().getWorldY());
         int range = (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2));
-        return range<30;
+        return range<100;
     }
     public String getDialogues(int i) {
         return dialogues.get(i);

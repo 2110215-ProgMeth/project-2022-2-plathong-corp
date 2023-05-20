@@ -7,8 +7,6 @@ import logic.game.GameLogic;
 
 public abstract class Enemy extends Entity{
 	protected double angle = 0;
-	protected String currentState = "default";
-	protected double delay = 0;
 	protected boolean canAttack;
 	protected double xspeed,yspeed;
 
@@ -48,7 +46,6 @@ public abstract class Enemy extends Entity{
 	
 	public void attack(Entity p) {
 		// TODO Auto-generated method stub
-//		System.out.println(this.getClass().getSimpleName()+"Attack");
 		if (checkEnemyHit()) {
 			((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
 		}
@@ -63,7 +60,7 @@ public abstract class Enemy extends Entity{
 
 	public void drawAttackBlock(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		gc.strokeRect(solidArea.getX(), attackBlock.getY(), attackBlock.getWidth(),
+		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(),
 				attackBlock.getHeight());
 	}
 	
@@ -73,7 +70,6 @@ public abstract class Enemy extends Entity{
 		else if (direction == "left")
 			attackBlock.setX(solidScreen.getX()+solidScreen.getWidth()-attackBlock.getWidth());
 		attackBlock.setY(screenY);
-
 	}
 	
 	public void update() {
@@ -84,6 +80,9 @@ public abstract class Enemy extends Entity{
 	}
 
 	public void move() {
+		xspeed = Math.cos(angle) * speed;
+		yspeed = Math.sin(angle) * speed;
+
 		if (yspeed < 0)
 			direction = "up";
 		else
@@ -92,9 +91,8 @@ public abstract class Enemy extends Entity{
 		gameLogic.checkTile(this);
 		if (collisionOn == false) {
 			worldY += yspeed;
-
 		}
-
+		
 		if (xspeed < 0)
 			direction = "left";
 		else

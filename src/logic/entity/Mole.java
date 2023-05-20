@@ -1,59 +1,93 @@
 package logic.entity;
 
+import Object.Ball;
+import Object.Projectile;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
 public class Mole extends Enemy{
 	protected String rank;
-	public Mole(double x, double y, GameLogic gameLogic,String rank) {
-		super(x, y, gameLogic);
+	private int coolDown = 360;
+	private int height ,width;
+	private double x,y;
+	private Image deadImage;
+	public Mole(double x, double y, GameLogic gameLogic,String rank,int width,int height) {
+		super(x+(int)(Math.random()*width),  y+ (int)(Math.random()*height), gameLogic);
+		this.height = height;
+		this.width = width;
+		this.x = x;
+		this.y = y;
 		this.maxHp = 100;
 		this.currentHealth = maxHp;
 		this.z = -100;
 		this.rank = rank;
-		if(rank=="DerKaiser")
+		if (rank == "DerKaiser") {
 			image = RenderableHolder.moleDerKaiser;
-		else
+			deadImage = RenderableHolder.moleDerKaiserDead;
+		} else {
 			image = RenderableHolder.mole;
+			deadImage = RenderableHolder.moleDead;
+		}
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
-		gc.drawImage(image, screenX, screenX);
+		if(currentState=="attacking")
+			gc.drawImage(image, screenX, screenY);
+		else if (currentState=="dead") {
+			gc.drawImage(deadImage, screenX, screenY);
+		}
+
+		 drawHitbox(gc);
 	}
-	
+
+	public void attack() {
+    	gameLogic.addNewProjectile(new Ball(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic));
+	}
 	@Override
-    public void update() {
-        // TODO Auto-generated method stub
-        super.update();
-		if (playerfound(1000)) 
+	public void update() {
+		// TODO Auto-generated method stub
+		super.update();
+		if(currentState!="dead") {
+		System.out.println(currentHealth);
+		if (playerfound(800) && coolDown<180)
 			currentState = "attacking";
 		else
 			currentState = "default";
-		if(currentState == "attacking") {
-        Player player = gameLogic.getPlayer();
-        angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
-        double xDirection =  Math.cos(Math.atan2(player.worldY-worldY,player.worldX-worldX));
-        if(xDirection<0)
-            direction = "left";
-        else
-            direction = "right";
-        
-        if(delay==0) {
-        	attack(gameLogic.getPlayer());
-        	delay = 1*60;
-        }
-        delay--;
+		if (currentState == "attacking") {
+
+			if (delay == 0) {
+				attack();
+				delay = 60;
+			}
+			delay--;
 		}
-    }
+		if(coolDown==0) {
+			coolDown = 360;
+			System.out.println("yoooo");
+			move();
+		}
+		coolDown--;
+		}
+	}
 	@Override
 	public void initSolidArea() {
 		solidArea = new Rectangle(16, 8, 32, 48);
 	}
-
+	@Override
+	public void move() {
+		worldX = x+ (int)(Math.random()*width);
+		worldY = y+ (int)(Math.random()*height);
+		System.out.println(worldX+" "+worldY);
+	}
+	@Override
+	public void changeHealthTo(int health) {
+	
+		}
 	@Override
 	public void initAttackBlock() {
 		attackBlock = new Rectangle(0,0,0,0);

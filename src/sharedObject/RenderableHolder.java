@@ -15,15 +15,7 @@ public class RenderableHolder {
 
 	private List<IRenderable> entities;
 	private Comparator<IRenderable> comparator;
-	public static Image playerLeft;
-	public static Image playerRight;
-	public static Image playerRightAtk;
-	public static Image johnSprite;
-	public static Image whiteTile;
-	public static Image grayTile;
-	public static Image pathTile;
-	public static Image blackStarTile;
-	public static Image blackTile;
+	public static Image playerLeft,playerLeftWalk,playerLeftAtk,playerRight,playerRightWalk,playerRightAtk;
 	public static Image CKLeft, CKLeftWalk1, CKLeftWalk2, CKLeftAtk, CKRight, CKRightWalk1, CKRightWalk2, CKRightAtk;
 	public static Image gameOverOverlay, pauseOverlay, pauseMenu, soundButton, urm, volumeButton;
 	public static Image GELeft, GELeftWalk, GELeftWalk2, GERight, GERightWalk, GERightWalk2;
@@ -34,13 +26,15 @@ public class RenderableHolder {
 	// EyeOfQwifot Sprite
 	public static Image EQ1, EQ2, EQDead1, EQDead2;
 	//MoleDerKaiser
-	public static Image mole,moleDerKaiser;
+	public static Image mole,moleDerKaiser,moleDead,moleDerKaiserDead;
 	public static Image moonSprite;
 	public static Image healthBar;
-	//Song
-	public static AudioClip inGameSong;
+	//Song & Effect
+	public static AudioClip inGameSong,sword1,chicknightSound,shootSound,griszlyEyeSound,npcSound,playerSkill,monsterdie;
 	// Map Tile
-	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,topLeftMapTile,topMapTile,topRightMapTile,
+	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,waterTopTile,waterBottomTile,
+	waterLeftTile,waterRightTile,waterTopLeftTile,waterTopRightTile,waterBottomLeftTile,waterBottomRightTile,
+	waterEdge1,waterEdge2,waterEdge3,waterEdge4,topLeftMapTile,topMapTile,topRightMapTile,
 	rightMapTile,bottomRightMapTile,bottomMapTile,bottomLeftMapTile,leftMapTile,tombTile,spawn1Tile,spawn2Tile;
 	static {
 		loadResource();
@@ -76,20 +70,33 @@ public class RenderableHolder {
 		loadShadowPot();
 		loadEyeOfQwifot();
 		loadMoleDerKaiser();
+		loadSound();
 		//
 		//Game State
 		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
 		gameOverOverlay = new Image(ClassLoader.getSystemResource("pause/GameOver.png").toString());
-		inGameSong = new AudioClip(ClassLoader.getSystemResource("IngameSong.wav").toString());
 		// StatusBar
 		healthBar = new Image(ClassLoader.getSystemResource("health_power_bar.png").toString());
 
 	}
 	
+	public static void loadSound() {
+		inGameSong = new AudioClip(ClassLoader.getSystemResource("sound/IngameSong.wav").toString());
+		chicknightSound = new AudioClip(ClassLoader.getSystemResource("sound/chicknight.mp3").toString());
+		shootSound = new AudioClip(ClassLoader.getSystemResource("sound/shootSound.mp3").toString());
+		sword1 = new AudioClip(ClassLoader.getSystemResource("sound/swing.mp3").toString());
+		griszlyEyeSound = new AudioClip(ClassLoader.getSystemResource("sound/GriszlyEyeSound.wav").toString());
+		npcSound = new AudioClip(ClassLoader.getSystemResource("sound/npcSound.wav").toString());
+		playerSkill = new AudioClip(ClassLoader.getSystemResource("sound/skill1.wav").toString());
+		monsterdie = new AudioClip(ClassLoader.getSystemResource("sound/monsterdie.wav").toString());
+	}
 	public static void loadPlayer() {
-		playerLeft = new Image(ClassLoader.getSystemResource("player/RabbiLeft.png").toString());
-		playerRight = new Image(ClassLoader.getSystemResource("player/Rabbi.png").toString());
-		playerRightAtk = new Image(ClassLoader.getSystemResource("player/RabbiRightAtk.png").toString());
+		playerLeft = new Image(ClassLoader.getSystemResource("player/playerLeft.png").toString());
+		playerLeftWalk = new Image(ClassLoader.getSystemResource("player/playerLeftWalk.png").toString());
+		playerLeftAtk = new Image(ClassLoader.getSystemResource("player/playerLeftAtk.png").toString());
+		playerRight = new Image(ClassLoader.getSystemResource("player/playerRight.png").toString());
+		playerRightWalk = new Image(ClassLoader.getSystemResource("player/playerRightWalk.png").toString());
+		playerRightAtk = new Image(ClassLoader.getSystemResource("player/playerRightAtk.png").toString());
 	}
 	public static void loadMapTile() {
 		ground1Tile =  new Image(ClassLoader.getSystemResource("mapTile/ground1.png").toString());
@@ -97,6 +104,18 @@ public class RenderableHolder {
 		ground3Tile =  new Image(ClassLoader.getSystemResource("mapTile/ground3.png").toString());
 		water1Tile =  new Image(ClassLoader.getSystemResource("mapTile/water1.png").toString());
 		water2Tile = new Image(ClassLoader.getSystemResource("mapTile/water2.png").toString());
+		waterTopTile = new Image(ClassLoader.getSystemResource("mapTile/waterTop.png").toString());
+		waterBottomTile = new Image(ClassLoader.getSystemResource("mapTile/waterBottom.png").toString());
+		waterLeftTile = new Image(ClassLoader.getSystemResource("mapTile/waterLeft.png").toString());
+		waterRightTile = new Image(ClassLoader.getSystemResource("mapTile/waterRight.png").toString());
+		waterTopRightTile = new Image(ClassLoader.getSystemResource("mapTile/waterTopRight.png").toString());
+		waterBottomRightTile = new Image(ClassLoader.getSystemResource("mapTile/waterBottomRight.png").toString());
+		waterTopLeftTile = new Image(ClassLoader.getSystemResource("mapTile/waterTopLeft.png").toString());
+		waterBottomLeftTile = new Image(ClassLoader.getSystemResource("mapTile/waterBottomLeft.png").toString());
+		waterEdge1 = new Image(ClassLoader.getSystemResource("mapTile/waterEdge1.png").toString());
+		waterEdge2 = new Image(ClassLoader.getSystemResource("mapTile/waterEdge2.png").toString());
+		waterEdge3 = new Image(ClassLoader.getSystemResource("mapTile/waterEdge3.png").toString());
+		waterEdge4 = new Image(ClassLoader.getSystemResource("mapTile/waterEdge4.png").toString());
 		topLeftMapTile =  new Image(ClassLoader.getSystemResource("mapTile/TopLeftMap.png").toString());
 		topMapTile =  new Image(ClassLoader.getSystemResource("mapTile/TopMap.png").toString());
 		topRightMapTile =  new Image(ClassLoader.getSystemResource("mapTile/TopRightMap.png").toString());
@@ -151,6 +170,8 @@ public class RenderableHolder {
 	public static void loadMoleDerKaiser() {
 		mole = new Image(ClassLoader.getSystemResource("MoleDerKaiser/normalMole.png").toString());
 		moleDerKaiser = new Image(ClassLoader.getSystemResource("MoleDerKaiser/moleDerKaiser.png").toString());
+		moleDead = new Image(ClassLoader.getSystemResource("MoleDerKaiser/normalMoleDead.png").toString());
+		moleDerKaiserDead = new Image(ClassLoader.getSystemResource("MoleDerKaiser/moleDerKaiserDead.png").toString());
 	}
 	public void add(IRenderable entity) {
 		System.out.println("add");

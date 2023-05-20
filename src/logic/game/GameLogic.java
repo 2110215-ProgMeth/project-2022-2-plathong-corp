@@ -20,7 +20,10 @@ import logic.entity.Enemy;
 import logic.entity.Entity;
 import logic.entity.EyeOfQwifot;
 import logic.entity.GriszlyEye;
+import logic.entity.LlaristicKnight;
 import logic.entity.MagicalTortoise;
+import logic.entity.Mole;
+import logic.entity.MoleDerKaiser;
 import logic.entity.Player;
 import logic.entity.ShadowPot;
 import logic.field.Map1;
@@ -37,13 +40,16 @@ public class GameLogic {
 	private EyeOfQwifot eQ;
 	private Map1 map;
 	private MagicalTortoise mT;
-
+	private MoleDerKaiser mDK;
+	private LlaristicKnight LN;
 	// GameState
 	public int gameState = 1;
 	public final int playState = 1;
 	public final int pauseState = 2;
 	public final int npcState = 3;
 	public final int gameOverState = 4;
+
+	public int dialogueIndex = 0;
 
 	public GameLogic(GameScreen gameScreen) {
 		this.gameScreen = gameScreen;
@@ -70,23 +76,51 @@ public class GameLogic {
 		this.gameObjectContainer = new ArrayList<Entity>();
 		this.projectilesContainer = new ArrayList<Projectile>();
 		RenderableHolder.getInstance().getEntities().clear();
-		
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
-		
-		player = new Player(384, 288, this);
+
+		player = new Player(1920, 1444, this);
 		eQ = new EyeOfQwifot(3456, 512, this);
-		mT = new MagicalTortoise(200, 200, this);
+		mT = new MagicalTortoise(2040, 1444, this);
 		addNewObject(player);
-		addNewObject(new Chicknight(200, 200, this));
+		addNewObject(new Chicknight(3000, 200, this));
+		for (int i = 0; i < 50; i++) {
+			double pointX = Math.random();
+			double pointY = Math.random();
+			boolean spawnPoint = ((pointX>0.4 && pointX<0.6) || (pointY>0.4 &&pointY<0.6));
+			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint) {
+				pointX = Math.random();
+				pointY = Math.random();
+				spawnPoint = ((pointX>0.4 && pointX<0.6) || (pointY>0.4 &&pointY<0.6));
+			}
+			addNewObject(new Chicknight(pointX * 64 * 64, pointY * 64 * 48, this));
+		}
+
+		for (int i = 0; i < 20; i++) {
+			double pointX = Math.random();
+			double pointY = Math.random();
+			boolean spawnPoint = ((pointX>0.4 && pointX<0.6) || (pointY>0.4 &&pointY<0.6));
+			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint) {
+				pointX = Math.random();
+				pointY = Math.random();
+				spawnPoint = ((pointX>0.4 && pointX<0.6) || (pointY>0.4 &&pointY<0.6));
+			}
+			addNewObject(new ShadowPot(pointX * 64 * 64, pointY * 64 * 48, this));
+		}
 		addNewObject(mT);
-		addNewObject(new GriszlyEye(200, 200, this));
-		addNewObject(eQ);
-		addNewObject(new ShadowPot(300, 500, this));
-		
+		addNewObject(new LlaristicKnight(8*64, 10*64, this));
+		addNewObject(new GriszlyEye(3000, 200, this));
+		addNewObject(new ShadowPot(3000, 500, this));
+		addNewObject(new EyeOfQwifot(3456, 512, this));
+		mDK = new MoleDerKaiser(1800, 64*37, this, 448, 448);
+		addNewObject(mDK);
+		for (Mole m : mDK.getMoles()) {
+			addNewObject(m);
+		}
 		gameState = playState;
 		System.out.println("New Game");
 	}
+
 	public void checkTile(Entity entity) {
 		int entityLeftWorldX = (int) (entity.getWorldX() + entity.solidArea.getX());
 		int entityRightWorldX = (int) (entity.getWorldX() + entity.solidArea.getX() + entity.solidArea.getWidth());
@@ -106,9 +140,6 @@ public class GameLogic {
 			entityTopRow = (entityTopWorldY - entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
 			tile2 = map.getTileIndex(entityRightCol, entityTopRow);
-//			tile1 = map.field[entityLeftCol][entityTopRow];
-//			tile2 = map.field[entityRightCol][entityTopRow];
-
 			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
 				entity.setCollisionOn(true);
 			}
@@ -117,8 +148,6 @@ public class GameLogic {
 			entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityBottomRow);
 			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
-//			tile1 = map.field[entityLeftCol][entityBottomRow];
-//			tile2 = map.field[entityRightCol][entityBottomRow];
 			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
 				entity.setCollisionOn(true);
 			}
@@ -127,8 +156,6 @@ public class GameLogic {
 			entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
 			tile2 = map.getTileIndex(entityLeftCol, entityBottomRow);
-//			tile1 = map.field[entityLeftCol][entityTopRow];
-//			tile2 = map.field[entityLeftCol][entityBottomRow];
 			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
 				entity.setCollisionOn(true);
 			}
@@ -137,8 +164,6 @@ public class GameLogic {
 			entityRightCol = (entityRightWorldX + entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityRightCol, entityTopRow);
 			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
-//			tile1 = map.field[entityRightCol][entityTopRow];
-//			tile2 = map.field[entityRightCol][entityBottomRow];
 			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
 				entity.setCollisionOn(true);
 			}
@@ -152,32 +177,44 @@ public class GameLogic {
 		if (!RenderableHolder.inGameSong.isPlaying()) {
 			RenderableHolder.inGameSong.play();
 		}
-		if(gameState == playState) {
-		logicUpdate();
-		gameScreen.paintComponent();
-		}
-		else if (gameState == pauseState) {
+		if (gameState == playState) {
+			logicUpdate();
+			gameScreen.paintComponent();
+		} else if (gameState == pauseState) {
 			drawGamePauseOverlay();
+			if (InputUtility.getKeyPressed(KeyCode.M)) {
+				Main.GoToMenu();
+				RenderableHolder.inGameSong.stop();
+				InputUtility.getKeyPressed().remove(KeyCode.M);
+			}
 //			System.out.println(500);
-		}else if (gameState == gameOverState) {
+		} else if (gameState == gameOverState) {
 			drawGameOverOverlay();
 			RenderableHolder.inGameSong.stop();
 			if (InputUtility.getKeyPressed(KeyCode.R)) {
 				startNewGame();
 //				reset();
-			}
-			else if ( InputUtility.getKeyPressed(KeyCode.M)) {
+			} else if (InputUtility.getKeyPressed(KeyCode.M)) {
 				InputUtility.getKeyPressed().remove(KeyCode.M);
 				Main.GoToMenu();
 			}
-		}
-		else if (gameState == npcState) {
-			drawDialogueScreen(0);
+		} else if (gameState == npcState) {
+			if (!getMagicalTortoise().playerfound()) {
+
+				gameState = playState;
+				dialogueIndex = 0;
+			}
 			logicUpdate();
 			gameScreen.paintComponent();
+			drawDialogueScreen(dialogueIndex);
+			if (InputUtility.isLeftClickTriggered()) {
+				dialogueIndex++;
+				RenderableHolder.npcSound.play(0.2);
+			}
+			if (getMagicalTortoise().getDialoguesSize() - 1 < dialogueIndex)
+				dialogueIndex = 0;
 		}
 	}
-
 
 	public void logicUpdate() {
 		if (counter == 60) {
@@ -261,8 +298,7 @@ public class GameLogic {
 			if (gameState == playState) {
 				gameState = npcState;
 
-			}
-			else if (gameState == npcState) {
+			} else if (gameState == npcState) {
 				int total = getMagicalTortoise().getDialoguesSize() - 1;
 				if (start < total) {
 					drawDialogueScreen(start);

@@ -73,6 +73,7 @@ public class GriszlyEye extends Enemy {
 			}
 			if (delay ==30) {
 				speed = normalSpeed*3;
+				RenderableHolder.griszlyEyeSound.play(0.1);
 				xspeed = Math.cos(angle) * speed;
 				yspeed = Math.sin(angle) * speed;
 			}

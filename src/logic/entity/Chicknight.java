@@ -26,36 +26,28 @@ public class Chicknight extends Enemy {
 //		System.out.println(c);
 		switch (direction) {
 		case "right":
-			if (currentState == "attacking")
-				if (gameLogic.getCounter() / 10 % 2 == 1) {
-					image = RenderableHolder.CKRight;
-				} else {
-					if(canAttack)
-						image = RenderableHolder.CKRightAtk;
-					else
-						image =RenderableHolder.CKRightWalk1;
-				}
-					
+			if (attackState)
+				image = RenderableHolder.CKRightAtk;
 			else {
-					image = RenderableHolder.CKRight;
+				image = RenderableHolder.CKRight;
+				if (currentState == "attacking") {
+					if (gameLogic.getCounter() / 10 % 2 == 1)
+						image = RenderableHolder.CKRightWalk1;
+				}
 			}
 			break;
 		case "left":
-			if (currentState == "attacking")
-				if (gameLogic.getCounter() / 10 % 2 == 1) {
-					image = RenderableHolder.CKLeft;
-				} else {
-					if(canAttack)
-						image = RenderableHolder.CKLeftAtk;
-					else
-						image =RenderableHolder.CKLeftWalk1;
-				}
-					
+			if (attackState)
+				image = RenderableHolder.CKLeftAtk;
 			else {
-					image = RenderableHolder.CKLeft;
+				image = RenderableHolder.CKLeft;
+				if (currentState == "attacking") {
+					if (gameLogic.getCounter() / 10 % 2 == 1)
+						image = RenderableHolder.CKLeftWalk1;
+				}
 			}
 			break;
-		
+
 		}
 
 		gc.drawImage(image, screenX, screenY);
@@ -79,11 +71,16 @@ public class Chicknight extends Enemy {
 				(int) (32));
 		if (currentState == "attacking") {
 			if(canAttack) {
+				if(delay==0) {
+				attackState = true;
 				attack(gameLogic.getPlayer());
+				RenderableHolder.chicknightSound.play(0.2);
+				delay = 60;
+				}
 			}
 			else {
-				double xspeed = Math.cos(angle) * speed;
-				double yspeed = Math.sin(angle) * speed;
+				xspeed = Math.cos(angle) * speed;
+				yspeed = Math.sin(angle) * speed;
 				
 
 				if (yspeed < 0)
@@ -108,7 +105,8 @@ public class Chicknight extends Enemy {
 					worldX += xspeed;
 				}
 			}
-
+			if(delay==40) attackState = false;
+			if (delay>0) delay--;
 
 		}
 		updateAttackBlock();

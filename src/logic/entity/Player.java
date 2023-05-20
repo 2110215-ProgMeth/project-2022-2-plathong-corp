@@ -10,219 +10,281 @@ import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
-public class Player extends Entity{
-	
-	
-	private String attackState = "no";
-	
-	//Status Position
-	private int statusBarWidth = (int) (180*1.5);
-	private int statusBarHeight = (int) (38*2);
-	private int statusBarX = (int) (10*1.5);
-	private int statusBarY = (int) (10*1.5);
-	
-	//Bar Position 
-	private int healthBarWidth = (int) (144*1.5);
-	private int healthBarHeight = (int) (4*2);
-	private int healthBarX = (int) (30*1.5);
-	private int healthBarY = (int) (11*1.5);
-	
-	//Status
-	protected int maxHp = 50;
+public class Player extends Entity {
+
+	// Status Position
+	private int statusBarWidth = (int) (180 * 1.5);
+	private int statusBarHeight = (int) (38 * 2);
+	private int statusBarX = (int) (10 * 1.5);
+	private int statusBarY = (int) (10 * 1.5);
+
+	// Bar Position
+	private int healthBarWidth = (int) (144 * 1.5);
+	private int healthBarHeight = (int) (4 * 2);
+	private int healthBarX = (int) (30 * 1.5);
+	private int healthBarY = (int) (11 * 1.5);
+
+	private int manaBarWidth = (int) (97 * 1.5);
+	private int manaBarHeight = (int) (2 * 2);
+	private int manaBarX = (int) (42 * 1.5);
+	private int manaBarY = (int) (30 * 1.5);
+
+	// Status
+	protected int maxHp = 5000;
 	protected int currentHealth = maxHp;
 	protected float healthWidth = healthBarWidth;
+	protected int maxMana = 100;
+	protected int currentMana = 0;
+	protected float manaWidth = currentMana;
 	protected int dmg = 10;
 	protected int iframe = 0;
-	
-	//AttackBlock
-	private Rectangle attackBlock;
-	
-	int counter;
-	public Player(double x, double y,GameLogic gameLogic) {
-		super(x,y,gameLogic);
-		this.speed = 5;
+	protected int duration = 0;
 
-		screenX = gameLogic.getGameScreen().getWidth()/2-radius;
-		screenY = gameLogic.getGameScreen().getHeight()/2-radius;
+	// AttackBlock
+	private Rectangle attackBlock;
+
+	int counter;
+
+	public Player(double x, double y, GameLogic gameLogic) {
+		super(x, y, gameLogic);
+		this.speed = 5;
+		z = -100;
+		screenX = gameLogic.getGameScreen().getWidth() / 2 - radius;
+		screenY = gameLogic.getGameScreen().getHeight() / 2 - radius;
 		image = RenderableHolder.playerRight;
 		initSolidArea();
 		initAttackBlock();
 	}
+
 	@Override
 	public void draw(GraphicsContext gc) {
-		image = RenderableHolder.playerRight;
 		// TODO Auto-generated method stub
-		switch(direction) {
+		switch (direction) {
 		case "left":
-			image = (RenderableHolder.playerLeft);
+			if (attackState)
+				image = RenderableHolder.playerLeftAtk;
+			else {
+				image = RenderableHolder.playerLeft;
+				if (currentState == "moving") {
+					if (gameLogic.getCounter() / 10 % 2 == 1)
+						image = RenderableHolder.playerLeftWalk;
+				}
+			}
 			break;
 		case "right":
-			image = RenderableHolder.playerRight;
+			if (attackState)
+				image = RenderableHolder.playerRightAtk;
+			else {
+				image = RenderableHolder.playerRight;
+				if (currentState == "moving") {
+					if (gameLogic.getCounter() / 10 % 2 == 1)
+						image = RenderableHolder.playerRightWalk;
+				}
+			}
 			break;
 
-		}	
-		gc.drawImage(image , screenX, screenY);
+		}
+		gc.drawImage(image, screenX, screenY);
 		drawUI(gc);
-		
-		//Debugging
+
+		// Debugging
 		drawHitbox(gc);
 		drawAttackBlock(gc);
 	}
-	
+
 	public void drawHitbox(GraphicsContext gc) {
 		gc.setLineWidth(2);
 		gc.setFill(Color.PINK);
-		gc.strokeRect(solidScreen.getX(),solidScreen.getY(),solidScreen.getWidth(),solidScreen.getHeight());
+		gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidScreen.getWidth(), solidScreen.getHeight());
 	}
-	
+
 	public void drawUI(GraphicsContext gc) {
 		gc.drawImage(RenderableHolder.healthBar, statusBarX, statusBarY, statusBarWidth, statusBarHeight);
 		gc.setFill(Color.BLACK);
-		gc.fillRect(healthBarX+statusBarX,healthBarY+statusBarY,healthWidth,healthBarHeight);
+		gc.fillRect(healthBarX + statusBarX, healthBarY + statusBarY, healthWidth, healthBarHeight);
+		gc.setFill(Color.LIGHTGRAY);
+		gc.fillRect(manaBarX + statusBarX, manaBarY + statusBarY, manaWidth, manaBarHeight);
 	}
-	
-	public void drawAttackBlock(GraphicsContext gc){
+
+	public void drawAttackBlock(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(),attackBlock.getHeight());
+		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
 	}
-	
+
 	public void attack(Entity e) {
-		
-		attackState = "yes";
-		Enemy enemy = (Enemy)e;
-		System.out.println("Player Attack "+e.getClass().getSimpleName());
-		enemy.changeHealthTo(enemy.getCurrentHealth()-dmg);
-		
-		
+		Enemy enemy = (Enemy) e;
+		System.out.println("Player Attack " + e.getClass().getSimpleName());
+		enemy.changeHealthTo(enemy.getCurrentHealth() - dmg);
+		changeManaTo(currentMana + 100);
 	}
+
+	public void skill() {
+		RenderableHolder.playerSkill.play();
+		duration = 10 * 60;
+		speed = 10;
+		dmg = 20;
+		changeManaTo(currentMana - 100);
+	}
+
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
+		solidScreen = new Rectangle(screenX + solidArea.getX(), screenY + solidArea.getY(), solidArea.getWidth(),
+				solidArea.getHeight());
 		move();
 		if (InputUtility.isLeftClickTriggered()) {
-			for (Entity entity: gameLogic.getGameObjectContainer()) {
-				if ((entity instanceof Enemy)) {
-					Enemy enemy = ((Enemy)entity);
-					int x = (int) enemy.solidScreen.getX();
-					int y = (int) enemy.solidScreen.getY();
-					int width = (int) enemy.getSolidArea().getWidth();
-					int height = (int) enemy.getSolidArea().getHeight();
-					 attackBlock.intersects(x,y,width,height);
-					if (attackBlock.intersects(x,y,width,height)) {
-						attack(entity);
+
+			if (delay == 0) {
+				attackState = true;
+				RenderableHolder.sword1.play(0.2);
+				for (Entity entity : gameLogic.getGameObjectContainer()) {
+					if ((entity instanceof Enemy)) {
+						Enemy enemy = ((Enemy) entity);
+						int x = (int) enemy.solidScreen.getX();
+						int y = (int) enemy.solidScreen.getY();
+						int width = (int) enemy.getSolidArea().getWidth();
+						int height = (int) enemy.getSolidArea().getHeight();
+						attackBlock.intersects(x, y, width, height);
+						if (attackBlock.intersects(x, y, width, height)) {
+							attack(entity);
+						}
 					}
-					if(enemy instanceof EyeOfQwifot) {
-//						System.out.println(enemy.solidScreen.getWidth()+" "+enemy.solidScreen.getHeight());
-					}
-					
 				}
+				delay = 20;
 			}
-			
 		}
-		
+		if (InputUtility.getKeyPressed(KeyCode.SPACE) && currentMana >= 100) {
+			skill();
+			InputUtility.getKeyPressed().remove(KeyCode.SPACE);
+		}
+
 		updateHealthBar();
 		updateAttackBlock();
-		if(iframe>0)iframe--;
+		if (iframe > 0)
+			iframe--;
+
+		if (delay == 10)
+			attackState = false;
+		if (delay > 0)
+			delay--;
+
+		if (duration > 0)
+			duration--;
+		if (duration == 0) {
+			speed = 5;
+			dmg = 10;
+		}
 	}
-	
+
 	public void updateHealthBar() {
-		healthWidth = (float) (currentHealth/(float) maxHp) * healthBarWidth;
+		healthWidth = (float) (currentHealth / (float) maxHp) * healthBarWidth;
+		manaWidth = (float) (currentMana / (float) maxMana) * manaBarWidth;
 	}
-	
+
 	public void changeHealthTo(int health) {
-		if(iframe == 0){
-			if (health>=maxHp) {
+		if (iframe == 0) {
+			if (health >= maxHp) {
 				currentHealth = maxHp;
-			}
-			else if (health<=0) {
+			} else if (health <= 0) {
 				currentHealth = 0;
 //				GameOver();
-			}
-			else {
+			} else {
 				currentHealth = health;
-				System.out.println("Plathong" + currentHealth);
 			}
 			iframe = 30;
 		}
-		
-	}
-	
-	public void move() {
-		direction = "";
-		if (InputUtility.getKeyPressed(KeyCode.W)) {
-			direction = "up";
-		}
-		if (InputUtility.getKeyPressed(KeyCode.S)) {
-			direction = "down";
-		}
-			
-		setCollisionOn(false);
-		gameLogic.checkTile(this);
-		
-		if (collisionOn == false) {
-			switch(direction) {
-			case "up":
-				worldY -= speed;
-				break;
-			case "down":
-				worldY += speed;
-				break;
-			}
-		}
-		
-		if (InputUtility.getKeyPressed(KeyCode.D)) {
-			direction = "right";
-		}
-		if (InputUtility.getKeyPressed(KeyCode.A)) {
-			direction = "left";
-		}
-		
-		setCollisionOn(false);
-		gameLogic.checkTile(this);
-		if (collisionOn == false) {
-			switch(direction) {
-			case "left":
-				worldX -= speed;
-				break;
-			case "right":
-				worldX += speed;
-				break;
-			}
-		}
-	}
-	public void initSolidArea() {
-		solidArea = new Rectangle(16,0,32,64);
 
 	}
-	
-	public void initAttackBlock() {
-		attackBlock = new Rectangle(screenX,screenY,solidArea.getWidth()+20*2,96);
+
+	public void move() {
+		currentState = "moving";
+		if (InputUtility.getKeyPressed(KeyCode.W)) {
+			direction = "up";
+		} else if (InputUtility.getKeyPressed(KeyCode.S)) {
+			direction = "down";
+		} else
+			currentState = "default";
+		if (currentState == "moving") {
+			setCollisionOn(false);
+			gameLogic.checkTile(this);
+
+			if (collisionOn == false) {
+				switch (direction) {
+				case "up":
+					worldY -= speed;
+					break;
+				case "down":
+					worldY += speed;
+					break;
+				}
+			}
+		}
+		currentState = "moving";
+		if (InputUtility.getKeyPressed(KeyCode.D)) {
+			direction = "right";
+		} else if (InputUtility.getKeyPressed(KeyCode.A)) {
+			direction = "left";
+		} else
+			currentState = "default";
+
+		if (currentState == "moving") {
+			setCollisionOn(false);
+			gameLogic.checkTile(this);
+			if (collisionOn == false) {
+				switch (direction) {
+				case "left":
+					worldX -= speed;
+					break;
+				case "right":
+					worldX += speed;
+					break;
+				}
+			}
+		}
 	}
-	
+
+	public void initSolidArea() {
+		solidArea = new Rectangle(16, 0, 32, 64);
+
+	}
+
+	public void initAttackBlock() {
+		attackBlock = new Rectangle(screenX, screenY, solidArea.getWidth() + 20 * 2, 96);
+	}
+
 	public void updateAttackBlock() {
 		if (direction == "right")
 			attackBlock.setX(solidScreen.getX());
 		else if (direction == "left")
-			attackBlock.setX(solidScreen.getX()+solidScreen.getWidth()-attackBlock.getWidth());
-		attackBlock.setY(screenY-16);
+			attackBlock.setX(solidScreen.getX() + solidScreen.getWidth() - attackBlock.getWidth());
+		attackBlock.setY(screenY - 16);
 	}
-	
+
 	public void GameOver() {
 		System.exit(0);
 	}
+
 	public int getCurrentHealth() {
 		return currentHealth;
 	}
-	public void setCurrentHealth(int currentHealth) {
-		this.currentHealth = currentHealth;
+
+	public void changeManaTo(int mana) {
+		if (mana >= maxMana) {
+			currentMana = maxMana;
+		} else if (mana <= 0) {
+			currentMana = 0;
+		} else {
+			currentMana = mana;
+		}
+		iframe = 30;
+
 	}
-	
-	public void reset() {		
+
+	public void reset() {
 		visible = true;
 		destroyed = false;
 		worldX = getWorldX();
 		worldY = getWorldY();
 		this.currentHealth = maxHp;
-		}
+	}
 }
