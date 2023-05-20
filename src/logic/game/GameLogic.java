@@ -77,7 +77,7 @@ public class GameLogic {
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
 		
-		player = new Player(3300, 288, this);
+		player = new Player(300, 288, this);
 //		eQ = new EyeOfQwifot(3456, 512, this);
 		mT = new MagicalTortoise(3300, 200, this);
 		addNewObject(player);

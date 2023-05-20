@@ -40,7 +40,9 @@ public class RenderableHolder {
 	//Song & Effect
 	public static AudioClip inGameSong,sword1;
 	// Map Tile
-	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,topLeftMapTile,topMapTile,topRightMapTile,
+	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,waterTopTile,waterBottomTile,
+	waterLeftTile,waterRightTile,waterTopLeftTile,waterTopRightTile,waterBottomLeftTile,waterBottomRightTile,
+	waterEdge1,waterEdge2,waterEdge3,waterEdge4,topLeftMapTile,topMapTile,topRightMapTile,
 	rightMapTile,bottomRightMapTile,bottomMapTile,bottomLeftMapTile,leftMapTile,tombTile,spawn1Tile,spawn2Tile;
 	static {
 		loadResource();
@@ -98,6 +100,18 @@ public class RenderableHolder {
 		ground3Tile =  new Image(ClassLoader.getSystemResource("mapTile/ground3.png").toString());
 		water1Tile =  new Image(ClassLoader.getSystemResource("mapTile/water1.png").toString());
 		water2Tile = new Image(ClassLoader.getSystemResource("mapTile/water2.png").toString());
+		waterTopTile = new Image(ClassLoader.getSystemResource("mapTile/waterTop.png").toString());
+		waterBottomTile = new Image(ClassLoader.getSystemResource("mapTile/waterBottom.png").toString());
+		waterLeftTile = new Image(ClassLoader.getSystemResource("mapTile/waterLeft.png").toString());
+		waterRightTile = new Image(ClassLoader.getSystemResource("mapTile/waterRight.png").toString());
+		waterTopRightTile = new Image(ClassLoader.getSystemResource("mapTile/waterTopRight.png").toString());
+		waterBottomRightTile = new Image(ClassLoader.getSystemResource("mapTile/waterBottomRight.png").toString());
+		waterTopLeftTile = new Image(ClassLoader.getSystemResource("mapTile/waterTopLeft.png").toString());
+		waterBottomLeftTile = new Image(ClassLoader.getSystemResource("mapTile/waterBottomLeft.png").toString());
+		waterEdge1 = new Image(ClassLoader.getSystemResource("mapTile/waterEdge1.png").toString());
+		waterEdge2 = new Image(ClassLoader.getSystemResource("mapTile/waterEdge2.png").toString());
+		waterEdge3 = new Image(ClassLoader.getSystemResource("mapTile/waterEdge3.png").toString());
+		waterEdge4 = new Image(ClassLoader.getSystemResource("mapTile/waterEdge4.png").toString());
 		topLeftMapTile =  new Image(ClassLoader.getSystemResource("mapTile/TopLeftMap.png").toString());
 		topMapTile =  new Image(ClassLoader.getSystemResource("mapTile/TopMap.png").toString());
 		topRightMapTile =  new Image(ClassLoader.getSystemResource("mapTile/TopRightMap.png").toString());
