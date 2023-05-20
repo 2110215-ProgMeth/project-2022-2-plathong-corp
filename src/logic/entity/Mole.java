@@ -53,7 +53,7 @@ public class Mole extends Enemy{
 		// TODO Auto-generated method stub
 		super.update();
 		if(currentState!="dead") {
-		System.out.println(currentHealth);
+//		System.out.println(currentHealth);
 		if (playerfound(800) && coolDown<180)
 			currentState = "attacking";
 		else
@@ -82,7 +82,7 @@ public class Mole extends Enemy{
 	public void move() {
 		worldX = x+ (int)(Math.random()*width);
 		worldY = y+ (int)(Math.random()*height);
-		System.out.println(worldX+" "+worldY);
+//		System.out.println(worldX+" "+worldY);
 	}
 	@Override
 	public void changeHealthTo(int health) {

@@ -17,7 +17,7 @@ public class RenderableHolder {
 	private Comparator<IRenderable> comparator;
 	public static Image playerLeft,playerLeftWalk,playerLeftAtk,playerRight,playerRightWalk,playerRightAtk;
 	public static Image CKLeft, CKLeftWalk1, CKLeftWalk2, CKLeftAtk, CKRight, CKRightWalk1, CKRightWalk2, CKRightAtk;
-	public static Image gameOverOverlay, pauseOverlay, pauseMenu, soundButton, urm, volumeButton;
+	public static Image gameOverOverlay, pauseOverlay, pauseMenu, soundButton, urm, volumeButton,wingameOverlay;
 	public static Image GELeft, GELeftWalk, GELeftWalk2, GERight, GERightWalk, GERightWalk2;
 	// Magical Tortoise Sprite
 	public static Image MTLeft1, MTLeft2, MTRight1, MTRight2;
@@ -75,6 +75,7 @@ public class RenderableHolder {
 		//Game State
 		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
 		gameOverOverlay = new Image(ClassLoader.getSystemResource("pause/GameOver.png").toString());
+		wingameOverlay = new Image(ClassLoader.getSystemResource("pause/Victory.png").toString());
 		// StatusBar
 		healthBar = new Image(ClassLoader.getSystemResource("health_power_bar.png").toString());
 

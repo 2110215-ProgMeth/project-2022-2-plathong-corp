@@ -30,13 +30,13 @@ public class Player extends Entity {
 	private int manaBarY = (int) (30 * 1.5);
 
 	// Status
-	protected int maxHp = 5000;
+	protected int maxHp = 100;
 	protected int currentHealth = maxHp;
 	protected float healthWidth = healthBarWidth;
 	protected int maxMana = 100;
 	protected int currentMana = 0;
 	protected float manaWidth = currentMana;
-	protected int dmg = 10;
+	protected int dmg = 100;
 	protected int iframe = 0;
 	protected int duration = 0;
 
@@ -122,7 +122,7 @@ public class Player extends Entity {
 		RenderableHolder.playerSkill.play();
 		duration = 10 * 60;
 		speed = 10;
-		dmg = 20;
+		dmg = 200;
 		changeManaTo(currentMana - 100);
 	}
 

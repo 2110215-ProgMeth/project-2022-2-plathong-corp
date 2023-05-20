@@ -26,6 +26,9 @@ public class Main extends Application {
 		Application.launch(args);
 	}
 
+	public static int second;
+	public static long lastTimeTriggered = -1;
+
 	public static boolean isStart = false;
 	private static GameMenu gameMenu;
 	public static Stage stage;
@@ -56,31 +59,40 @@ public class Main extends Application {
 		gameScreen.requestFocus();
 //		
 //		
-			 animation = new AnimationTimer() {
-				long previousTime = 0;
-				double drawInterval = 1e9 / 60;
-				double delta = 0;
-
-				public void handle(long now) {
-					delta += (now - previousTime) / drawInterval;
-					previousTime = now;
-					logic.checkGameState();
-					if (delta >= 1) {
-						logic.count();
-						logic.update();
-						RenderableHolder.getInstance().update();
-						InputUtility.updateInputState();
-						delta--;
-					}
+		second = 0 ;
+		animation = new AnimationTimer() {
+			long previousTime = 0;
+			double drawInterval = 1e9 / 60;
+			double delta = 0;
+			
+			public void handle(long now) {
+				// timer
+				lastTimeTriggered = (lastTimeTriggered < 0 ? now : lastTimeTriggered);
+				if (now - lastTimeTriggered >= 1000000000) {
+					second++;
+					lastTimeTriggered = now;
 				}
-			};
-			animation.start();
-		}
+
+				delta += (now - previousTime) / drawInterval;
+				previousTime = now;
+				logic.checkGameState();
+				if (delta >= 1) {
+					logic.count();
+					logic.update();
+					RenderableHolder.getInstance().update();
+					InputUtility.updateInputState();
+					delta--;
+				}
+				System.out.println(second);
+			}
+		};
+		animation.start();
+	}
 
 	public static void GoToMenu() {
 		animation.stop();
 		root.getChildren().remove(gameScreen);
-		root.getChildren().addAll(bg,gameMenu);
+		root.getChildren().addAll(bg, gameMenu);
 	}
 
 	@Override
@@ -120,4 +132,5 @@ public class Main extends Application {
 //		
 //		
 	}
+
 }

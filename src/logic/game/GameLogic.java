@@ -8,6 +8,7 @@ import Object.Projectile;
 import application.Main;
 import drawing.GameScreen;
 import input.InputUtility;
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
@@ -48,8 +49,11 @@ public class GameLogic {
 	public final int pauseState = 2;
 	public final int npcState = 3;
 	public final int gameOverState = 4;
+	public final int winState = 5;
 
 	public int dialogueIndex = 0;
+	private boolean isFinish = true;
+	private int timeStamp;
 
 	public GameLogic(GameScreen gameScreen) {
 		this.gameScreen = gameScreen;
@@ -82,16 +86,17 @@ public class GameLogic {
 		player = new Player(1920, 1444, this);
 		eQ = new EyeOfQwifot(3456, 512, this);
 		mT = new MagicalTortoise(2040, 1444, this);
+		LN = new LlaristicKnight(8 * 64, 10 * 64, this);
 		addNewObject(player);
 		addNewObject(new Chicknight(3000, 200, this));
 		for (int i = 0; i < 50; i++) {
 			double pointX = Math.random();
 			double pointY = Math.random();
-			boolean spawnPoint = ((pointX>0.4 && pointX<0.6) || (pointY>0.4 &&pointY<0.6));
+			boolean spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
 			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint) {
 				pointX = Math.random();
 				pointY = Math.random();
-				spawnPoint = ((pointX>0.4 && pointX<0.6) || (pointY>0.4 &&pointY<0.6));
+				spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
 			}
 			addNewObject(new Chicknight(pointX * 64 * 64, pointY * 64 * 48, this));
 		}
@@ -99,26 +104,28 @@ public class GameLogic {
 		for (int i = 0; i < 20; i++) {
 			double pointX = Math.random();
 			double pointY = Math.random();
-			boolean spawnPoint = ((pointX>0.4 && pointX<0.6) || (pointY>0.4 &&pointY<0.6));
+			boolean spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
 			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint) {
 				pointX = Math.random();
 				pointY = Math.random();
-				spawnPoint = ((pointX>0.4 && pointX<0.6) || (pointY>0.4 &&pointY<0.6));
+				spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
 			}
 			addNewObject(new ShadowPot(pointX * 64 * 64, pointY * 64 * 48, this));
 		}
 		addNewObject(mT);
-		addNewObject(new LlaristicKnight(8*64, 10*64, this));
+
+		addNewObject(LN);
 		addNewObject(new GriszlyEye(3000, 200, this));
 		addNewObject(new ShadowPot(3000, 500, this));
-		addNewObject(new EyeOfQwifot(3456, 512, this));
-		mDK = new MoleDerKaiser(1800, 64*37, this, 448, 448);
+		addNewObject(eQ);
+		mDK = new MoleDerKaiser(1800, 64 * 37, this, 448, 448);
 		addNewObject(mDK);
 		for (Mole m : mDK.getMoles()) {
 			addNewObject(m);
 		}
 		gameState = playState;
 		System.out.println("New Game");
+
 	}
 
 	public void checkTile(Entity entity) {
@@ -173,7 +180,7 @@ public class GameLogic {
 	}
 
 	public void update() {
-		System.out.println(gameState);
+//		System.out.println(gameState);
 		if (!RenderableHolder.inGameSong.isPlaying()) {
 			RenderableHolder.inGameSong.play();
 		}
@@ -213,6 +220,18 @@ public class GameLogic {
 			}
 			if (getMagicalTortoise().getDialoguesSize() - 1 < dialogueIndex)
 				dialogueIndex = 0;
+		} else if (gameState == winState) {
+			if (isFinish) {
+				timeStamp = Main.second;
+				isFinish = false;
+			}
+			drawWinGameOvelay(timeStamp);
+			if (InputUtility.getKeyPressed(KeyCode.M)) {
+				Main.GoToMenu();
+				InputUtility.getKeyPressed().remove(KeyCode.M);
+				RenderableHolder.inGameSong.stop();
+			}
+//			System.out.println(Main.second);
 		}
 	}
 
@@ -262,8 +281,18 @@ public class GameLogic {
 		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 320, (int) (720 / 1.5), 200, 40, " Menu(M)");
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
 		gc.drawImage(RenderableHolder.gameOverOverlay, 0, 0);
-		retry.draw(gc);
-		mainMenu.draw(gc);
+		retry.draw(gc, Color.BLACK, Color.BLACK);
+		mainMenu.draw(gc, Color.BLACK, Color.BLACK);
+	}
+
+	public void drawWinGameOvelay(int time) {
+		// TODO Auto-generated method stub
+		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 480, (int) (720 / 1.5), 200, 40, " Menu(M)");
+		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
+		gc.drawImage(RenderableHolder.wingameOverlay, 0, 0);
+		gc.fillText("Finish Time : " + time + " seconds", (int) (1280 / 3.5) + 420, (int) (720 / 1.7));
+		mainMenu.draw(gc, Color.WHITE, Color.WHITE);
+
 	}
 
 	public Player getPlayer() {
@@ -313,6 +342,11 @@ public class GameLogic {
 		if (getPlayer().getCurrentHealth() == 0) {
 			gameState = gameOverState;
 		}
+
+		boolean win = LN.getCurrentState() == "dead" && eQ.getCurrentState() == "dead"
+				&& mDK.getCurrentState() == "dead";
+		if (win)
+			gameState = winState;
 	}
 
 	public ArrayList<Entity> getGameObjectContainer() {
