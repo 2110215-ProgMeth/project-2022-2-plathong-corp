@@ -2,6 +2,7 @@ package logic.entity;
 
 import Object.SwordBeam;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
@@ -13,10 +14,10 @@ public class LlaristicKnight extends Enemy{
 	private int xExtra,yExtra;
 	public LlaristicKnight(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
-        maxHp = 100;
+        maxHp = 300;
         currentHealth = maxHp;
         z = -100;
-        dmg = 50;
+        dmg = 20;
         speed = 1;
         image = RenderableHolder.lKRight1;
 	}
@@ -59,6 +60,8 @@ public class LlaristicKnight extends Enemy{
 		}
 
 		gc.drawImage(image, screenX, screenY);
+		gc.setFill(Color.BLACK);
+		gc.fillText("LlaristicKnight", screenX, screenY);
 //		drawHitbox(gc);
 //		drawAttackBlock(gc);
 	}
@@ -79,6 +82,7 @@ public class LlaristicKnight extends Enemy{
 			if(delay==0) {
 				delay = 60;
 				attack(player);
+				RenderableHolder.katana.play(0.2);
 				if(canAttack == ( Math.random()<probablility)) 
 					specialMove();
 				else
@@ -124,7 +128,7 @@ public class LlaristicKnight extends Enemy{
 	@Override
 	public void initAttackBlock() {
 		// TODO Auto-generated method stub
-		attackBlock = new Rectangle(0,0, solidArea.getWidth()+ 100, 64);
+		attackBlock = new Rectangle(0,0, solidArea.getWidth()+ 60, 64);
 	}
 
 	@Override

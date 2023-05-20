@@ -126,7 +126,7 @@ public class Main extends Application {
 		});
 		}
 
-		stage.setTitle("2D Game");
+		stage.setTitle("Black Light Matter");
 		stage.setScene(scene);
 		stage.show();
 		// TODO Auto-generated method stub

@@ -16,8 +16,8 @@ public class SwordBeam extends Projectile{
         speed = 5;
         xspeed = Math.cos(angle) * speed;
         yspeed = Math.sin(angle) * speed;
-        dmg = 20;
-        image = RenderableHolder.beamRight;
+        dmg = 10;
+        image = RenderableHolder.beam;
     	rotatedImage = new ImageView(image);
     	rotatedImage.setRotate(angle*180/Math.PI);
     	params = new SnapshotParameters();

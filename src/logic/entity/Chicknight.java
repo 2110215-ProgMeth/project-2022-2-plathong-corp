@@ -12,7 +12,7 @@ public class Chicknight extends Enemy {
 
 	public Chicknight(double x, double y, GameLogic gameLogic) {
 		super(x,y,gameLogic);
-		this.maxHp = 10;
+		this.maxHp = 30;
 		this.currentHealth = maxHp;
 		this.dmg = 5;
 		this.z = -100;

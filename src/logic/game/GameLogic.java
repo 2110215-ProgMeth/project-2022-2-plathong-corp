@@ -28,7 +28,6 @@ import logic.entity.MoleDerKaiser;
 import logic.entity.Player;
 import logic.entity.ShadowPot;
 import logic.field.Map1;
-import logic.field.WhiteMap;
 import sharedObject.RenderableHolder;
 
 public class GameLogic {

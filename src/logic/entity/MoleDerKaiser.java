@@ -10,8 +10,6 @@ public class MoleDerKaiser extends Mole{
 	
 	public MoleDerKaiser(double x,double y,GameLogic gameLogic,int width,int height) {
 		super(x, y, gameLogic, "DerKaiser", width, height);
-		this.maxHp = 100;
-		this.gameLogic =gameLogic;
 		for(int i = 0;i<3;i++) {
 			moles[i] = new Mole(x,y,gameLogic,"",width,height);
 		}

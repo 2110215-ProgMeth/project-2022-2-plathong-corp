@@ -12,7 +12,7 @@ public class ShadowPot extends Enemy {
 	public ShadowPot(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
 		image = RenderableHolder.sPRight1;
-		maxHp = 10;
+		maxHp = 20;
 		currentHealth = maxHp;
 		delay = 1 * 60;
 	}

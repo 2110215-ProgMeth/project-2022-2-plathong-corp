@@ -4,6 +4,7 @@ import Object.Ball;
 import Object.Projectile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
@@ -20,7 +21,7 @@ public class Mole extends Enemy{
 		this.width = width;
 		this.x = x;
 		this.y = y;
-		this.maxHp = 100;
+		this.maxHp = 300;
 		this.currentHealth = maxHp;
 		this.z = -100;
 		this.rank = rank;
@@ -38,12 +39,16 @@ public class Mole extends Enemy{
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
-		if(currentState=="attacking")
+		if(currentState=="attacking") {
+			if(rank=="DerKaiser") {
+				gc.setFill(Color.BLACK);
+				gc.fillText("MoleDerKaiser", screenX, screenY);
+			}
 			if( coolDown<20)
 				gc.drawImage(animationImage, screenX, screenY);
 			else
 				gc.drawImage(image, screenX, screenY);
-		else if (currentState=="dead") {
+		}else if (currentState=="dead") {
 			gc.drawImage(deadImage, screenX, screenY);
 		}
 		else {

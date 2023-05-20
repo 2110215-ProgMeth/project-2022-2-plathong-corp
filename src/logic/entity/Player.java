@@ -32,7 +32,7 @@ public class Player extends Entity {
 	protected int maxMana = 100;
 	protected int currentMana = 0;
 	protected float manaWidth = currentMana;
-	protected int baseDamage = 1000;
+	protected int baseDamage = 10;
 	protected int iframe = 0;
 	protected int duration = 0;
 
@@ -43,7 +43,7 @@ public class Player extends Entity {
 		super(x, y, gameLogic);
 		this.speed = 5;
 		z = -100;
-		maxHp = 100;
+		maxHp = 200;
 		currentHealth = maxHp;
 		dmg = baseDamage;
 		screenX = gameLogic.getGameScreen().getWidth() / 2 - radius;
@@ -84,8 +84,8 @@ public class Player extends Entity {
 		drawUI(gc);
 
 		// Debugging
-//		drawHitbox(gc);
-//		drawAttackBlock(gc);
+		drawHitbox(gc);
+		drawAttackBlock(gc);
 	}
 
 	public void drawHitbox(GraphicsContext gc) {
@@ -112,12 +112,13 @@ public class Player extends Entity {
 		System.out.println("Player Attack " + e.getClass().getSimpleName());
 		enemy.changeHealthTo(enemy.getCurrentHealth() - dmg);
 		System.out.println(dmg+" "+enemy.getCurrentHealth());
-		changeManaTo(currentMana + 100);
+		changeHealthTo(currentHealth+1);
+		changeManaTo(currentMana + 10);
 	}
 
 	public void skill() {
 		RenderableHolder.playerSkill.play();
-		duration = 10 * 60;
+		duration = 5 * 60;
 		speed = 10;
 		dmg = 2*baseDamage;
 		changeManaTo(currentMana - 100);
@@ -243,7 +244,7 @@ public class Player extends Entity {
 	}
 
 	public void initSolidArea() {
-		solidArea = new Rectangle(16, 0, 32, 64);
+		solidArea = new Rectangle(16, 16, 32, 48);
 
 	}
 

@@ -30,11 +30,10 @@ public class RenderableHolder {
 	//llaristicKnight
 	public static Image lKLeft1,lKLeft2,lKLeftAtk,lKRight1,lKRight2,lKRightAtk;
 	//projectile
-	public static Image ball,beamTop,beamBottom,beamLeft,beamRight;
-	public static Image moonSprite;
+	public static Image ball,beam;
 	public static Image healthBar;
 	//Song & Effect
-	public static AudioClip inGameSong,sword1,chicknightSound,shootSound,griszlyEyeSound,npcSound,playerSkill,monsterdie;
+	public static AudioClip inGameSong,sword1,chicknightSound,shootSound,griszlyEyeSound,npcSound,playerSkill,monsterdie,katana;
 	// Map Tile
 	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,waterTopTile,waterBottomTile,
 	waterLeftTile,waterRightTile,waterTopLeftTile,waterTopRightTile,waterBottomLeftTile,waterBottomRightTile,
@@ -96,6 +95,7 @@ public class RenderableHolder {
 		npcSound = new AudioClip(ClassLoader.getSystemResource("sound/npcSound.wav").toString());
 		playerSkill = new AudioClip(ClassLoader.getSystemResource("sound/skill1.wav").toString());
 		monsterdie = new AudioClip(ClassLoader.getSystemResource("sound/monsterdie.wav").toString());
+		katana = new AudioClip(ClassLoader.getSystemResource("sound/katana.mp3").toString());
 	}
 	public static void loadPlayer() {
 		playerLeft = new Image(ClassLoader.getSystemResource("player/playerLeft.png").toString());
@@ -190,10 +190,7 @@ public class RenderableHolder {
 	}
 	public static void loadProjectile() {
 		ball = new Image(ClassLoader.getSystemResource("ShadowPot/ball.png").toString());
-		beamBottom = new Image(ClassLoader.getSystemResource("swordBeam/beamBottom.png").toString());
-		beamTop = new Image(ClassLoader.getSystemResource("swordBeam/beamTop.png").toString());
-		beamRight = new Image(ClassLoader.getSystemResource("swordBeam/beamRight.png").toString());
-		beamLeft = new Image(ClassLoader.getSystemResource("swordBeam/beamLeft.png").toString());
+		beam = new Image(ClassLoader.getSystemResource("swordBeam/beamRight.png").toString());
 	}
 	public void add(IRenderable entity) {
 		System.out.println("add");
@@ -205,7 +202,6 @@ public class RenderableHolder {
 
 		}
 	}
-
 	public void update() {
         for (int i = entities.size() - 1; i >= 0; i--) {
             if (entities.get(i).isDestroyed())
@@ -213,7 +209,6 @@ public class RenderableHolder {
         }
         Collections.sort(entities, comparator);
     }
-
 	public List<IRenderable> getEntities() {
 		return entities;
 	}

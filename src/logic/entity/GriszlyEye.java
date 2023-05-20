@@ -12,12 +12,11 @@ public class GriszlyEye extends Enemy {
 	private int normalSpeed = 3;
 	public GriszlyEye(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
-		this.maxHp = 10;
+		this.maxHp = 20;
 		this.currentHealth = maxHp;
-		this.dmg = 3;
+		this.dmg = 5;
 		this.z = -100;
 		this.speed = normalSpeed;
-		this.dmg = 3;
 		this.image = RenderableHolder.gERight;
 	}
 
