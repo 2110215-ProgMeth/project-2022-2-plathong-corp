@@ -1,15 +1,15 @@
 package Object;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.entity.Player;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
-import sharedObject.RenderableHolder;
 
 public abstract class Projectile implements IRenderable {
-
+	protected Image image;
 	protected double worldX, worldY;
 	public double screenX, screenY;
 	protected Rectangle solidArea,solidScreen;

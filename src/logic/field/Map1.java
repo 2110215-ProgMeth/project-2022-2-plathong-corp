@@ -1,9 +1,6 @@
 package logic.field;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
-import javafx.scene.shape.Rectangle;
-import logic.entity.Player;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
@@ -51,9 +48,9 @@ public class Map1 implements IRenderable{
 			{13,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,9},
 			{13,0,21,17,17,17,17,22,0,0,21,17,17,17,17,22,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
 			{13,0,19,5,4,4,4,20,0,0,19,4,5,4,4,20,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,19,4,27,18,18,24,0,0,23,18,18,28,5,20,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
+			{13,0,19,4,27,18,18,24,0,0,23,18,18,28,5,20,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,9},
 			{13,0,19,4,20,0,0,2,0,0,0,0,0,19,4,20,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,19,4,20,0,0,21,17,17,22,2,0,19,4,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,9},
+			{13,0,19,4,20,0,0,21,17,17,22,2,0,19,4,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
 			{13,0,23,18,24,0,0,23,18,18,24,0,0,23,18,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
 			{13,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,3,3,3,3,0,0,0,0,0,9},
 			{13,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0,0,9},
@@ -116,8 +113,6 @@ public class Map1 implements IRenderable{
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		double width = field[0].length*tileSize;
-		double height = field.length*tileSize;
 		int worldCol = 0;
 		int worldRow = 0;
 
@@ -129,10 +124,6 @@ public class Map1 implements IRenderable{
 
 			if (screenX > -tileSize && screenX < gL.getGameScreen().getWidth() && screenY > -tileSize
 					&& screenY < gL.getGameScreen().getHeight()) {
-//			if(worldX > gL.getPlayer().getWorldX()-gL.getPlayer().getScreenX()&&
-//					worldX<gL.getPlayer().getWorldX()+gL.getPlayer().getScreenX()&&
-//					worldY>gL.getPlayer().getWorldY()-gL.getPlayer().getScreenY()&&
-//					worldY<gL.getPlayer().getWorldY()+gL.getPlayer().getScreenY()) {
 				gc.drawImage(tiles[(getTileIndex(worldCol, worldRow))].getImage(), screenX, screenY);
 
 			}

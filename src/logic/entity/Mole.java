@@ -1,10 +1,12 @@
 package logic.entity;
 
 import Object.Ball;
-import Object.Projectile;
+import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
@@ -13,36 +15,50 @@ public class Mole extends Enemy{
 	private int coolDown = 360;
 	private int height ,width;
 	private double x,y;
-	private Image deadImage;
+	private Image deadImage,animationImage;
 	public Mole(double x, double y, GameLogic gameLogic,String rank,int width,int height) {
 		super(x+(int)(Math.random()*width),  y+ (int)(Math.random()*height), gameLogic);
 		this.height = height;
 		this.width = width;
 		this.x = x;
 		this.y = y;
-		this.maxHp = 100;
+		this.maxHp = 300;
 		this.currentHealth = maxHp;
 		this.z = -100;
 		this.rank = rank;
 		if (rank == "DerKaiser") {
 			image = RenderableHolder.moleDerKaiser;
 			deadImage = RenderableHolder.moleDerKaiserDead;
+			animationImage = RenderableHolder.moleDerKaiser1;
 		} else {
 			image = RenderableHolder.mole;
 			deadImage = RenderableHolder.moleDead;
+			animationImage = RenderableHolder.mole1;
 		}
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
-		if(currentState=="attacking")
-			gc.drawImage(image, screenX, screenY);
-		else if (currentState=="dead") {
+		if(currentState== EntityState.ATTACK) {
+			if(rank=="DerKaiser") {
+				gc.setFill(Color.BLACK);
+				gc.setFont(new Font(15));
+				gc.fillText("MoleDerKaiser", screenX, screenY);
+			}
+			if( coolDown<20)
+				gc.drawImage(animationImage, screenX, screenY);
+			else
+				gc.drawImage(image, screenX, screenY);
+		}else if (currentState== EntityState.DEAD) {
 			gc.drawImage(deadImage, screenX, screenY);
 		}
+		else {
+			if(coolDown<200)
+				gc.drawImage(animationImage, screenX,screenY);
+		}
 
-		 drawHitbox(gc);
+//		 drawHitbox(gc);
 	}
 
 	public void attack() {
@@ -52,13 +68,13 @@ public class Mole extends Enemy{
 	public void update() {
 		// TODO Auto-generated method stub
 		super.update();
-		if(currentState!="dead") {
+		if(currentState!= EntityState.DEAD) {
 //		System.out.println(currentHealth);
-		if (playerfound(800) && coolDown<180)
-			currentState = "attacking";
+		if (playerfound(800) && coolDown<=180)
+			currentState = EntityState.ATTACK;
 		else
-			currentState = "default";
-		if (currentState == "attacking") {
+			currentState = EntityState.DEFAULT;
+		if (currentState == EntityState.ATTACK) {
 
 			if (delay == 0) {
 				attack();
@@ -68,7 +84,8 @@ public class Mole extends Enemy{
 		}
 		if(coolDown==0) {
 			coolDown = 360;
-			System.out.println("yoooo");
+//			System.out.println("yoooo");
+			currentState = EntityState.DEFAULT;
 			move();
 		}
 		coolDown--;

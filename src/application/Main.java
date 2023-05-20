@@ -1,6 +1,7 @@
 package application;
 
 import MainMenu.GameMenu;
+import constant.Constant;
 import drawing.GameScreen;
 import input.InputUtility;
 import javafx.animation.AnimationTimer;
@@ -9,26 +10,18 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logic.game.GameLogic;
-import logic.entity.Player;
 import sharedObject.RenderableHolder;
 
 public class Main extends Application {
 
 	Scene gameScene, mainScene;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Application.launch(args);
-	}
-
 	public static int second;
-	public static long lastTimeTriggered = -1;
-
+	private static long lastTimeTriggered = -1;
 	public static boolean isStart = false;
 	private static GameMenu gameMenu;
 	public static Stage stage;
@@ -38,33 +31,26 @@ public class Main extends Application {
 	private static GameLogic logic;
 	private static AnimationTimer animation;
 
-	final static int width = 1280;
-	final static int height = 720;
-
 	public Stage getStage() {
 		return stage;
 	}
-
-	public boolean isStart() {
-		return isStart;
-	}
-
+	
 	public static void GameStart() {
 
 		System.out.println(isStart);
 		root.getChildren().removeAll(bg, gameMenu);
-		gameScreen = new GameScreen(width, height);
+		gameScreen = new GameScreen(Constant.ScreenSize.GAMEWIDTH, Constant.ScreenSize.GAMEHEIGHT);
 		logic = new GameLogic(gameScreen);
 		root.getChildren().add(gameScreen);
 		gameScreen.requestFocus();
 //		
 //		
-		second = 0 ;
+		second = 0;
 		animation = new AnimationTimer() {
 			long previousTime = 0;
 			double drawInterval = 1e9 / 60;
 			double delta = 0;
-			
+
 			public void handle(long now) {
 				// timer
 				lastTimeTriggered = (lastTimeTriggered < 0 ? now : lastTimeTriggered);
@@ -83,7 +69,7 @@ public class Main extends Application {
 					InputUtility.updateInputState();
 					delta--;
 				}
-				System.out.println(second);
+//				System.out.println(second);
 			}
 		};
 		animation.start();
@@ -100,37 +86,40 @@ public class Main extends Application {
 
 		Main.stage = stage;
 		Main.root = new StackPane();
-		root.setPrefSize(width, height);
+		root.setPrefSize(Constant.ScreenSize.GAMEWIDTH, Constant.ScreenSize.GAMEHEIGHT);
 
 		gameMenu = new GameMenu();
 
-		Image img = new Image(ClassLoader.getSystemResource("Elysia.jpeg").toString());
+		Image img = new Image(ClassLoader.getSystemResource("other/darkSoul4.png").toString());
 		bg = new ImageView(img);
-		bg.setFitWidth(width);
-		bg.setFitHeight(height);
+		bg.setFitWidth(Constant.ScreenSize.GAMEWIDTH);
+		bg.setFitHeight(Constant.ScreenSize.GAMEHEIGHT);
 
 		root.getChildren().addAll(bg, gameMenu);
 		gameMenu.setVisible(false);
 
 		Scene scene = new Scene(root);
+		if (!gameMenu.isVisible()) {
+			scene.setOnKeyPressed(e -> {
+//				System.out.println("attempt");
 
-		scene.setOnKeyPressed(e -> {
-			if (!gameMenu.isVisible()) {
 				FadeTransition ft = new FadeTransition(Duration.seconds(1), gameMenu);
 				ft.setFromValue(0);
 				ft.setToValue(1);
 				gameMenu.setVisible(true);
 				ft.play();
-			}
-		});
 
-		stage.setTitle("2D Game");
+			});
+		}
+
+		stage.setTitle("Black Light Matter");
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
-//		
-//		
+		Application.launch(args);
 	}
 
 }

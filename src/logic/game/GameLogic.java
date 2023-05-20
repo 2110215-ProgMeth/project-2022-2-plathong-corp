@@ -1,23 +1,19 @@
 package logic.game;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import MainMenu.GameOverButton;
 import Object.Projectile;
 import application.Main;
+import constant.GameState;
 import drawing.GameScreen;
 import input.InputUtility;
-import javafx.animation.AnimationTimer;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import logic.entity.Chicknight;
-import logic.entity.Enemy;
 import logic.entity.Entity;
 import logic.entity.EyeOfQwifot;
 import logic.entity.GriszlyEye;
@@ -28,7 +24,6 @@ import logic.entity.MoleDerKaiser;
 import logic.entity.Player;
 import logic.entity.ShadowPot;
 import logic.field.Map1;
-import logic.field.WhiteMap;
 import sharedObject.RenderableHolder;
 
 public class GameLogic {
@@ -44,12 +39,7 @@ public class GameLogic {
 	private MoleDerKaiser mDK;
 	private LlaristicKnight LN;
 	// GameState
-	public int gameState = 1;
-	public final int playState = 1;
-	public final int pauseState = 2;
-	public final int npcState = 3;
-	public final int gameOverState = 4;
-	public final int winState = 5;
+	public GameState gameState = GameState.PLAYSTATE;
 
 	public int dialogueIndex = 0;
 	private boolean isFinish = true;
@@ -123,7 +113,7 @@ public class GameLogic {
 		for (Mole m : mDK.getMoles()) {
 			addNewObject(m);
 		}
-		gameState = playState;
+		gameState = GameState.PLAYSTATE;
 		System.out.println("New Game");
 
 	}
@@ -143,7 +133,7 @@ public class GameLogic {
 		int tile2 = 0;
 
 		switch (entity.getDirection()) {
-		case "up":
+		case UP:
 			entityTopRow = (entityTopWorldY - entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
 			tile2 = map.getTileIndex(entityRightCol, entityTopRow);
@@ -151,7 +141,7 @@ public class GameLogic {
 				entity.setCollisionOn(true);
 			}
 			break;
-		case "down":
+		case DOWN:
 			entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityBottomRow);
 			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
@@ -159,7 +149,7 @@ public class GameLogic {
 				entity.setCollisionOn(true);
 			}
 			break;
-		case "left":
+		case LEFT:
 			entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
 			tile2 = map.getTileIndex(entityLeftCol, entityBottomRow);
@@ -167,7 +157,7 @@ public class GameLogic {
 				entity.setCollisionOn(true);
 			}
 			break;
-		case "right":
+		case RIGHT:
 			entityRightCol = (entityRightWorldX + entity.getSpeed()) / map.getTileSize();
 			tile1 = map.getTileIndex(entityRightCol, entityTopRow);
 			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
@@ -184,10 +174,10 @@ public class GameLogic {
 		if (!RenderableHolder.inGameSong.isPlaying()) {
 			RenderableHolder.inGameSong.play();
 		}
-		if (gameState == playState) {
+		if (gameState == GameState.PLAYSTATE) {
 			logicUpdate();
 			gameScreen.paintComponent();
-		} else if (gameState == pauseState) {
+		} else if (gameState == GameState.PAUSESTATE) {
 			drawGamePauseOverlay();
 			if (InputUtility.getKeyPressed(KeyCode.M)) {
 				Main.GoToMenu();
@@ -195,7 +185,7 @@ public class GameLogic {
 				InputUtility.getKeyPressed().remove(KeyCode.M);
 			}
 //			System.out.println(500);
-		} else if (gameState == gameOverState) {
+		} else if (gameState == GameState.GAMEOVERSTATE) {
 			drawGameOverOverlay();
 			RenderableHolder.inGameSong.stop();
 			if (InputUtility.getKeyPressed(KeyCode.R)) {
@@ -205,10 +195,10 @@ public class GameLogic {
 				InputUtility.getKeyPressed().remove(KeyCode.M);
 				Main.GoToMenu();
 			}
-		} else if (gameState == npcState) {
+		} else if (gameState == GameState.NPCSTATE) {
 			if (!getMagicalTortoise().playerfound()) {
 
-				gameState = playState;
+				gameState = GameState.PLAYSTATE;
 				dialogueIndex = 0;
 			}
 			logicUpdate();
@@ -220,10 +210,12 @@ public class GameLogic {
 			}
 			if (getMagicalTortoise().getDialoguesSize() - 1 < dialogueIndex)
 				dialogueIndex = 0;
-		} else if (gameState == winState) {
+		} else if (gameState == GameState.WINSTATE) {
+			RenderableHolder.inGameSong.stop();
 			if (isFinish) {
 				timeStamp = Main.second;
 				isFinish = false;
+
 			}
 			drawWinGameOvelay(timeStamp);
 			if (InputUtility.getKeyPressed(KeyCode.M)) {
@@ -313,40 +305,39 @@ public class GameLogic {
 	public void checkGameState() {
 		if (InputUtility.getKeyPressed(KeyCode.ESCAPE)) {
 
-			if (gameState == playState) {
-				gameState = pauseState;
+			if (gameState == GameState.PLAYSTATE) {
+				gameState = GameState.PAUSESTATE;
 
-			} else if (gameState == pauseState) {
-				gameState = playState;
+			} else if (gameState == GameState.PAUSESTATE) {
+				gameState = GameState.PLAYSTATE;
 			}
 			InputUtility.getKeyPressed().remove(KeyCode.ESCAPE);
 		}
 
 		if (InputUtility.isLeftClickTriggered() && getMagicalTortoise().playerfound()) {
 			int start = 0;
-			if (gameState == playState) {
-				gameState = npcState;
+			if (gameState == GameState.PLAYSTATE) {
+				gameState = GameState.NPCSTATE;
 
-			} else if (gameState == npcState) {
+			} else if (gameState == GameState.NPCSTATE) {
 				int total = getMagicalTortoise().getDialoguesSize() - 1;
 				if (start < total) {
 					drawDialogueScreen(start);
 					start += 1;
 				} else {
-					gameState = playState;
+					gameState = GameState.PLAYSTATE;
 				}
 
 			}
 
 		}
 		if (getPlayer().getCurrentHealth() == 0) {
-			gameState = gameOverState;
+			gameState = GameState.GAMEOVERSTATE;
 		}
 
-		boolean win = LN.getCurrentState() == "dead" && eQ.getCurrentState() == "dead"
-				&& mDK.getCurrentState() == "dead";
+		boolean win = LN.isDead() && eQ.isDead() && mDK.isDead();
 		if (win)
-			gameState = winState;
+			gameState = GameState.WINSTATE;
 	}
 
 	public ArrayList<Entity> getGameObjectContainer() {

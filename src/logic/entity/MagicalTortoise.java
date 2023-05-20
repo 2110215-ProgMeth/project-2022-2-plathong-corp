@@ -2,13 +2,14 @@ package logic.entity;
 
 import java.util.ArrayList;
 
+import constant.Direction;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
 public class MagicalTortoise extends Entity{
-    private Image image = RenderableHolder.MTRight1;
+    private Image image = RenderableHolder.mTRight1;
     protected ArrayList<String> dialogues;
 
     public MagicalTortoise(double x, double y, GameLogic gameLogic) {
@@ -23,19 +24,19 @@ public class MagicalTortoise extends Entity{
     public void draw(GraphicsContext gc) {
         // TODO Auto-generated method stub
         switch(direction) {
-        case "right":
+        case RIGHT:
                 if (gameLogic.getCounter()/10%2==1) 
-                    image = RenderableHolder.MTRight1;
+                    image = RenderableHolder.mTRight1;
 
                 else
-                    image = RenderableHolder.MTRight2;
+                    image = RenderableHolder.mTRight2;
             break;
-        case "left":
+        case LEFT:
                 if (gameLogic.getCounter()/10%2==1) 
-                    image = RenderableHolder.MTLeft1;
+                    image = RenderableHolder.mTLeft1;
 
                 else
-                    image = RenderableHolder.MTLeft2;
+                    image = RenderableHolder.mTLeft2;
 
             break;
         }
@@ -55,9 +56,9 @@ public class MagicalTortoise extends Entity{
         Player player = gameLogic.getPlayer();
         double xDirection =  Math.cos(Math.atan2(player.worldY-worldY,player.worldX-worldX));
         if(xDirection<0)
-            direction = "left";
+            direction = Direction.LEFT;
         else
-            direction = "right";
+            direction = Direction.RIGHT;
     }
 
     public void setDialogues() {

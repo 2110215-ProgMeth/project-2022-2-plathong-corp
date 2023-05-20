@@ -1,7 +1,8 @@
 package logic.entity;
 
 import Object.Ball;
-import Object.Projectile;
+import constant.Direction;
+import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
@@ -11,63 +12,58 @@ public class ShadowPot extends Enemy {
 
 	public ShadowPot(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
-		image = RenderableHolder.SPRight1;
-		maxHp = 10;
+		image = RenderableHolder.sPRight1;
+		maxHp = 20;
 		currentHealth = maxHp;
 		delay = 1 * 60;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		// TODO Auto-generated method stub
 		switch (direction) {
-		case "right":
+		case RIGHT:
 			if (gameLogic.getCounter() < 20)
-				if (currentState == "attacking")
-					image = RenderableHolder.SPRightAtk;
+				if (currentState == EntityState.ATTACK)
+					image = RenderableHolder.sPRightAtk;
 				else
-					image = RenderableHolder.SPRight1;
+					image = RenderableHolder.sPRight1;
 
 			else
-				image = RenderableHolder.SPRight2;
+				image = RenderableHolder.sPRight2;
 			break;
-		case "left":
+		case LEFT:
 			if (gameLogic.getCounter() < 20)
-				if (currentState == "attacking")
-					image = RenderableHolder.SPLeftAtk;
+				if (currentState == EntityState.ATTACK)
+					image = RenderableHolder.sPLeftAtk;
 				else
-					image = RenderableHolder.SPLeft1;
+					image = RenderableHolder.sPLeft1;
 
 			else
-				image = RenderableHolder.SPLeft2;
+				image = RenderableHolder.sPLeft2;
 
 			break;
 		}
 		gc.drawImage(image, screenX, screenY);
-		// TODO Auto-generated method stub
-		drawHitbox(gc);
+//		drawHitbox(gc);
 	}
 
 	public void attack() {
-        // TODO Auto-generated method stub
-  
         	gameLogic.addNewProjectile(new Ball(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic));
     }
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		super.update();
 		if (playerfound(1000))
-			currentState = "attacking";
+			currentState = EntityState.ATTACK;
 		else
-			currentState = "default";
-		if (currentState == "attacking") {
+			currentState = EntityState.DEFAULT;
+		if (currentState == EntityState.ATTACK) {
 			double xDirection = Math.cos(angle);
 			if (xDirection < 0)
-				direction = "left";
+				direction = Direction.LEFT;
 			else
-				direction = "right";
+				direction = Direction.RIGHT;
 
 			if (delay == 0) {
 
