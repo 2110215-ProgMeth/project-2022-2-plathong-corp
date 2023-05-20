@@ -7,7 +7,7 @@ import sharedObject.IRenderable;
 
 public abstract class Entity implements IRenderable {
 	protected boolean attackState = false;
-	protected double delay = 0;
+	protected int delay = 0;
 	protected double worldX, worldY;
 	public double screenX, screenY;
 	protected int z, radius;

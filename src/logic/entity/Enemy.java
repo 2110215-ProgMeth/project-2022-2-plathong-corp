@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
+import sharedObject.RenderableHolder;
 
 public abstract class Enemy extends Entity{
 	protected double angle = 0;
@@ -22,6 +23,7 @@ public abstract class Enemy extends Entity{
 			currentHealth = maxHp;
 		}
 		else if (health<=0) {
+			RenderableHolder.monsterdie.play();
 			currentHealth = 0;
 			setDestroyed(true);
 		}
@@ -60,7 +62,7 @@ public abstract class Enemy extends Entity{
 
 	public void drawAttackBlock(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		gc.strokeRect(solidArea.getX(), attackBlock.getY(), attackBlock.getWidth(),
+		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(),
 				attackBlock.getHeight());
 	}
 	
@@ -70,7 +72,6 @@ public abstract class Enemy extends Entity{
 		else if (direction == "left")
 			attackBlock.setX(solidScreen.getX()+solidScreen.getWidth()-attackBlock.getWidth());
 		attackBlock.setY(screenY);
-
 	}
 	
 	public void update() {
@@ -81,6 +82,9 @@ public abstract class Enemy extends Entity{
 	}
 
 	public void move() {
+		xspeed = Math.cos(angle) * speed;
+		yspeed = Math.sin(angle) * speed;
+
 		if (yspeed < 0)
 			direction = "up";
 		else
@@ -89,9 +93,8 @@ public abstract class Enemy extends Entity{
 		gameLogic.checkTile(this);
 		if (collisionOn == false) {
 			worldY += yspeed;
-
 		}
-
+		
 		if (xspeed < 0)
 			direction = "left";
 		else
@@ -117,6 +120,10 @@ public abstract class Enemy extends Entity{
 		int rangeX = (int) Math.abs(worldX-gameLogic.getPlayer().getWorldX());
 		int rangeY = (int) Math.abs(worldY-gameLogic.getPlayer().getWorldY());
 		return (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2)) < range;
+	}
+	
+	public String getCurrentState() {
+		return currentState;
 	}
 
 

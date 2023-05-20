@@ -24,11 +24,12 @@ public class GameOverButton {
 		
 	}
 	
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc,Color colorStrokeRect,Color colorFillText) {
 		//(1280/2.5,720/1.5,200,40)
 		gc.strokeRect(x,y,width,height);
-		gc.setFill(Color.BLACK);
+		gc.setFill(colorStrokeRect);
 		gc.setFont(Font.font("Times New Roman", FontWeight.BOLD, 32));
+		gc.setFill(colorFillText);
 		gc.fillText(text.getText(), (x+width/2-75), (y+height/1.3));
 	}
 

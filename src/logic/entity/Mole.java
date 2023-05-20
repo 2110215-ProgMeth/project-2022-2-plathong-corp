@@ -1,5 +1,6 @@
 package logic.entity;
 
+import Object.Ball;
 import Object.Projectile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -12,7 +13,7 @@ public class Mole extends Enemy{
 	private int coolDown = 360;
 	private int height ,width;
 	private double x,y;
-	private Image deadImage;
+	private Image deadImage,animationImage;
 	public Mole(double x, double y, GameLogic gameLogic,String rank,int width,int height) {
 		super(x+(int)(Math.random()*width),  y+ (int)(Math.random()*height), gameLogic);
 		this.height = height;
@@ -26,9 +27,11 @@ public class Mole extends Enemy{
 		if (rank == "DerKaiser") {
 			image = RenderableHolder.moleDerKaiser;
 			deadImage = RenderableHolder.moleDerKaiserDead;
+			animationImage = RenderableHolder.moleDerKaiser1;
 		} else {
 			image = RenderableHolder.mole;
 			deadImage = RenderableHolder.moleDead;
+			animationImage = RenderableHolder.mole1;
 		}
 	}
 
@@ -36,25 +39,31 @@ public class Mole extends Enemy{
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 		if(currentState=="attacking")
-			gc.drawImage(image, screenX, screenY);
+			if( coolDown<20)
+				gc.drawImage(animationImage, screenX, screenY);
+			else
+				gc.drawImage(image, screenX, screenY);
 		else if (currentState=="dead") {
 			gc.drawImage(deadImage, screenX, screenY);
 		}
+		else {
+			if(coolDown<200)
+				gc.drawImage(animationImage, screenX,screenY);
+		}
 
-		 drawHitbox(gc);
+//		 drawHitbox(gc);
 	}
 
 	public void attack() {
-		Projectile projectile = new Projectile(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic);
-    	gameLogic.addNewProjectile(projectile);
+    	gameLogic.addNewProjectile(new Ball(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic));
 	}
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		super.update();
 		if(currentState!="dead") {
-		System.out.println(currentHealth);
-		if (playerfound(800) && coolDown<180)
+//		System.out.println(currentHealth);
+		if (playerfound(800) && coolDown<=180)
 			currentState = "attacking";
 		else
 			currentState = "default";
@@ -69,6 +78,7 @@ public class Mole extends Enemy{
 		if(coolDown==0) {
 			coolDown = 360;
 			System.out.println("yoooo");
+			currentState = "default";
 			move();
 		}
 		coolDown--;
@@ -82,7 +92,7 @@ public class Mole extends Enemy{
 	public void move() {
 		worldX = x+ (int)(Math.random()*width);
 		worldY = y+ (int)(Math.random()*height);
-		System.out.println(worldX+" "+worldY);
+//		System.out.println(worldX+" "+worldY);
 	}
 	@Override
 	public void changeHealthTo(int health) {

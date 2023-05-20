@@ -17,7 +17,7 @@ public class Chicknight extends Enemy {
 		this.dmg = 5;
 		this.z = -100;
 		this.speed = 1;
-		image = RenderableHolder.CKRight;
+		image = RenderableHolder.cKRight;
 	}
 
 	@Override
@@ -27,23 +27,23 @@ public class Chicknight extends Enemy {
 		switch (direction) {
 		case "right":
 			if (attackState)
-				image = RenderableHolder.CKRightAtk;
+				image = RenderableHolder.cKRightAtk;
 			else {
-				image = RenderableHolder.CKRight;
+				image = RenderableHolder.cKRight;
 				if (currentState == "attacking") {
 					if (gameLogic.getCounter() / 10 % 2 == 1)
-						image = RenderableHolder.CKRightWalk1;
+						image = RenderableHolder.cKRightWalk1;
 				}
 			}
 			break;
 		case "left":
 			if (attackState)
-				image = RenderableHolder.CKLeftAtk;
+				image = RenderableHolder.cKLeftAtk;
 			else {
-				image = RenderableHolder.CKLeft;
+				image = RenderableHolder.cKLeft;
 				if (currentState == "attacking") {
 					if (gameLogic.getCounter() / 10 % 2 == 1)
-						image = RenderableHolder.CKLeftWalk1;
+						image = RenderableHolder.cKLeftWalk1;
 				}
 			}
 			break;
@@ -52,8 +52,8 @@ public class Chicknight extends Enemy {
 
 		gc.drawImage(image, screenX, screenY);
 
-		drawHitbox(gc);
-		drawAttackBlock(gc);
+//		drawHitbox(gc);
+//		drawAttackBlock(gc);
 	}
 
 	

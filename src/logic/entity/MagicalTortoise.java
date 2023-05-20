@@ -8,7 +8,7 @@ import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
 public class MagicalTortoise extends Entity{
-    private Image image = RenderableHolder.MTRight1;
+    private Image image = RenderableHolder.mTRight1;
     protected ArrayList<String> dialogues;
 
     public MagicalTortoise(double x, double y, GameLogic gameLogic) {
@@ -25,17 +25,17 @@ public class MagicalTortoise extends Entity{
         switch(direction) {
         case "right":
                 if (gameLogic.getCounter()/10%2==1) 
-                    image = RenderableHolder.MTRight1;
+                    image = RenderableHolder.mTRight1;
 
                 else
-                    image = RenderableHolder.MTRight2;
+                    image = RenderableHolder.mTRight2;
             break;
         case "left":
                 if (gameLogic.getCounter()/10%2==1) 
-                    image = RenderableHolder.MTLeft1;
+                    image = RenderableHolder.mTLeft1;
 
                 else
-                    image = RenderableHolder.MTLeft2;
+                    image = RenderableHolder.mTLeft2;
 
             break;
         }
@@ -61,8 +61,20 @@ public class MagicalTortoise extends Entity{
     }
 
     public void setDialogues() {
-        dialogues.add("Hi , I'm GAY");
-        dialogues.add("This is GayZone So u r Gay");
+    	dialogues.add("Goodluck Traveller!");
+        dialogues.add("Hi , I'm Magical Tortoise");
+        dialogues.add("You would be \"THE TRAVELLER\" \n in my prophecy");
+        dialogues.add("This world will collapse soon");
+        dialogues.add("Everything will be colorless");
+        dialogues.add("People have no emotion");
+        dialogues.add("You are the only one");
+        dialogues.add("Please, save this world");
+        dialogues.add("For the color of the world");
+        dialogues.add("For the emotion of people");
+        dialogues.add("Please, get rid of all 3 inverders");
+        dialogues.add("The Eye of QWIFOT");
+        dialogues.add("MoleDerKaiser");
+        dialogues.add("LaristicKnight");
     }
 
     public boolean playerfound(){

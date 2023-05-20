@@ -18,7 +18,7 @@ public class GriszlyEye extends Enemy {
 		this.z = -100;
 		this.speed = normalSpeed;
 		this.dmg = 3;
-		this.image = RenderableHolder.GERight;
+		this.image = RenderableHolder.gERight;
 	}
 
 	
@@ -29,29 +29,29 @@ public class GriszlyEye extends Enemy {
 		switch (direction) {
 		case "right":
 			if (currentState == "default")
-				image = RenderableHolder.GERight;
+				image = RenderableHolder.gERight;
 
 			else {
 				if (gameLogic.getCounter() / 10 % 2 == 1) {
-					image = RenderableHolder.GERightWalk;
+					image = RenderableHolder.gERightWalk;
 				} else
 					
-					image = RenderableHolder.GERightWalk2;
+					image = RenderableHolder.gERightWalk2;
 			}
 			break;
 		case "left":
 			if (currentState == "default")
-				image = RenderableHolder.GELeft;
+				image = RenderableHolder.gELeft;
 			else {
 				if (gameLogic.getCounter() / 10 % 2 == 1) {
-					image = RenderableHolder.GELeftWalk;
+					image = RenderableHolder.gELeftWalk;
 				} else
-					image = RenderableHolder.GELeftWalk2;
+					image = RenderableHolder.gELeftWalk2;
 			}
 			break;
 		}
 		gc.drawImage(image, screenX, screenY);
-		drawHitbox(gc);
+//		drawHitbox(gc);
 	}
 
 

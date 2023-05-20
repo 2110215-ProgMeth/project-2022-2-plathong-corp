@@ -2,12 +2,10 @@ package logic.entity;
 
 import input.InputUtility;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
-import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
 public class Player extends Entity {
@@ -24,22 +22,30 @@ public class Player extends Entity {
 	private int healthBarX = (int) (30 * 1.5);
 	private int healthBarY = (int) (11 * 1.5);
 
-	// Status
-	protected int maxHp = 5000;
-	protected int currentHealth = maxHp;
-	protected float healthWidth = healthBarWidth;
-	protected int dmg = 100;
-	protected int iframe = 0;
+	private int manaBarWidth = (int) (97 * 1.5);
+	private int manaBarHeight = (int) (2 * 2);
+	private int manaBarX = (int) (42 * 1.5);
+	private int manaBarY = (int) (30 * 1.5);
 
-	// AttackBlock
-	private Rectangle attackBlock;
+	// Status
+	protected float healthWidth = healthBarWidth;
+	protected int maxMana = 100;
+	protected int currentMana = 0;
+	protected float manaWidth = currentMana;
+	protected int baseDamage = 1000;
+	protected int iframe = 0;
+	protected int duration = 0;
 
 	int counter;
+	private String lastDirection;
 
 	public Player(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
 		this.speed = 5;
 		z = -100;
+		maxHp = 100;
+		currentHealth = maxHp;
+		dmg = baseDamage;
 		screenX = gameLogic.getGameScreen().getWidth() / 2 - radius;
 		screenY = gameLogic.getGameScreen().getHeight() / 2 - radius;
 		image = RenderableHolder.playerRight;
@@ -50,37 +56,36 @@ public class Player extends Entity {
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
-		switch (direction) {
-		case "left":
+		if (direction =="left" ) {
 			if (attackState)
 				image = RenderableHolder.playerLeftAtk;
 			else {
 				image = RenderableHolder.playerLeft;
-			if (currentState == "moving") {
-				if (gameLogic.getCounter()/10%2==1) 
-                    image = RenderableHolder.playerLeftWalk;
+				if (currentState == "moving") {
+					if (gameLogic.getCounter() / 10 % 2 == 1)
+						image = RenderableHolder.playerLeftWalk;
+				}
 			}
-			}
-			break;
-		case "right":
+		}
+		else {
 			if (attackState)
 				image = RenderableHolder.playerRightAtk;
 			else {
 				image = RenderableHolder.playerRight;
-			if (currentState == "moving") {
-				if (gameLogic.getCounter()/10%2==1) 
-                    image = RenderableHolder.playerRightWalk;
+				if (currentState == "moving") {
+					if (gameLogic.getCounter() / 10 % 2 == 1)
+						image = RenderableHolder.playerRightWalk;
+				}
 			}
-			}
-			break;
+		
 
 		}
 		gc.drawImage(image, screenX, screenY);
 		drawUI(gc);
 
 		// Debugging
-		drawHitbox(gc);
-		drawAttackBlock(gc);
+//		drawHitbox(gc);
+//		drawAttackBlock(gc);
 	}
 
 	public void drawHitbox(GraphicsContext gc) {
@@ -93,6 +98,8 @@ public class Player extends Entity {
 		gc.drawImage(RenderableHolder.healthBar, statusBarX, statusBarY, statusBarWidth, statusBarHeight);
 		gc.setFill(Color.BLACK);
 		gc.fillRect(healthBarX + statusBarX, healthBarY + statusBarY, healthWidth, healthBarHeight);
+		gc.setFill(Color.LIGHTGRAY);
+		gc.fillRect(manaBarX + statusBarX, manaBarY + statusBarY, manaWidth, manaBarHeight);
 	}
 
 	public void drawAttackBlock(GraphicsContext gc) {
@@ -101,9 +108,19 @@ public class Player extends Entity {
 	}
 
 	public void attack(Entity e) {
-			Enemy enemy = (Enemy) e;
-			System.out.println("Player Attack " + e.getClass().getSimpleName());
-			enemy.changeHealthTo(enemy.getCurrentHealth() - dmg);		
+		Enemy enemy = (Enemy) e;
+		System.out.println("Player Attack " + e.getClass().getSimpleName());
+		enemy.changeHealthTo(enemy.getCurrentHealth() - dmg);
+		System.out.println(dmg+" "+enemy.getCurrentHealth());
+		changeManaTo(currentMana + 100);
+	}
+
+	public void skill() {
+		RenderableHolder.playerSkill.play();
+		duration = 10 * 60;
+		speed = 10;
+		dmg = 2*baseDamage;
+		changeManaTo(currentMana - 100);
 	}
 
 	@Override
@@ -113,7 +130,7 @@ public class Player extends Entity {
 				solidArea.getHeight());
 		move();
 		if (InputUtility.isLeftClickTriggered()) {
-			
+
 			if (delay == 0) {
 				attackState = true;
 				RenderableHolder.sword1.play(0.2);
@@ -128,27 +145,37 @@ public class Player extends Entity {
 						if (attackBlock.intersects(x, y, width, height)) {
 							attack(entity);
 						}
-						if (enemy instanceof EyeOfQwifot) {
-//						System.out.println(enemy.solidScreen.getWidth()+" "+enemy.solidScreen.getHeight());
-						}
-
 					}
 				}
 				delay = 20;
 			}
-
+		}
+		if (InputUtility.getKeyPressed(KeyCode.SPACE) && currentMana >= 100) {
+			skill();
+			InputUtility.getKeyPressed().remove(KeyCode.SPACE);
 		}
 
-		
 		updateHealthBar();
 		updateAttackBlock();
-		if (iframe > 0) iframe--;
-		if (delay==10) attackState = false;
-		if (delay>0) delay--;
+		if (iframe > 0)
+			iframe--;
+
+		if (delay == 10)
+			attackState = false;
+		if (delay > 0)
+			delay--;
+
+		if (duration > 0)
+			duration--;
+		if (duration == 0) {
+			speed = 5;
+			dmg = baseDamage;
+		}
 	}
 
 	public void updateHealthBar() {
 		healthWidth = (float) (currentHealth / (float) maxHp) * healthBarWidth;
+		manaWidth = (float) (currentMana / (float) maxMana) * manaBarWidth;
 	}
 
 	public void changeHealthTo(int health) {
@@ -167,15 +194,15 @@ public class Player extends Entity {
 	}
 
 	public void move() {
-		currentState = "moving";
+		currentState = "default";
+		if(InputUtility.getKeyPressed(KeyCode.W)||InputUtility.getKeyPressed(KeyCode.S)
+				||InputUtility.getKeyPressed(KeyCode.D)||InputUtility.getKeyPressed(KeyCode.A))
+			currentState = "moving";
+		lastDirection = direction;
 		if (InputUtility.getKeyPressed(KeyCode.W)) {
 			direction = "up";
-		}
-		else if (InputUtility.getKeyPressed(KeyCode.S)) {
+		} else if (InputUtility.getKeyPressed(KeyCode.S)) 
 			direction = "down";
-		}
-		else
-			currentState = "default";
 		if (currentState == "moving") {
 			setCollisionOn(false);
 			gameLogic.checkTile(this);
@@ -191,30 +218,28 @@ public class Player extends Entity {
 				}
 			}
 		}
-		currentState = "moving";
+		
 		if (InputUtility.getKeyPressed(KeyCode.D)) {
 			direction = "right";
-		}
-		else if (InputUtility.getKeyPressed(KeyCode.A)) {
+			lastDirection = direction;
+		} else if (InputUtility.getKeyPressed(KeyCode.A)) {
 			direction = "left";
-		}
-		else
-			currentState = "default";
-
+		lastDirection = direction;}
 		if (currentState == "moving") {
-		setCollisionOn(false);
-		gameLogic.checkTile(this);
-		if (collisionOn == false) {
-			switch (direction) {
-			case "left":
-				worldX -= speed;
-				break;
-			case "right":
-				worldX += speed;
-				break;
+			setCollisionOn(false);
+			gameLogic.checkTile(this);
+			if (collisionOn == false) {
+				switch (direction) {
+				case "left":
+					worldX -= speed;
+					break;
+				case "right":
+					worldX += speed;
+					break;
+				}
 			}
 		}
-		}
+		direction = lastDirection;
 	}
 
 	public void initSolidArea() {
@@ -242,8 +267,16 @@ public class Player extends Entity {
 		return currentHealth;
 	}
 
-	public void setCurrentHealth(int currentHealth) {
-		this.currentHealth = currentHealth;
+	public void changeManaTo(int mana) {
+		if (mana >= maxMana) {
+			currentMana = maxMana;
+		} else if (mana <= 0) {
+			currentMana = 0;
+		} else {
+			currentMana = mana;
+		}
+		iframe = 30;
+
 	}
 
 	public void reset() {

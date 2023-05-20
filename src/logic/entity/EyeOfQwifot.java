@@ -12,7 +12,7 @@ public class EyeOfQwifot extends Enemy{
         maxHp = 100;
         currentHealth = maxHp;
         z = 100;
-        image = RenderableHolder.EQ1;
+        image = RenderableHolder.eQ1;
         // TODO Auto-generated constructor stub
     }
 
@@ -21,21 +21,21 @@ public class EyeOfQwifot extends Enemy{
         // TODO Auto-generated method stub
         if(currentState == "dead") {
         	if (gameLogic.getCounter()/10%2==1) 
-                image = RenderableHolder.EQDead1;
+                image = RenderableHolder.eQDead1;
 
             else
-                image = RenderableHolder.EQDead2;
+                image = RenderableHolder.eQDead2;
         } else {
             if (gameLogic.getCounter()/10%2==1) 
-                image = RenderableHolder.EQ1;
+                image = RenderableHolder.eQ1;
 
             else
-                image = RenderableHolder.EQ2;
+                image = RenderableHolder.eQ2;
 
         }
         gc.drawImage(image,screenX,screenY);
         // TODO Auto-generated method stub
-        drawHitbox(gc);
+//        drawHitbox(gc);
         
     }
 
