@@ -77,20 +77,20 @@ public class GameLogic {
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
 		
-		player = new Player(300, 288, this);
-//		eQ = new EyeOfQwifot(3456, 512, this);
+		player = new Player(3000, 288, this);
+		eQ = new EyeOfQwifot(3456, 512, this);
 		mT = new MagicalTortoise(3300, 200, this);
 		addNewObject(player);
-//		addNewObject(new Chicknight(3200, 200, this));
+		addNewObject(new Chicknight(3000, 200, this));
 		addNewObject(mT);
 //		addNewObject(new GriszlyEye(3000, 200, this));
-//		addNewObject(eQ);
-//		addNewObject(new ShadowPot(3000, 500, this));
-		mDK = new MoleDerKaiser(3000, 300, this,448,448);
-		addNewObject(mDK);
-		for(Mole m:mDK.getMoles()) {
-			addNewObject(m);
-		}
+		addNewObject(eQ);
+		addNewObject(new ShadowPot(3000, 500, this));
+//		mDK = new MoleDerKaiser(3000, 300, this,448,448);
+//		addNewObject(mDK);
+//		for(Mole m:mDK.getMoles()) {
+//			addNewObject(m);
+//		}
 		gameState = playState;
 		System.out.println("New Game");
 	}
@@ -171,13 +171,17 @@ public class GameLogic {
 		}
 		else if (gameState == npcState ) {
             if (!getMagicalTortoise().playerfound()) {
+       
                 gameState = playState;
                 dialogueIndex =0;
             }
             logicUpdate();
             gameScreen.paintComponent();
             drawDialogueScreen(dialogueIndex);
-            if (InputUtility.isLeftClickTriggered()) dialogueIndex++;
+            if (InputUtility.isLeftClickTriggered()) {
+            	dialogueIndex++;
+            	RenderableHolder.npcSound.play(0.2);
+            }
             if (getMagicalTortoise().getDialoguesSize()-1<dialogueIndex) dialogueIndex=0;
         }
 	}

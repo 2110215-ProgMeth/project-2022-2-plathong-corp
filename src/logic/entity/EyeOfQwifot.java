@@ -82,6 +82,7 @@ public class EyeOfQwifot extends Enemy{
 		attackBlock = new Rectangle(0,0,0,0);
 	}
 	
+	@Override
 	public void changeHealthTo(int health) {
 		if (health>=maxHp) {
 			currentHealth = maxHp;

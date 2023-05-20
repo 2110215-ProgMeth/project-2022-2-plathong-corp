@@ -12,8 +12,6 @@ import sharedObject.RenderableHolder;
 
 public class Player extends Entity {
 
-	private String attackState = "no";
-
 	// Status Position
 	private int statusBarWidth = (int) (180 * 1.5);
 	private int statusBarHeight = (int) (38 * 2);
@@ -27,7 +25,7 @@ public class Player extends Entity {
 	private int healthBarY = (int) (11 * 1.5);
 
 	// Status
-	protected int maxHp = 50;
+	protected int maxHp = 5000;
 	protected int currentHealth = maxHp;
 	protected float healthWidth = healthBarWidth;
 	protected int dmg = 100;
@@ -51,14 +49,29 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		image = RenderableHolder.playerRight;
 		// TODO Auto-generated method stub
 		switch (direction) {
 		case "left":
-			image = (RenderableHolder.playerLeft);
+			if (attackState)
+				image = RenderableHolder.playerLeftAtk;
+			else {
+				image = RenderableHolder.playerLeft;
+			if (currentState == "moving") {
+				if (gameLogic.getCounter()/10%2==1) 
+                    image = RenderableHolder.playerLeftWalk;
+			}
+			}
 			break;
 		case "right":
-			image = RenderableHolder.playerRight;
+			if (attackState)
+				image = RenderableHolder.playerRightAtk;
+			else {
+				image = RenderableHolder.playerRight;
+			if (currentState == "moving") {
+				if (gameLogic.getCounter()/10%2==1) 
+                    image = RenderableHolder.playerRightWalk;
+			}
+			}
 			break;
 
 		}
@@ -88,15 +101,9 @@ public class Player extends Entity {
 	}
 
 	public void attack(Entity e) {
-		if (delay == 0) {
-			attackState = "yes";
-			RenderableHolder.sword1.play(10);
 			Enemy enemy = (Enemy) e;
 			System.out.println("Player Attack " + e.getClass().getSimpleName());
-			enemy.changeHealthTo(enemy.getCurrentHealth() - dmg);
-			delay =15;
-		}
-		
+			enemy.changeHealthTo(enemy.getCurrentHealth() - dmg);		
 	}
 
 	@Override
@@ -106,29 +113,37 @@ public class Player extends Entity {
 				solidArea.getHeight());
 		move();
 		if (InputUtility.isLeftClickTriggered()) {
-			for (Entity entity : gameLogic.getGameObjectContainer()) {
-				if ((entity instanceof Enemy)) {
-					Enemy enemy = ((Enemy) entity);
-					int x = (int) enemy.solidScreen.getX();
-					int y = (int) enemy.solidScreen.getY();
-					int width = (int) enemy.getSolidArea().getWidth();
-					int height = (int) enemy.getSolidArea().getHeight();
-					attackBlock.intersects(x, y, width, height);
-					if (attackBlock.intersects(x, y, width, height)) {
-						attack(entity);
-					}
-					if (enemy instanceof EyeOfQwifot) {
+			
+			if (delay == 0) {
+				attackState = true;
+				RenderableHolder.sword1.play(0.2);
+				for (Entity entity : gameLogic.getGameObjectContainer()) {
+					if ((entity instanceof Enemy)) {
+						Enemy enemy = ((Enemy) entity);
+						int x = (int) enemy.solidScreen.getX();
+						int y = (int) enemy.solidScreen.getY();
+						int width = (int) enemy.getSolidArea().getWidth();
+						int height = (int) enemy.getSolidArea().getHeight();
+						attackBlock.intersects(x, y, width, height);
+						if (attackBlock.intersects(x, y, width, height)) {
+							attack(entity);
+						}
+						if (enemy instanceof EyeOfQwifot) {
 //						System.out.println(enemy.solidScreen.getWidth()+" "+enemy.solidScreen.getHeight());
-					}
+						}
 
+					}
 				}
+				delay = 20;
 			}
 
 		}
 
+		
 		updateHealthBar();
 		updateAttackBlock();
 		if (iframe > 0) iframe--;
+		if (delay==10) attackState = false;
 		if (delay>0) delay--;
 	}
 
@@ -145,7 +160,6 @@ public class Player extends Entity {
 //				GameOver();
 			} else {
 				currentHealth = health;
-				System.out.println("Plathong" + currentHealth);
 			}
 			iframe = 30;
 		}
@@ -153,35 +167,41 @@ public class Player extends Entity {
 	}
 
 	public void move() {
-		direction = "";
+		currentState = "moving";
 		if (InputUtility.getKeyPressed(KeyCode.W)) {
 			direction = "up";
 		}
-		if (InputUtility.getKeyPressed(KeyCode.S)) {
+		else if (InputUtility.getKeyPressed(KeyCode.S)) {
 			direction = "down";
 		}
+		else
+			currentState = "default";
+		if (currentState == "moving") {
+			setCollisionOn(false);
+			gameLogic.checkTile(this);
 
-		setCollisionOn(false);
-		gameLogic.checkTile(this);
-
-		if (collisionOn == false) {
-			switch (direction) {
-			case "up":
-				worldY -= speed;
-				break;
-			case "down":
-				worldY += speed;
-				break;
+			if (collisionOn == false) {
+				switch (direction) {
+				case "up":
+					worldY -= speed;
+					break;
+				case "down":
+					worldY += speed;
+					break;
+				}
 			}
 		}
-
+		currentState = "moving";
 		if (InputUtility.getKeyPressed(KeyCode.D)) {
 			direction = "right";
 		}
-		if (InputUtility.getKeyPressed(KeyCode.A)) {
+		else if (InputUtility.getKeyPressed(KeyCode.A)) {
 			direction = "left";
 		}
+		else
+			currentState = "default";
 
+		if (currentState == "moving") {
 		setCollisionOn(false);
 		gameLogic.checkTile(this);
 		if (collisionOn == false) {
@@ -193,6 +213,7 @@ public class Player extends Entity {
 				worldX += speed;
 				break;
 			}
+		}
 		}
 	}
 

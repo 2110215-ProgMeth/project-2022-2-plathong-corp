@@ -6,6 +6,7 @@ import logic.game.GameLogic;
 import sharedObject.IRenderable;
 
 public abstract class Entity implements IRenderable {
+	protected boolean attackState = false;
 	protected double delay = 0;
 	protected double worldX, worldY;
 	public double screenX, screenY;
@@ -17,6 +18,7 @@ public abstract class Entity implements IRenderable {
 	public Rectangle solidArea,solidScreen;
 	public boolean collisionOn = false;
 	public GameLogic gameLogic;
+	protected String currentState = "default";
 
 	// Status
 	protected int maxHp;

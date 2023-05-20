@@ -7,7 +7,6 @@ import logic.game.GameLogic;
 
 public abstract class Enemy extends Entity{
 	protected double angle = 0;
-	protected String currentState = "default";
 	protected boolean canAttack;
 	protected double xspeed,yspeed;
 
@@ -47,7 +46,6 @@ public abstract class Enemy extends Entity{
 	
 	public void attack(Entity p) {
 		// TODO Auto-generated method stub
-//		System.out.println(this.getClass().getSimpleName()+"Attack");
 		if (checkEnemyHit()) {
 			((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth()-dmg);
 		}

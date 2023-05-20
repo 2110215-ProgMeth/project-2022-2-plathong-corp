@@ -34,6 +34,7 @@ public class Projectile implements IRenderable {
 		this.dmg = 10;
 		solidArea = new Rectangle(0, 0, 8, 8);
 		solidScreen = new Rectangle(screenX,screenY,8,8);
+		RenderableHolder.shootSound.play(0.1);
 	}
 
 	public void update() {

@@ -15,15 +15,7 @@ public class RenderableHolder {
 
 	private List<IRenderable> entities;
 	private Comparator<IRenderable> comparator;
-	public static Image playerLeft;
-	public static Image playerRight;
-	public static Image playerRightAtk;
-	public static Image johnSprite;
-	public static Image whiteTile;
-	public static Image grayTile;
-	public static Image pathTile;
-	public static Image blackStarTile;
-	public static Image blackTile;
+	public static Image playerLeft,playerLeftWalk,playerLeftAtk,playerRight,playerRightWalk,playerRightAtk;
 	public static Image CKLeft, CKLeftWalk1, CKLeftWalk2, CKLeftAtk, CKRight, CKRightWalk1, CKRightWalk2, CKRightAtk;
 	public static Image gameOverOverlay, pauseOverlay, pauseMenu, soundButton, urm, volumeButton;
 	public static Image GELeft, GELeftWalk, GELeftWalk2, GERight, GERightWalk, GERightWalk2;
@@ -38,7 +30,7 @@ public class RenderableHolder {
 	public static Image moonSprite;
 	public static Image healthBar;
 	//Song & Effect
-	public static AudioClip inGameSong,sword1;
+	public static AudioClip inGameSong,sword1,chicknightSound,shootSound,griszlyEyeSound,npcSound;
 	// Map Tile
 	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,waterTopTile,waterBottomTile,
 	waterLeftTile,waterRightTile,waterTopLeftTile,waterTopRightTile,waterBottomLeftTile,waterBottomRightTile,
@@ -78,21 +70,31 @@ public class RenderableHolder {
 		loadShadowPot();
 		loadEyeOfQwifot();
 		loadMoleDerKaiser();
+		loadSound();
 		//
 		//Game State
 		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
 		gameOverOverlay = new Image(ClassLoader.getSystemResource("pause/GameOver.png").toString());
-		inGameSong = new AudioClip(ClassLoader.getSystemResource("IngameSong.wav").toString());
-		sword1 = new AudioClip(ClassLoader.getSystemResource("Sword1.mp3").toString());
 		// StatusBar
 		healthBar = new Image(ClassLoader.getSystemResource("health_power_bar.png").toString());
 
 	}
 	
+	public static void loadSound() {
+		inGameSong = new AudioClip(ClassLoader.getSystemResource("sound/IngameSong.wav").toString());
+		chicknightSound = new AudioClip(ClassLoader.getSystemResource("sound/chicknight.mp3").toString());
+		shootSound = new AudioClip(ClassLoader.getSystemResource("sound/shootSound.mp3").toString());
+		sword1 = new AudioClip(ClassLoader.getSystemResource("sound/swing.mp3").toString());
+		griszlyEyeSound = new AudioClip(ClassLoader.getSystemResource("sound/GriszlyEyeSound.wav").toString());
+		npcSound = new AudioClip(ClassLoader.getSystemResource("sound/npcSound.wav").toString());
+	}
 	public static void loadPlayer() {
-		playerLeft = new Image(ClassLoader.getSystemResource("player/RabbiLeft.png").toString());
-		playerRight = new Image(ClassLoader.getSystemResource("player/Rabbi.png").toString());
-		playerRightAtk = new Image(ClassLoader.getSystemResource("player/RabbiRightAtk.png").toString());
+		playerLeft = new Image(ClassLoader.getSystemResource("player/playerLeft.png").toString());
+		playerLeftWalk = new Image(ClassLoader.getSystemResource("player/playerLeftWalk.png").toString());
+		playerLeftAtk = new Image(ClassLoader.getSystemResource("player/playerLeftAtk.png").toString());
+		playerRight = new Image(ClassLoader.getSystemResource("player/playerRight.png").toString());
+		playerRightWalk = new Image(ClassLoader.getSystemResource("player/playerRightWalk.png").toString());
+		playerRightAtk = new Image(ClassLoader.getSystemResource("player/playerRightAtk.png").toString());
 	}
 	public static void loadMapTile() {
 		ground1Tile =  new Image(ClassLoader.getSystemResource("mapTile/ground1.png").toString());
