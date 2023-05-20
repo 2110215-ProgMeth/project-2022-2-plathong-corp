@@ -3,6 +3,7 @@ package logic.entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
@@ -36,6 +37,7 @@ public class EyeOfQwifot extends Enemy{
         }
         gc.drawImage(image,screenX,screenY);
         gc.setFill(Color.BLACK);
+        gc.setFont(new Font(15));
 		gc.fillText("Eye Of Qwifot", screenX+70, screenY-10);
         // TODO Auto-generated method stub
 //        drawHitbox(gc);

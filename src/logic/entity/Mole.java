@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
@@ -42,6 +43,7 @@ public class Mole extends Enemy{
 		if(currentState=="attacking") {
 			if(rank=="DerKaiser") {
 				gc.setFill(Color.BLACK);
+				gc.setFont(new Font(15));
 				gc.fillText("MoleDerKaiser", screenX, screenY);
 			}
 			if( coolDown<20)

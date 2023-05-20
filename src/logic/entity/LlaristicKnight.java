@@ -4,6 +4,7 @@ import Object.SwordBeam;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
 
@@ -61,6 +62,7 @@ public class LlaristicKnight extends Enemy{
 
 		gc.drawImage(image, screenX, screenY);
 		gc.setFill(Color.BLACK);
+		gc.setFont(new Font(15));
 		gc.fillText("LlaristicKnight", screenX, screenY);
 //		drawHitbox(gc);
 //		drawAttackBlock(gc);

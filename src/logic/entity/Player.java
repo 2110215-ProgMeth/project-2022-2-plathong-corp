@@ -84,8 +84,8 @@ public class Player extends Entity {
 		drawUI(gc);
 
 		// Debugging
-		drawHitbox(gc);
-		drawAttackBlock(gc);
+//		drawHitbox(gc);
+//		drawAttackBlock(gc);
 	}
 
 	public void drawHitbox(GraphicsContext gc) {
