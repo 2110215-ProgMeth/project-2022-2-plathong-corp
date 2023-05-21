@@ -1,5 +1,5 @@
 package constant;
 
 public enum EntityState {
-	DEFAULT,ALIVE,DEAD,ATTACK,MOVING
+	DEFAULT, ALIVE, DEAD, ATTACK, MOVING
 }

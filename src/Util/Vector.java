@@ -1,9 +1,9 @@
 package Util;
 
-public class Vector <T>{
-	private T x,y;
-	
-	public Vector(T x , T y) {
+public class Vector<T> {
+	private T x, y;
+
+	public Vector(T x, T y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -23,6 +23,5 @@ public class Vector <T>{
 	public void setY(T y) {
 		this.y = y;
 	}
-	
-	
+
 }

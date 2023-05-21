@@ -1,6 +1,7 @@
 package logic.entity;
 
 import Object.Ball;
+import Util.Vector;
 import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -44,25 +45,25 @@ public class Mole extends Enemy{
 			if(rank=="DerKaiser") {
 				gc.setFill(Color.BLACK);
 				gc.setFont(new Font(15));
-				gc.fillText("MoleDerKaiser", screenX, screenY);
+				gc.fillText("MoleDerKaiser", getScreenPos().getX(), getScreenPos().getY());
 			}
 			if( coolDown<20)
-				gc.drawImage(animationImage, screenX, screenY);
+				gc.drawImage(animationImage, getScreenPos().getX(), getScreenPos().getY());
 			else
-				gc.drawImage(image, screenX, screenY);
+				gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 		}else if (currentState== EntityState.DEAD) {
-			gc.drawImage(deadImage, screenX, screenY);
+			gc.drawImage(deadImage, getScreenPos().getX(), getScreenPos().getY());
 		}
 		else {
 			if(coolDown<200)
-				gc.drawImage(animationImage, screenX,screenY);
+				gc.drawImage(animationImage, getScreenPos().getX(), getScreenPos().getY());
 		}
 
 //		 drawHitbox(gc);
 	}
 
 	public void attack() {
-    	gameLogic.addNewProjectile(new Ball(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic));
+    	gameLogic.addNewProjectile(new Ball(getWorldPos().getX()+solidArea.getX(), getWorldPos().getY()+solidArea.getY(), angle,gameLogic));
 	}
 	@Override
 	public void update() {
@@ -70,7 +71,7 @@ public class Mole extends Enemy{
 		super.update();
 		if(currentState!= EntityState.DEAD) {
 //		System.out.println(currentHealth);
-		if (playerfound(800) && coolDown<=180)
+		if (playerfound(700) && coolDown<=180)
 			currentState = EntityState.ATTACK;
 		else
 			currentState = EntityState.DEFAULT;
@@ -97,8 +98,7 @@ public class Mole extends Enemy{
 	}
 	@Override
 	public void move() {
-		worldX = x+ (int)(Math.random()*width);
-		worldY = y+ (int)(Math.random()*height);
+		worldPos = new Vector<Double>(x+ (int)(Math.random()*width), y+ (int)(Math.random()*height));
 //		System.out.println(worldX+" "+worldY);
 	}
 	@Override

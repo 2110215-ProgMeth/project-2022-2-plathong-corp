@@ -1,5 +1,6 @@
 package logic.entity;
 
+import Util.Vector;
 import constant.Direction;
 import constant.EntityState;
 import javafx.scene.image.Image;
@@ -10,16 +11,16 @@ import sharedObject.IRenderable;
 public abstract class Entity implements IRenderable {
 	protected boolean attackState = false;
 	protected int delay = 0;
-	protected double worldX, worldY;
-	public double screenX, screenY;
-	protected int z, radius;
+	protected Vector<Double> worldPos;
+	protected Vector<Double> screenPos;
+	protected int z;
 	protected boolean visible, destroyed;
 	protected int speed;
 	protected Direction direction;
 	protected Image image;
-	public Rectangle solidArea, solidScreen;
-	public boolean collisionOn = false;
-	public GameLogic gameLogic;
+	protected Rectangle solidArea, solidScreen;
+	protected boolean collisionOn = false;
+	protected GameLogic gameLogic;
 	protected EntityState currentState = EntityState.DEFAULT;
 
 	// Status
@@ -33,20 +34,23 @@ public abstract class Entity implements IRenderable {
 	public Entity(double x, double y, GameLogic gameLogic) {
 		visible = true;
 		destroyed = false;
-		worldX = x;
-		worldY = y;
+		worldPos = new Vector<Double>(x, y);
+		screenPos = new Vector<Double>(x, y);
 		this.gameLogic = gameLogic;
 		direction = Direction.RIGHT;
-		radius = 32;
 	}
 
 	public abstract void attack(Entity t);
 
 	public abstract void move();
 
+
 	public void update() {
-		screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;
-		screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
+		double screenX = worldPos.getX() - gameLogic.getPlayer().getWorldPos().getX()
+				+ gameLogic.getPlayer().getScreenPos().getX();
+		double screenY = worldPos.getY() - gameLogic.getPlayer().getWorldPos().getY()
+				+ gameLogic.getPlayer().getScreenPos().getY();
+		screenPos = new Vector<Double>(screenX, screenY);
 	}
 
 	public boolean canAttack(double x1, double y1, double x2, double y2, int attackRange) {
@@ -71,28 +75,16 @@ public abstract class Entity implements IRenderable {
 		return visible;
 	}
 
-	public double getWorldX() {
-		return worldX;
+	public Vector<Double> getWorldPos() {
+		return worldPos;
 	}
 
-	public double getWorldY() {
-		return worldY;
+	public Vector<Double> getScreenPos() {
+		return screenPos;
 	}
 
 	public Direction getDirection() {
 		return direction;
-	}
-
-	public double getScreenX() {
-		return screenX;
-	}
-
-	public double getScreenY() {
-		return screenY;
-	}
-
-	public int getRadius() {
-		return radius;
 	}
 
 	public int getSpeed() {
@@ -113,6 +105,45 @@ public abstract class Entity implements IRenderable {
 
 	public void setDestroyed(boolean destroyed) {
 		this.destroyed = destroyed;
+	}
+	public boolean isAttackState() {
+		return attackState;
+	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public Rectangle getSolidScreen() {
+		return solidScreen;
+	}
+
+	public GameLogic getGameLogic() {
+		return gameLogic;
+	}
+
+	public EntityState getCurrentState() {
+		return currentState;
+	}
+
+	public int getMaxHp() {
+		return maxHp;
+	}
+
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	public int getDmg() {
+		return dmg;
+	}
+
+	public Rectangle getAttackBlock() {
+		return attackBlock;
 	}
 
 }

@@ -12,9 +12,7 @@ import sharedObject.RenderableHolder;
 
 public class LlaristicKnight extends Enemy{
 
-	protected Rectangle normalAttackBlock;
 	private double probablility = 0.7;
-	private int xExtra,yExtra;
 	private int normalSpeed = 1;
 	public LlaristicKnight(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
@@ -66,10 +64,10 @@ public class LlaristicKnight extends Enemy{
 		}
 		}
 
-		gc.drawImage(image, screenX, screenY);
+		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 		gc.setFill(Color.BLACK);
 		gc.setFont(new Font(15));
-		gc.fillText("LlaristicKnight", screenX, screenY);
+		gc.fillText("LlaristicKnight", getScreenPos().getX(), getScreenPos().getY());
 //		drawHitbox(gc);
 //		drawAttackBlock(gc);
 	}
@@ -101,8 +99,13 @@ public class LlaristicKnight extends Enemy{
 			if(delay==0) {
 				delay = 60;
 				attack(player);
-				RenderableHolder.katana.play(0.2);
-				gameLogic.addNewProjectile(new SwordBeam(worldX, worldY, angle, gameLogic));
+				RenderableHolder.katana.play(0.4);
+				gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle, gameLogic));
+				if(Math.random()>probablility) {
+					gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle+90, gameLogic));
+					gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle+180, gameLogic));
+//					gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle+270, gameLogic));
+				}
 			}	
 			else if (delay == 30 && canAttack == ( Math.random()>probablility)) {
 				specialMove();
@@ -128,16 +131,16 @@ public class LlaristicKnight extends Enemy{
 			direction = Direction.RIGHT;
 		else
 			direction = Direction.LEFT;
-		if(worldX+xspeed<64)
-			worldX = 64;
-		else if (worldX+xspeed>64*63)
-			worldX = 64*63;
-		else worldX += xspeed;
-		if(worldY+yspeed<64)
-			worldY = 64;
-		else if (worldY+yspeed>64*47)
-			worldY = 64*47;
-		else worldY += yspeed;
+		if(getWorldPos().getX()+xspeed<64)
+			getWorldPos().setX((double) 64);
+		else if (getWorldPos().getX()+xspeed>64*63)
+			getWorldPos().setX((double) 64*63);
+		else getWorldPos().setX(getWorldPos().getX()+(double) xspeed);
+		if(getWorldPos().getY()+yspeed<64)
+			getWorldPos().setY((double) 64);
+		else if (getWorldPos().getY()+yspeed>64*47)
+			getWorldPos().setY((double) (64*47));
+		else getWorldPos().setY(getWorldPos().getY()+yspeed);
 	}
 	@Override
 	public void initSolidArea() {
@@ -160,6 +163,8 @@ public class LlaristicKnight extends Enemy{
 		else if (health<=0) {
 			currentHealth = 0;
 			currentState = EntityState.DEAD;
+			gameLogic.getGameSong().stop();
+			gameLogic.setGameSong(RenderableHolder.inGameSong);
 		}
 		else {
 			currentHealth = health;

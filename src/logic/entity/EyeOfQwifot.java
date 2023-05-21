@@ -17,7 +17,7 @@ public class EyeOfQwifot extends Enemy {
 		z = 100;
 		image = RenderableHolder.eQ1;
 	}
-	
+
 	@Override
 	public void changeHealthTo(int health) {
 		if (health >= maxHp) {
@@ -39,21 +39,21 @@ public class EyeOfQwifot extends Enemy {
 			else
 				image = RenderableHolder.eQDead2;
 		} else {
-			if(delay>60 && delay<80)
+			if (delay > 60 && delay < 80)
 				image = RenderableHolder.eQAtk;
 			else {
-			if (gameLogic.getCounter() / 10 % 2 == 1)
-				image = RenderableHolder.eQ1;
+				if (gameLogic.getCounter() / 10 % 2 == 1)
+					image = RenderableHolder.eQ1;
 
-			else
-				image = RenderableHolder.eQ2;
+				else
+					image = RenderableHolder.eQ2;
 			}
 
 		}
-		gc.drawImage(image, screenX, screenY);
+		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 		gc.setFill(Color.BLACK);
 		gc.setFont(new Font(15));
-		gc.fillText("Eye Of Qwifot", screenX + 70, screenY - 10);
+		gc.fillText("Eye Of Qwifot", getScreenPos().getX() + 70, getScreenPos().getY() - 10);
 
 //        drawHitbox(gc);
 
@@ -78,8 +78,8 @@ public class EyeOfQwifot extends Enemy {
 					delay = 300;
 				if (delay == 60) {
 					RenderableHolder.griszlyEyeSound.play(0.3);
-					gameLogic.addNewObject(new GriszlyEye(worldX, worldY, gameLogic));
-					gameLogic.addNewObject(new GriszlyEye(worldX + 240, worldY, gameLogic));
+					gameLogic.addNewObject(new GriszlyEye(getWorldPos().getX(), getWorldPos().getY(), gameLogic));
+					gameLogic.addNewObject(new GriszlyEye(getWorldPos().getX() + 240, getWorldPos().getY(), gameLogic));
 				}
 				delay--;
 			}
@@ -96,7 +96,5 @@ public class EyeOfQwifot extends Enemy {
 	public void initAttackBlock() {
 		attackBlock = new Rectangle(0, 0, 0, 0);
 	}
-
-	
 
 }

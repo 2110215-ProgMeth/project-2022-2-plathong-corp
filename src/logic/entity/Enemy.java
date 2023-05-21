@@ -1,5 +1,6 @@
 package logic.entity;
 
+import Util.Vector;
 import constant.Direction;
 import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,11 +27,11 @@ public abstract class Enemy extends Entity {
 			((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth() - dmg);
 		}
 	}
-	
+
 	public boolean checkEnemyHit() {
 		Player p = gameLogic.getPlayer();
-		int x = (int) p.getScreenX();
-		int y = (int) p.getScreenY();
+		double x = (double) p.getScreenPos().getX();
+		double y = (double) p.getScreenPos().getY();
 		int width = (int) p.getSolidArea().getWidth();
 		int height = (int) p.getSolidArea().getHeight();
 		return solidScreen.intersects(x, y, width, height) || attackBlock.intersects(x, y, width, height);
@@ -55,15 +56,16 @@ public abstract class Enemy extends Entity {
 			attackBlock.setX(solidScreen.getX());
 		else if (direction == Direction.LEFT)
 			attackBlock.setX(solidScreen.getX() + solidScreen.getWidth() - attackBlock.getWidth());
-		attackBlock.setY(screenY);
+		attackBlock.setY(getScreenPos().getY());
 	}
 
 	public void update() {
 		super.update();
-		solidScreen = new Rectangle(screenX + solidArea.getX(), screenY + solidArea.getY(), solidArea.getWidth(),
-				solidArea.getHeight());
+		solidScreen = new Rectangle(getScreenPos().getX() + solidArea.getX(), getScreenPos().getY() + solidArea.getY(),
+				solidArea.getWidth(), solidArea.getHeight());
 		Player player = gameLogic.getPlayer();
-		angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
+		angle = Math.atan2(player.getWorldPos().getY() - getWorldPos().getY(),
+				player.getWorldPos().getX() - getWorldPos().getX());
 	}
 
 	public void move() {
@@ -75,9 +77,9 @@ public abstract class Enemy extends Entity {
 		else
 			direction = Direction.DOWN;
 		setCollisionOn(false);
-		gameLogic.checkTile(this);
+		gameLogic.getMap().checkTile(this);
 		if (collisionOn == false) {
-			worldY += yspeed;
+			getWorldPos().setY(getWorldPos().getY() + yspeed);
 		}
 
 		if (xspeed < 0)
@@ -86,52 +88,52 @@ public abstract class Enemy extends Entity {
 			direction = Direction.RIGHT;
 
 		setCollisionOn(false);
-		gameLogic.checkTile(this);
+		gameLogic.getMap().checkTile(this);
 		if (collisionOn == false) {
-			worldX += xspeed;
+			getWorldPos().setX(getWorldPos().getX() + xspeed);
 		}
 	}
 
 	public void reset() {
 		visible = true;
 		destroyed = false;
-		worldX = getWorldX();
-		worldY = getWorldY();
+		worldPos = new Vector<Double>(getWorldPos().getX(), getWorldPos().getY());
 		this.currentHealth = maxHp;
 		this.direction = Direction.RIGHT;
 	}
 
 	public boolean playerfound(int range) {
-		int rangeX = (int) Math.abs(worldX - gameLogic.getPlayer().getWorldX());
-		int rangeY = (int) Math.abs(worldY - gameLogic.getPlayer().getWorldY());
+		int rangeX = (int) Math.abs(getWorldPos().getX() - gameLogic.getPlayer().getWorldPos().getX());
+		int rangeY = (int) Math.abs(getWorldPos().getY() - gameLogic.getPlayer().getWorldPos().getY());
 		return (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2)) < range;
 	}
 
 	public EntityState getCurrentState() {
 		return currentState;
 	}
-	
+
 	public int getCurrentHealth() {
 		return currentHealth;
 	}
-	
+
 	public boolean isDead() {
 		return currentState == EntityState.DEAD;
 	}
-	
-	// Debugger
-		public void drawHitbox(GraphicsContext gc) {
-			gc.setLineWidth(2);
-			gc.setFill(Color.PINK);
-			gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidScreen.getWidth(), solidScreen.getHeight());
-		}
 
-		public void drawAttackBlock(GraphicsContext gc) {
-			gc.setFill(Color.BLACK);
-			gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
-		}
-	
+	// Debugger
+	public void drawHitbox(GraphicsContext gc) {
+		gc.setLineWidth(2);
+		gc.setFill(Color.PINK);
+		gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidScreen.getWidth(), solidScreen.getHeight());
+	}
+
+	public void drawAttackBlock(GraphicsContext gc) {
+		gc.setFill(Color.BLACK);
+		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
+	}
+
 	public abstract void initSolidArea();
 
 	public abstract void initAttackBlock();
+	
 }

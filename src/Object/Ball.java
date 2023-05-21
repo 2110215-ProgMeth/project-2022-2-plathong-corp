@@ -14,7 +14,7 @@ public class Ball extends Projectile{
         yspeed = Math.sin(angle) * speed;
         dmg = 5;
         solidArea = new Rectangle(0, 0, 8, 8);
-        solidScreen = new Rectangle(screenX+solidArea.getX(),screenY+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
+        solidScreen = new Rectangle(screenPos.getX()+solidArea.getX(),screenPos.getY()+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
         RenderableHolder.shootSound.play(0.1);
         image = RenderableHolder.ball;
     }
@@ -22,7 +22,7 @@ public class Ball extends Projectile{
     @Override
     public void draw(GraphicsContext gc) {
         // TODO Auto-generated method stub
-        gc.drawImage(image, screenX, screenY);
+        gc.drawImage(image, screenPos.getX(), screenPos.getY());
 //        drawHitbox(gc);
     }
 

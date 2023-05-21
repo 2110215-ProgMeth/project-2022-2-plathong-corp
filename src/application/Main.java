@@ -34,7 +34,7 @@ public class Main extends Application {
 	public Stage getStage() {
 		return stage;
 	}
-	
+
 	public static void GameStart() {
 
 		System.out.println(isStart);
@@ -111,12 +111,12 @@ public class Main extends Application {
 
 			});
 		}
-
+		stage.setResizable(false);
 		stage.setTitle("Black Light Matter");
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Application.launch(args);

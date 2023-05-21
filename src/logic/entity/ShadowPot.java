@@ -43,18 +43,19 @@ public class ShadowPot extends Enemy {
 
 			break;
 		}
-		gc.drawImage(image, screenX, screenY);
+		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 //		drawHitbox(gc);
 	}
 
 	public void attack() {
-        	gameLogic.addNewProjectile(new Ball(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic));
-    }
+		gameLogic.addNewProjectile(new Ball(getWorldPos().getX() + solidArea.getX(),
+				getWorldPos().getY() + solidArea.getY(), angle, gameLogic));
+	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (playerfound(1000))
+		if (playerfound(700))
 			currentState = EntityState.ATTACK;
 		else
 			currentState = EntityState.DEFAULT;
