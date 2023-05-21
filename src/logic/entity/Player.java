@@ -86,7 +86,7 @@ public class Player extends Entity {
 
 		}
 		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
-		drawUI(gc);
+//		drawUI(gc);
 
 		// Debugging
 //		drawHitbox(gc);

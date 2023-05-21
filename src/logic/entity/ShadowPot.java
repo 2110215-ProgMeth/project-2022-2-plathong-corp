@@ -55,7 +55,7 @@ public class ShadowPot extends Enemy {
 	@Override
 	public void update() {
 		super.update();
-		if (playerfound(700))
+		if (playerfound(500))
 			currentState = EntityState.ATTACK;
 		else
 			currentState = EntityState.DEFAULT;

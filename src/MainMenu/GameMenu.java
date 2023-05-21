@@ -36,13 +36,13 @@ public class GameMenu extends Parent {
 			System.exit(0);
 		});
 
-		MenuButton optionBtn = new MenuButton("OPTION");
-
-		optionBtn.setOnMouseClicked(e -> {
-			getChildren().add(playMenu);
-			transition(mainMenu, playMenu, -640);
-
-		});
+//		MenuButton optionBtn = new MenuButton("OPTION");
+//
+//		optionBtn.setOnMouseClicked(e -> {
+//			getChildren().add(playMenu);
+//			transition(mainMenu, playMenu, -640);
+//
+//		});
 
 		// PlayMenu
 
@@ -62,11 +62,11 @@ public class GameMenu extends Parent {
 			transition(playMenu, mainMenu, 640);
 		});
 
-		MenuButton ContBtn = new MenuButton("CONTINUE");
-
-		ContBtn.setOnMouseClicked(e -> {
-
-		});
+//		MenuButton ContBtn = new MenuButton("CONTINUE");
+//
+//		ContBtn.setOnMouseClicked(e -> {
+//
+//		});
 
 		MenuButton backBtn = new MenuButton("BACK");
 
@@ -80,8 +80,8 @@ public class GameMenu extends Parent {
 		Rectangle bg = new Rectangle(Constant.ScreenSize.GAMEWIDTH, Constant.ScreenSize.GAMEHEIGHT);
 		bg.setOpacity(0.1);
 		bg.setFill(Color.WHITE);
-		mainMenu.getChildren().addAll(startBtn, optionBtn, exitBtn);
-		playMenu.getChildren().addAll(playBtn, ContBtn, backBtn);
+		mainMenu.getChildren().addAll(startBtn, exitBtn);
+		playMenu.getChildren().addAll(playBtn, backBtn);
 
 		getChildren().addAll(bg, mainMenu);
 

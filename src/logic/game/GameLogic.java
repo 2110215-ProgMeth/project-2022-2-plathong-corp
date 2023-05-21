@@ -130,6 +130,7 @@ public class GameLogic {
 		if (gameState == GameState.PLAYSTATE) {
 			logicUpdate();
 			gameScreen.paintComponent();
+			player.drawUI(gameScreen.getGraphicsContext2D());
 		} else if (gameState == GameState.PAUSESTATE) {
 			drawGamePauseOverlay();
 			gameSong.stop();

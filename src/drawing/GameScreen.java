@@ -72,6 +72,7 @@ public class GameScreen extends Canvas {
 
 			}
 		}
+		
 	}
 
 	public GameScreen getGameScreen() {
