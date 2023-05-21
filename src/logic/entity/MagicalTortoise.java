@@ -40,7 +40,7 @@ public class MagicalTortoise extends Entity{
 
             break;
         }
-        gc.drawImage(image, screenX, screenY);
+        gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 
     }
 
@@ -54,7 +54,7 @@ public class MagicalTortoise extends Entity{
         // TODO Auto-generated method stub
     	super.update();
         Player player = gameLogic.getPlayer();
-        double xDirection =  Math.cos(Math.atan2(player.worldY-worldY,player.worldX-worldX));
+        double xDirection =  Math.cos(Math.atan2(player.getWorldPos().getY()-getWorldPos().getY(),player.getWorldPos().getX()-getWorldPos().getX()));
         if(xDirection<0)
             direction = Direction.LEFT;
         else
@@ -75,12 +75,12 @@ public class MagicalTortoise extends Entity{
         dialogues.add("Please, get rid of all 3 inverders");
         dialogues.add("The Eye of QWIFOT");
         dialogues.add("MoleDerKaiser");
-        dialogues.add("LaristicKnight");
+        dialogues.add("LlaristicKnight");
     }
 
     public boolean playerfound(){
-        int rangeX = (int) Math.abs(worldX-gameLogic.getPlayer().getWorldX());
-        int rangeY = (int) Math.abs(worldY-gameLogic.getPlayer().getWorldY());
+        int rangeX = (int) Math.abs(getWorldPos().getX()-gameLogic.getPlayer().getWorldPos().getX());
+        int rangeY = (int) Math.abs(getWorldPos().getY()-gameLogic.getPlayer().getWorldPos().getY());
         int range = (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2));
         return range<100;
     }

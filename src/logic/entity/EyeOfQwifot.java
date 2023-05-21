@@ -39,17 +39,21 @@ public class EyeOfQwifot extends Enemy {
 			else
 				image = RenderableHolder.eQDead2;
 		} else {
+			if(delay>60 && delay<80)
+				image = RenderableHolder.eQAtk;
+			else {
 			if (gameLogic.getCounter() / 10 % 2 == 1)
 				image = RenderableHolder.eQ1;
 
 			else
 				image = RenderableHolder.eQ2;
+			}
 
 		}
-		gc.drawImage(image, screenX, screenY);
+		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 		gc.setFill(Color.BLACK);
 		gc.setFont(new Font(15));
-		gc.fillText("Eye Of Qwifot", screenX + 70, screenY - 10);
+		gc.fillText("Eye Of Qwifot", getScreenPos().getX() + 70, getScreenPos().getY() - 10);
 
 //        drawHitbox(gc);
 
@@ -73,8 +77,9 @@ public class EyeOfQwifot extends Enemy {
 				if (delay == 0)
 					delay = 300;
 				if (delay == 60) {
-					gameLogic.addNewObject(new GriszlyEye(worldX, worldY, gameLogic));
-					gameLogic.addNewObject(new GriszlyEye(worldX + 20, worldY, gameLogic));
+					RenderableHolder.griszlyEyeSound.play(0.3);
+					gameLogic.addNewObject(new GriszlyEye(getWorldPos().getX(), getWorldPos().getY(), gameLogic));
+					gameLogic.addNewObject(new GriszlyEye(getWorldPos().getX() + 240, getWorldPos().getY(), gameLogic));
 				}
 				delay--;
 			}

@@ -33,8 +33,8 @@ public abstract class Projectile implements IRenderable {
 	public void update() {
 		worldX += xspeed;
 		worldY += yspeed;
-		screenX = worldX - gameLogic.getPlayer().getWorldX() + gameLogic.getPlayer().screenX;
-		screenY = worldY - gameLogic.getPlayer().getWorldY() + gameLogic.getPlayer().screenY;
+		screenX = worldX - gameLogic.getPlayer().getWorldPos().getX() + gameLogic.getPlayer().getScreenPos().getX();
+		screenY = worldY - gameLogic.getPlayer().getWorldPos().getY() + gameLogic.getPlayer().getScreenPos().getY();
 		boolean isOut = screenX < 0 || screenX > 1280 || screenY < 0 || screenY > 720;
 		if (isOut) {
 			destroyed = true;
@@ -45,8 +45,8 @@ public abstract class Projectile implements IRenderable {
 
 	public void checkEnemyHit() {
 		Player p =gameLogic.getPlayer();
-		int x = (int) p.getScreenX();
-		int y = (int) p.getScreenY();
+		double x = (double) p.getScreenPos().getX();
+		double y = (double) p.getScreenPos().getY();
 		int width = (int) p.getSolidArea().getWidth();
 		int height = (int) p.getSolidArea().getHeight();
 		if (solidScreen.intersects(x,y,width,height)) {

@@ -1,5 +1,6 @@
 package logic.entity;
 
+import Util.Vector;
 import constant.Direction;
 import constant.EntityState;
 import javafx.scene.image.Image;
@@ -10,8 +11,8 @@ import sharedObject.IRenderable;
 public abstract class Entity implements IRenderable {
 	protected boolean attackState = false;
 	protected int delay = 0;
-	protected double worldX, worldY;
-	public double screenX, screenY;
+	protected Vector<Double> worldPos ;
+	protected Vector<Double> screenPos;
 	protected int z, radius;
 	protected boolean visible, destroyed;
 	protected int speed;
@@ -33,8 +34,8 @@ public abstract class Entity implements IRenderable {
 	public Entity(double x, double y, GameLogic gameLogic) {
 		visible = true;
 		destroyed = false;
-		worldX = x;
-		worldY = y;
+		worldPos = new Vector<Double>(x,y);
+		screenPos = new Vector<Double>(x,y);
 		this.gameLogic = gameLogic;
 		direction = Direction.RIGHT;
 		radius = 32;
@@ -45,8 +46,9 @@ public abstract class Entity implements IRenderable {
 	public abstract void move();
 
 	public void update() {
-		screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;
-		screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
+		double screenX = worldPos.getX() - gameLogic.getPlayer().getWorldPos().getX() + gameLogic.getPlayer().getScreenPos().getX();
+		double screenY = worldPos.getY() - gameLogic.getPlayer().getWorldPos().getY() + gameLogic.getPlayer().getScreenPos().getY();
+		screenPos = new Vector<Double>(screenX, screenY);
 	}
 
 	public boolean canAttack(double x1, double y1, double x2, double y2, int attackRange) {
@@ -71,25 +73,18 @@ public abstract class Entity implements IRenderable {
 		return visible;
 	}
 
-	public double getWorldX() {
-		return worldX;
+	public Vector<Double> getWorldPos() {
+		return worldPos;
 	}
-
-	public double getWorldY() {
-		return worldY;
+	
+	public Vector<Double> getScreenPos() {
+		return screenPos;
 	}
 
 	public Direction getDirection() {
 		return direction;
 	}
 
-	public double getScreenX() {
-		return screenX;
-	}
-
-	public double getScreenY() {
-		return screenY;
-	}
 
 	public int getRadius() {
 		return radius;

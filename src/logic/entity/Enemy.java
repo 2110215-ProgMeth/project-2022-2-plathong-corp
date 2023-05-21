@@ -1,5 +1,6 @@
 package logic.entity;
 
+import Util.Vector;
 import constant.Direction;
 import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,8 +30,8 @@ public abstract class Enemy extends Entity {
 	
 	public boolean checkEnemyHit() {
 		Player p = gameLogic.getPlayer();
-		int x = (int) p.getScreenX();
-		int y = (int) p.getScreenY();
+		double x = (double) p.getScreenPos().getX();
+		double y = (double) p.getScreenPos().getY();
 		int width = (int) p.getSolidArea().getWidth();
 		int height = (int) p.getSolidArea().getHeight();
 		return solidScreen.intersects(x, y, width, height) || attackBlock.intersects(x, y, width, height);
@@ -41,7 +42,7 @@ public abstract class Enemy extends Entity {
 		if (health >= maxHp) {
 			currentHealth = maxHp;
 		} else if (health <= 0) {
-			RenderableHolder.monsterdie.play();
+			RenderableHolder.monsterdie.play(0.2);
 			currentHealth = 0;
 			setDestroyed(true);
 		} else {
@@ -55,15 +56,15 @@ public abstract class Enemy extends Entity {
 			attackBlock.setX(solidScreen.getX());
 		else if (direction == Direction.LEFT)
 			attackBlock.setX(solidScreen.getX() + solidScreen.getWidth() - attackBlock.getWidth());
-		attackBlock.setY(screenY);
+		attackBlock.setY(getScreenPos().getY());
 	}
 
 	public void update() {
 		super.update();
-		solidScreen = new Rectangle(screenX + solidArea.getX(), screenY + solidArea.getY(), solidArea.getWidth(),
+		solidScreen = new Rectangle(getScreenPos().getX() + solidArea.getX(), getScreenPos().getY() + solidArea.getY(), solidArea.getWidth(),
 				solidArea.getHeight());
 		Player player = gameLogic.getPlayer();
-		angle = Math.atan2(player.worldY - worldY, player.worldX - worldX);
+		angle = Math.atan2(player.getWorldPos().getY() - getWorldPos().getY(), player.getWorldPos().getX() - getWorldPos().getX());
 	}
 
 	public void move() {
@@ -77,7 +78,7 @@ public abstract class Enemy extends Entity {
 		setCollisionOn(false);
 		gameLogic.checkTile(this);
 		if (collisionOn == false) {
-			worldY += yspeed;
+			getWorldPos().setY(getWorldPos().getY()+yspeed);
 		}
 
 		if (xspeed < 0)
@@ -88,22 +89,21 @@ public abstract class Enemy extends Entity {
 		setCollisionOn(false);
 		gameLogic.checkTile(this);
 		if (collisionOn == false) {
-			worldX += xspeed;
+			getWorldPos().setX(getWorldPos().getX()+xspeed);
 		}
 	}
 
 	public void reset() {
 		visible = true;
 		destroyed = false;
-		worldX = getWorldX();
-		worldY = getWorldY();
+		worldPos = new Vector<Double>(getWorldPos().getX(), getWorldPos().getY());
 		this.currentHealth = maxHp;
 		this.direction = Direction.RIGHT;
 	}
 
 	public boolean playerfound(int range) {
-		int rangeX = (int) Math.abs(worldX - gameLogic.getPlayer().getWorldX());
-		int rangeY = (int) Math.abs(worldY - gameLogic.getPlayer().getWorldY());
+		int rangeX = (int) Math.abs(getWorldPos().getX() - gameLogic.getPlayer().getWorldPos().getX());
+		int rangeY = (int) Math.abs(getWorldPos().getY() - gameLogic.getPlayer().getWorldPos().getY());
 		return (int) Math.sqrt(Math.pow(rangeX, 2) + Math.pow(rangeY, 2)) < range;
 	}
 

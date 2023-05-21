@@ -10,13 +10,13 @@ import drawing.GameScreen;
 import input.InputUtility;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import logic.entity.Chicknight;
 import logic.entity.Entity;
 import logic.entity.EyeOfQwifot;
-import logic.entity.GriszlyEye;
 import logic.entity.LlaristicKnight;
 import logic.entity.MagicalTortoise;
 import logic.entity.Mole;
@@ -33,11 +33,12 @@ public class GameLogic {
 
 	private GameScreen gameScreen;
 	private Player player;
-	private EyeOfQwifot eQ;
+	private EyeOfQwifot eyeOfQwifot;
 	private Map1 map;
-	private MagicalTortoise mT;
-	private MoleDerKaiser mDK;
-	private LlaristicKnight LN;
+	private MagicalTortoise magicalTortoise;
+	private MoleDerKaiser moleDerKaiser;
+	private LlaristicKnight llaristicKnight;
+	private AudioClip gameSong;
 	// GameState
 	public GameState gameState = GameState.PLAYSTATE;
 
@@ -72,18 +73,27 @@ public class GameLogic {
 		RenderableHolder.getInstance().getEntities().clear();
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
-
-		player = new Player(1920, 1444, this);
-		eQ = new EyeOfQwifot(3456, 512, this);
-		mT = new MagicalTortoise(2040, 1444, this);
-		LN = new LlaristicKnight(8 * 64, 10 * 64, this);
+//1920+64
+		player = new Player(1920+64, 1440, this);
+		eyeOfQwifot = new EyeOfQwifot(3456, 512, this);
+		magicalTortoise = new MagicalTortoise(2040+32, 1444, this);
+		llaristicKnight = new LlaristicKnight(8 * 64, 10 * 64, this);
+		moleDerKaiser = new MoleDerKaiser(1800, 64 * 37, this, 448, 448);
 		addNewObject(player);
-		addNewObject(new Chicknight(3000, 200, this));
+		addNewObject(magicalTortoise);
+		addNewObject(llaristicKnight);
+		addNewObject(eyeOfQwifot);
+		addNewObject(moleDerKaiser);
+		for (Mole m : moleDerKaiser.getMoles()) {
+			addNewObject(m);
+		}
+
 		for (int i = 0; i < 50; i++) {
 			double pointX = Math.random();
 			double pointY = Math.random();
 			boolean spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
-			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint) {
+
+			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint || (pointX < 0.25&&pointY<0.35)) {
 				pointX = Math.random();
 				pointY = Math.random();
 				spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
@@ -95,34 +105,25 @@ public class GameLogic {
 			double pointX = Math.random();
 			double pointY = Math.random();
 			boolean spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
-			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint) {
+			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint || (pointX < 0.25&&pointY<0.35)) {
 				pointX = Math.random();
 				pointY = Math.random();
 				spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
 			}
 			addNewObject(new ShadowPot(pointX * 64 * 64, pointY * 64 * 48, this));
 		}
-		addNewObject(mT);
 
-		addNewObject(LN);
-		addNewObject(new GriszlyEye(3000, 200, this));
-		addNewObject(new ShadowPot(3000, 500, this));
-		addNewObject(eQ);
-		mDK = new MoleDerKaiser(1800, 64 * 37, this, 448, 448);
-		addNewObject(mDK);
-		for (Mole m : mDK.getMoles()) {
-			addNewObject(m);
-		}
 		gameState = GameState.PLAYSTATE;
+		gameSong = RenderableHolder.inGameSong;
 		System.out.println("New Game");
 
 	}
 
 	public void checkTile(Entity entity) {
-		int entityLeftWorldX = (int) (entity.getWorldX() + entity.solidArea.getX());
-		int entityRightWorldX = (int) (entity.getWorldX() + entity.solidArea.getX() + entity.solidArea.getWidth());
-		int entityTopWorldY = (int) (entity.getWorldY() + entity.solidArea.getY());
-		int entityBottomWorldY = (int) (entity.getWorldY() + entity.solidArea.getY() + entity.solidArea.getHeight());
+		int entityLeftWorldX = (int) (entity.getWorldPos().getX() + entity.solidArea.getX());
+		int entityRightWorldX = (int) (entity.getWorldPos().getX() + entity.solidArea.getX() + entity.solidArea.getWidth());
+		int entityTopWorldY = (int) (entity.getWorldPos().getY() + entity.solidArea.getY());
+		int entityBottomWorldY = (int) (entity.getWorldPos().getY() + entity.solidArea.getY() + entity.solidArea.getHeight());
 
 		int entityLeftCol = entityLeftWorldX / map.getTileSize();
 		int entityRightCol = entityRightWorldX / map.getTileSize();
@@ -171,8 +172,8 @@ public class GameLogic {
 
 	public void update() {
 //		System.out.println(gameState);
-		if (!RenderableHolder.inGameSong.isPlaying()) {
-			RenderableHolder.inGameSong.play();
+		if (!gameSong.isPlaying()) {
+			gameSong.play();
 		}
 		if (gameState == GameState.PLAYSTATE) {
 			logicUpdate();
@@ -247,7 +248,7 @@ public class GameLogic {
 	}
 
 	public MagicalTortoise getMagicalTortoise() {
-		return mT;
+		return magicalTortoise;
 	}
 
 	public void drawDialogueScreen(int i) {
@@ -335,7 +336,7 @@ public class GameLogic {
 			gameState = GameState.GAMEOVERSTATE;
 		}
 
-		boolean win = LN.isDead() && eQ.isDead() && mDK.isDead();
+		boolean win = llaristicKnight.isDead() && eyeOfQwifot.isDead() && moleDerKaiser.isDead();
 		if (win)
 			gameState = GameState.WINSTATE;
 	}
@@ -348,4 +349,13 @@ public class GameLogic {
 		return projectilesContainer;
 	}
 
+	public AudioClip getGameSong() {
+		return gameSong;
+	}
+
+	public void setGameSong(AudioClip gameSong) {
+		this.gameSong = gameSong;
+	}
+
+	
 }

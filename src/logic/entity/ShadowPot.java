@@ -43,12 +43,12 @@ public class ShadowPot extends Enemy {
 
 			break;
 		}
-		gc.drawImage(image, screenX, screenY);
+		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 //		drawHitbox(gc);
 	}
 
 	public void attack() {
-        	gameLogic.addNewProjectile(new Ball(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic));
+        	gameLogic.addNewProjectile(new Ball(getWorldPos().getX()+solidArea.getX(), getWorldPos().getY()+solidArea.getY(), angle,gameLogic));
     }
 
 	@Override

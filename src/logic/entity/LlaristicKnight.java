@@ -14,20 +14,23 @@ public class LlaristicKnight extends Enemy{
 
 	protected Rectangle normalAttackBlock;
 	private double probablility = 0.7;
-	private int xExtra,yExtra;
+	private int normalSpeed = 1;
 	public LlaristicKnight(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
         maxHp = 300;
         currentHealth = maxHp;
         z = -100;
         dmg = 20;
-        speed = 1;
+        speed = normalSpeed;
         image = RenderableHolder.lKRight1;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
+		if(currentState == EntityState.DEAD)
+			image = RenderableHolder.lKDead;
+		else {
 		switch (direction) {
 		case RIGHT:
 			if(currentState == EntityState.ATTACK) {
@@ -59,13 +62,13 @@ public class LlaristicKnight extends Enemy{
 			} else
 				image = RenderableHolder.lKLeft1;
 			break;
-
+		}
 		}
 
-		gc.drawImage(image, screenX, screenY);
+		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 		gc.setFill(Color.BLACK);
 		gc.setFont(new Font(15));
-		gc.fillText("LlaristicKnight", screenX, screenY);
+		gc.fillText("LlaristicKnight", getScreenPos().getX(), getScreenPos().getY());
 //		drawHitbox(gc);
 //		drawAttackBlock(gc);
 	}
@@ -74,10 +77,21 @@ public class LlaristicKnight extends Enemy{
 	public void update() {
 		super.update();
 		if(currentState!=EntityState.DEAD) {
-		if (playerfound(1000)) 
+		if (playerfound(600)) {
 			currentState = EntityState.ATTACK;
-		else
+			if(gameLogic.getGameSong()!=RenderableHolder.llaristicTheme) {
+				gameLogic.getGameSong().stop();
+				gameLogic.setGameSong(RenderableHolder.llaristicTheme);
+			}
+		}
+		else {
 			currentState = EntityState.DEFAULT;
+			
+			if(gameLogic.getGameSong()!=RenderableHolder.inGameSong) {
+				gameLogic.getGameSong().stop();
+				gameLogic.setGameSong(RenderableHolder.inGameSong);
+			}
+		}
 		Player player = gameLogic.getPlayer();
 		canAttack = canAttack(player.solidScreen.getX() + solidScreen.getWidth() / 2,
 				player.solidScreen.getY() + solidScreen.getHeight() / 2,
@@ -87,11 +101,11 @@ public class LlaristicKnight extends Enemy{
 				delay = 60;
 				attack(player);
 				RenderableHolder.katana.play(0.2);
-				if(canAttack == ( Math.random()<probablility)) 
-					specialMove();
-				else
-					gameLogic.addNewProjectile(new SwordBeam(worldX, worldY, angle, gameLogic));
-			}			
+				gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle, gameLogic));
+			}	
+			else if (delay == 30 && canAttack == ( Math.random()>probablility)) {
+				specialMove();
+			}
 			move();
 		}	
 		if(delay >0) delay--;
@@ -100,28 +114,29 @@ public class LlaristicKnight extends Enemy{
 	}
 	
 	public void specialMove() {
-		if (yspeed < 0)
-			direction = Direction.UP;
-		else
-			direction = Direction.DOWN;
-		setCollisionOn(false);
-		gameLogic.checkTile(this);
-		yExtra = (int) (yspeed * 500 * Math.random());
-		if (collisionOn == false && (worldY + yExtra> 0 && worldY+yExtra< 64*47 )) {
-			worldY += yExtra;
-		}
-
-		if (xspeed < 0)
-			direction = Direction.LEFT;
-		else
+		speed = (int) (normalSpeed * 500 * Math.random());
+		move();
+		speed = normalSpeed;
+	}
+	
+	@Override
+	public void move() {
+		xspeed = Math.cos(angle) * speed;
+		yspeed = Math.sin(angle) * speed;
+		if(xspeed>0)
 			direction = Direction.RIGHT;
-
-		setCollisionOn(false);
-		gameLogic.checkTile(this);
-		xExtra = (int) (xspeed * 500 * Math.random());
-		if (collisionOn == false && (worldX + xExtra> 0 && worldX+xExtra< 64*63 )) {
-			worldX += xExtra;
-		}
+		else
+			direction = Direction.LEFT;
+		if(getWorldPos().getX()+xspeed<64)
+			getWorldPos().setX((double) 64);
+		else if (getWorldPos().getX()+xspeed>64*63)
+			getWorldPos().setX((double) 64*63);
+		else getWorldPos().setX(getWorldPos().getX()+(double) xspeed);
+		if(getWorldPos().getY()+yspeed<64)
+			getWorldPos().setY((double) 64);
+		else if (getWorldPos().getY()+yspeed>64*47)
+			getWorldPos().setY((double) (64*47));
+		else getWorldPos().setY(getWorldPos().getY()+yspeed);
 	}
 	@Override
 	public void initSolidArea() {

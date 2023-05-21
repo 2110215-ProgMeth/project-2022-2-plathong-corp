@@ -49,7 +49,7 @@ public class Chicknight extends Enemy {
 			break;
 		}
 
-		gc.drawImage(image, screenX, screenY);
+		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 
 //		drawHitbox(gc);
 //		drawAttackBlock(gc);
@@ -87,7 +87,7 @@ public class Chicknight extends Enemy {
 				setCollisionOn(false);
 				gameLogic.checkTile(this);
 				if (collisionOn == false) {
-					worldY += yspeed;
+					getWorldPos().setY(getWorldPos().getY()+yspeed);
 
 				}
 
@@ -99,7 +99,7 @@ public class Chicknight extends Enemy {
 				setCollisionOn(false);
 				gameLogic.checkTile(this);
 				if (collisionOn == false) {
-					worldX += xspeed;
+					getWorldPos().setX(getWorldPos().getX()+xspeed);
 				}
 			}
 			if (delay == 40)
@@ -116,7 +116,7 @@ public class Chicknight extends Enemy {
 	}
 
 	public void initAttackBlock() {
-		attackBlock = new Rectangle(screenX + solidArea.getWidth(), screenY, solidArea.getWidth() + 10 * 2, 64);
+		attackBlock = new Rectangle(getScreenPos().getX() + solidArea.getWidth(), getScreenPos().getY(), solidArea.getWidth() + 10 * 2, 64);
 	}
 
 //	Debug Chick

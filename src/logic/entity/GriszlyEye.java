@@ -1,5 +1,6 @@
 package logic.entity;
 
+import constant.Direction;
 import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
@@ -47,7 +48,7 @@ public class GriszlyEye extends Enemy {
 			}
 			break;
 		}
-		gc.drawImage(image, screenX, screenY);
+		gc.drawImage(image, getScreenPos().getX(), getScreenPos().getY());
 //		drawHitbox(gc);
 	}
 
@@ -60,7 +61,7 @@ public class GriszlyEye extends Enemy {
 		else
 			currentState = EntityState.DEFAULT;
 		Player player = gameLogic.getPlayer();
-		canAttack = canAttack(player.worldX, player.worldY, worldX + radius, worldY + radius, 128);
+		canAttack = canAttack(player.getWorldPos().getX(), player.getWorldPos().getY(), getWorldPos().getX() + radius, getWorldPos().getY() + radius, 128);
 		if (currentState == EntityState.ATTACK) {
 			if (delay == 0) {
 				speed = normalSpeed;
@@ -76,11 +77,10 @@ public class GriszlyEye extends Enemy {
 			if (delay > 30) {
 				xspeed = Math.cos(angle) * speed;
 				yspeed = Math.sin(angle) * speed;
-				move();
-			} else {
-				worldX += xspeed;
-				worldY += yspeed;
 			}
+			move();
+			
+			
 
 			attack(gameLogic.getPlayer());
 			delay--;
@@ -88,7 +88,15 @@ public class GriszlyEye extends Enemy {
 
 		updateAttackBlock();
 	}
-
+	@Override
+	public void move() {
+		if(xspeed>0)
+			direction =Direction.RIGHT;
+		else
+			direction =Direction.LEFT;
+		getWorldPos().setX(getWorldPos().getX()+xspeed);
+		getWorldPos().setY(getWorldPos().getY()+yspeed);
+	}
 	public void initSolidArea() {
 		solidArea = new Rectangle(20, 0, 24, 32);
 
