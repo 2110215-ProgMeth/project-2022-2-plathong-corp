@@ -29,7 +29,6 @@ public class SwordBeam extends Projectile{
             solidArea = new Rectangle(-32,0,128,32);
         }
         solidScreen = new Rectangle(screenPos.getX()+solidArea.getX(),screenPos.getY()+solidArea.getY(),solidArea.getWidth(),solidArea.getHeight());
-        RenderableHolder.shootSound.play(0.1);
     }
 
     @Override

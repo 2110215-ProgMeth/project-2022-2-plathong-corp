@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import MainMenu.GameOverButton;
 import Object.Projectile;
 import application.Main;
+import constant.Constant;
 import constant.GameState;
 import drawing.GameScreen;
 import input.InputUtility;
@@ -216,12 +217,12 @@ public class GameLogic {
 
 	public void drawGamePauseOverlay() {
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
-		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252);
+		gc.drawImage(RenderableHolder.pauseOverlay, 480*Constant.ScreenSize.GAMEWIDTH/1280, 252*Constant.ScreenSize.GAMEHEIGHT/720);
 	}
 
 	public void drawGameOverOverlay() {
-		GameOverButton retry = new GameOverButton((int) (1280 / 3.5), (int) (720 / 1.5), 200, 40, "RETRY(R)");
-		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 320, (int) (720 / 1.5), 200, 40, " Menu(M)");
+		GameOverButton retry = new GameOverButton((int) (Constant.ScreenSize.GAMEWIDTH / 3.5), (int) (Constant.ScreenSize.GAMEHEIGHT / 1.5), 200, 40, "RETRY(R)");
+		GameOverButton mainMenu = new GameOverButton((int) (Constant.ScreenSize.GAMEWIDTH / 3.5) + 320, (int) (Constant.ScreenSize.GAMEHEIGHT  / 1.5), 200, 40, " Menu(M)");
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
 		gc.drawImage(RenderableHolder.gameOverOverlay, 0, 0);
 		retry.draw(gc, Color.BLACK, Color.BLACK);
@@ -230,10 +231,10 @@ public class GameLogic {
 
 	public void drawWinGameOvelay(int time) {
 		// TODO Auto-generated method stub
-		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 480, (int) (720 / 1.5), 200, 40, " Menu(M)");
+		GameOverButton mainMenu = new GameOverButton((int) (Constant.ScreenSize.GAMEWIDTH / 3.5) + 480, (int) (Constant.ScreenSize.GAMEHEIGHT  / 1.5), 200, 40, " Menu(M)");
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
-		gc.drawImage(RenderableHolder.wingameOverlay, 0, 0);
-		gc.fillText("Finish Time : " + time + " seconds", (int) (1280 / 3.5) + 420, (int) (720 / 1.7));
+		gc.drawImage(RenderableHolder.wingameOverlay, 0, 0,Constant.ScreenSize.GAMEWIDTH,Constant.ScreenSize.GAMEHEIGHT );
+		gc.fillText("Finish Time : " + time + " seconds", (int) (Constant.ScreenSize.GAMEWIDTH / 3.5) + 420, (int) (Constant.ScreenSize.GAMEHEIGHT  / 1.7));
 		mainMenu.draw(gc, Color.WHITE, Color.WHITE);
 
 	}

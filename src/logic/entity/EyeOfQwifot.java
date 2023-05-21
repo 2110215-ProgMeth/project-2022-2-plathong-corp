@@ -59,10 +59,6 @@ public class EyeOfQwifot extends Enemy {
 
 	}
 
-	@Override
-	public void attack(Entity t) {
-
-	}
 
 	@Override
 	public void update() {

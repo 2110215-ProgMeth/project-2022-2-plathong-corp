@@ -33,10 +33,10 @@ public class Player extends Entity {
 	protected int currentMana = 0;
 	protected float manaWidth = currentMana;
 	protected int normalSpeed = 5;
-	protected int baseDamage = 10;
+	protected int baseDamage = 12;
 	protected int iframe = 0;
 	protected int duration = 0;
-	private int regain = 2;
+	private int regain = baseDamage;
 
 	int counter;
 	private Direction lastDirection;
@@ -118,8 +118,8 @@ public class Player extends Entity {
 	public void attack(Entity e) {
 		Enemy enemy = (Enemy) e;
 		enemy.changeHealthTo(enemy.getCurrentHealth() - dmg);
-		changeHealthTo(currentHealth + regain);
-		changeManaTo(currentMana + 10);
+		changeHealthTo(currentHealth + regain/5);
+		changeManaTo(currentMana + 15);
 //		System.out.println(dmg+" "+enemy.getCurrentHealth());
 //		System.out.println("Player Attack " + e.getClass().getSimpleName());
 
@@ -130,14 +130,14 @@ public class Player extends Entity {
 		duration = 5 * 60;
 		speed = (normalSpeed*2);
 		dmg = 2 * baseDamage;
-		regain *= 4;
+		regain = 5*baseDamage;
 		changeManaTo(currentMana - 100);
 	}
 	@Override
 	public void changeHealthTo(int health) {
 		if (iframe == 0) {
 			super.changeHealthTo(health);
-			iframe = 30;
+			iframe = 10;
 		}
 
 	}
@@ -200,7 +200,7 @@ public class Player extends Entity {
 		if (duration == 0) {
 			speed = normalSpeed;
 			dmg = baseDamage;
-			regain /= 4;
+			regain = baseDamage;
 		}
 	}
 

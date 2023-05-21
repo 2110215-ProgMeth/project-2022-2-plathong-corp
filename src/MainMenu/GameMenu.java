@@ -1,6 +1,7 @@
 package MainMenu;
 
 import application.Main;
+import constant.Constant;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Parent;
@@ -15,11 +16,10 @@ public class GameMenu extends Parent {
 		GameMenu gameMenu = this;
 		VBox mainMenu = new VBox(10);
 		VBox playMenu = new VBox(10);
-
-		mainMenu.setTranslateX(1280 / 2.5);
-		mainMenu.setTranslateY(720 * 3 / 4);
-		playMenu.setTranslateX(1280 / 1.5);
-		playMenu.setTranslateY(720 * 3 / 4);
+		mainMenu.setTranslateX(Constant.ScreenSize.GAMEWIDTH / 2.5);
+		mainMenu.setTranslateY(Constant.ScreenSize.GAMEHEIGHT * 3 / 4);
+		playMenu.setTranslateX(Constant.ScreenSize.GAMEWIDTH / 1.5);
+		playMenu.setTranslateY(Constant.ScreenSize.GAMEHEIGHT * 3 / 4);
 
 		// Main menu
 		MenuButton startBtn = new MenuButton("START");
@@ -77,7 +77,7 @@ public class GameMenu extends Parent {
 
 		});
 
-		Rectangle bg = new Rectangle(1280, 720);
+		Rectangle bg = new Rectangle(Constant.ScreenSize.GAMEWIDTH, Constant.ScreenSize.GAMEHEIGHT);
 		bg.setOpacity(0.1);
 		bg.setFill(Color.WHITE);
 		mainMenu.getChildren().addAll(startBtn, optionBtn, exitBtn);

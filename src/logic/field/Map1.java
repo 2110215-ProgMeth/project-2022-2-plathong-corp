@@ -7,7 +7,7 @@ import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
 public class Map1 implements IRenderable {
-	public GameLogic gL;
+	protected GameLogic gL;
 //	private WritableImage[] croppedImage = new WritableImage[4];
 	private Tile[] tiles = new Tile[29];
 
@@ -45,7 +45,7 @@ public class Map1 implements IRenderable {
 	}
 
 	int tileSize = 64;
-	public int[][] field = {
+	private int[][] field = {
 			{ 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
 					7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8 },
 			{ 13, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
