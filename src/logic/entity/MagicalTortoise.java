@@ -73,7 +73,7 @@ public class MagicalTortoise extends Entity {
 		dialogues.add("Please, save this world");
 		dialogues.add("For the color of the world");
 		dialogues.add("For the emotion of people");
-		dialogues.add("Please, get rid of all 3 inverders");
+		dialogues.add("Please, get rid of all 3 elite MONSTEERRRR");
 		dialogues.add("The Eye of QWIFOT");
 		dialogues.add("MoleDerKaiser");
 		dialogues.add("LlaristicKnight");
