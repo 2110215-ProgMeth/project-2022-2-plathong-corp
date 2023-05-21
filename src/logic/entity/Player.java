@@ -45,7 +45,7 @@ public class Player extends Entity {
 		super(x, y, gameLogic);
 		speed = normalSpeed;
 		z = -100;
-		maxHp = 200;
+		maxHp = 210;
 		currentHealth = maxHp;
 		dmg = baseDamage;
 		screenPos = new Vector<Double>(gameLogic.getGameScreen().getWidth() / 2 - 32,
