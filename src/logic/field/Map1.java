@@ -1,9 +1,6 @@
 package logic.field;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
-import javafx.scene.shape.Rectangle;
-import logic.entity.Player;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
@@ -19,8 +16,8 @@ public class Map1 implements IRenderable{
 		tiles[1] = new Tile( RenderableHolder.ground2Tile,false);
 		tiles[2] = new Tile( RenderableHolder.ground3Tile,false);
 		tiles[3] = new Tile(RenderableHolder.ground1Tile,true);
-		tiles[4] = new Tile(RenderableHolder.water1Tile,false);
-		tiles[5] = new Tile( RenderableHolder.water2Tile,false);
+		tiles[4] = new Tile(RenderableHolder.water1Tile,true);
+		tiles[5] = new Tile( RenderableHolder.water2Tile,true);
 		tiles[6] = new Tile( RenderableHolder.topLeftMapTile,true);
 		tiles[7] = new Tile( RenderableHolder.topMapTile,true);
 		tiles[8] = new Tile( RenderableHolder.topRightMapTile,true);
@@ -32,18 +29,18 @@ public class Map1 implements IRenderable{
 		tiles[14] = new Tile( RenderableHolder.tombTile,true);
 		tiles[15] = new Tile( RenderableHolder.spawn1Tile,false);
 		tiles[16] = new Tile(RenderableHolder.spawn2Tile,false);
-		tiles[17] = new Tile(RenderableHolder.waterTopTile,false);
+		tiles[17] = new Tile(RenderableHolder.waterTopTile,true);
 		tiles[18] = new Tile(RenderableHolder.waterBottomTile, false);
-		tiles[19] = new Tile(RenderableHolder.waterLeftTile,false);
-		tiles[20] = new Tile(RenderableHolder.waterRightTile,false);
-		tiles[21] = new Tile(RenderableHolder.waterTopLeftTile,false);
-		tiles[22] = new Tile(RenderableHolder.waterTopRightTile,false);
+		tiles[19] = new Tile(RenderableHolder.waterLeftTile,true);
+		tiles[20] = new Tile(RenderableHolder.waterRightTile,true);
+		tiles[21] = new Tile(RenderableHolder.waterTopLeftTile,true);
+		tiles[22] = new Tile(RenderableHolder.waterTopRightTile,true);
 		tiles[23] = new Tile(RenderableHolder.waterBottomLeftTile,false);
 		tiles[24] = new Tile(RenderableHolder.waterBottomRightTile,false);
-		tiles[25] = new Tile(RenderableHolder.waterEdge1,false);
-		tiles[26] = new Tile(RenderableHolder.waterEdge2,false);
-		tiles[27] = new Tile(RenderableHolder.waterEdge3,false);
-		tiles[28] = new Tile(RenderableHolder.waterEdge4,false);
+		tiles[25] = new Tile(RenderableHolder.waterEdge1,true);
+		tiles[26] = new Tile(RenderableHolder.waterEdge2,true);
+		tiles[27] = new Tile(RenderableHolder.waterEdge3,true);
+		tiles[28] = new Tile(RenderableHolder.waterEdge4,true);
 	}
 	int tileSize = 64;
 	public int[][] field = {{6,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,8},
@@ -65,17 +62,17 @@ public class Map1 implements IRenderable{
 			{13,0,23,18,18,18,18,24,0,0,23,18,18,18,18,24,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
 			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
 			{13,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,15,15,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,15,15,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,15,15,15,15,15,15,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,16,15,15,15,15,15,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,15,15,15,15,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,15,15,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,15,15,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,15,15,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
-			{13,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,21,17,22,0,2,21,17,17,17,17,17,17,22,0,0,21,17,22,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,4,20,0,0,19,5,4,4,4,4,4,20,0,0,19,5,20,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,4,20,0,0,19,4,4,4,4,5,4,20,0,0,19,4,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,5,20,0,0,23,18,18,18,18,18,18,24,0,0,19,4,20,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,4,20,0,2,0,0,0,16,0,0,0,0,0,0,19,5,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,19,4,20,0,0,0,0,0,0,0,0,0,0,0,0,19,4,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,4,25,17,17,17,17,22,1,0,21,17,17,17,17,26,4,20,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,5,4,4,4,4,5,20,0,0,19,4,4,4,4,5,4,20,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,4,5,4,4,4,4,20,0,0,19,5,4,5,4,4,4,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,19,4,4,4,5,4,4,20,0,0,19,4,5,4,4,4,5,20,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
+			{13,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,23,18,18,18,18,18,18,24,0,0,23,18,18,18,18,18,18,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,9},
 			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
 			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
 			{13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},
@@ -116,8 +113,6 @@ public class Map1 implements IRenderable{
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		double width = field[0].length*tileSize;
-		double height = field.length*tileSize;
 		int worldCol = 0;
 		int worldRow = 0;
 

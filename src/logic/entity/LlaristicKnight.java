@@ -1,6 +1,8 @@
 package logic.entity;
 
 import Object.SwordBeam;
+import constant.Direction;
+import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -13,22 +15,26 @@ public class LlaristicKnight extends Enemy{
 	protected Rectangle normalAttackBlock;
 	private double probablility = 0.7;
 	private int xExtra,yExtra;
+	private int normalSpeed = 1;
 	public LlaristicKnight(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
         maxHp = 300;
         currentHealth = maxHp;
         z = -100;
         dmg = 20;
-        speed = 1;
+        speed = normalSpeed;
         image = RenderableHolder.lKRight1;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
+		if(currentState == EntityState.DEAD)
+			image = RenderableHolder.lKDead;
+		else {
 		switch (direction) {
-		case "right":
-			if(currentState == "attacking") {
+		case RIGHT:
+			if(currentState == EntityState.ATTACK) {
 
 					if(delay>40)
 						image = RenderableHolder.lKRightAtk;
@@ -43,8 +49,8 @@ public class LlaristicKnight extends Enemy{
 			else
 				image = RenderableHolder.lKRight1;
 			break;
-		case "left":
-			if (currentState == "attacking") {
+		case LEFT:
+			if (currentState == EntityState.ATTACK) {
 					if (delay > 40)
 						image = RenderableHolder.lKLeftAtk;
 					else {
@@ -57,7 +63,7 @@ public class LlaristicKnight extends Enemy{
 			} else
 				image = RenderableHolder.lKLeft1;
 			break;
-
+		}
 		}
 
 		gc.drawImage(image, screenX, screenY);
@@ -71,25 +77,36 @@ public class LlaristicKnight extends Enemy{
 	@Override
 	public void update() {
 		super.update();
-		if(currentState!="dead") {
-		if (playerfound(1000)) 
-			currentState = "attacking";
-		else
-			currentState = "default";
+		if(currentState!=EntityState.DEAD) {
+		if (playerfound(600)) {
+			currentState = EntityState.ATTACK;
+			if(gameLogic.getGameSong()!=RenderableHolder.llaristicTheme) {
+				gameLogic.getGameSong().stop();
+				gameLogic.setGameSong(RenderableHolder.llaristicTheme);
+			}
+		}
+		else {
+			currentState = EntityState.DEFAULT;
+			
+			if(gameLogic.getGameSong()!=RenderableHolder.inGameSong) {
+				gameLogic.getGameSong().stop();
+				gameLogic.setGameSong(RenderableHolder.inGameSong);
+			}
+		}
 		Player player = gameLogic.getPlayer();
 		canAttack = canAttack(player.solidScreen.getX() + solidScreen.getWidth() / 2,
 				player.solidScreen.getY() + solidScreen.getHeight() / 2,
 				solidScreen.getX() + solidScreen.getWidth() / 2, solidScreen.getY() + solidScreen.getHeight() / 2, 100);
-		if (currentState == "attacking") {
+		if (currentState == EntityState.ATTACK) {
 			if(delay==0) {
 				delay = 60;
 				attack(player);
 				RenderableHolder.katana.play(0.2);
-				if(canAttack == ( Math.random()<probablility)) 
-					specialMove();
-				else
-					gameLogic.addNewProjectile(new SwordBeam(worldX, worldY, angle, gameLogic));
-			}			
+				gameLogic.addNewProjectile(new SwordBeam(worldX, worldY, angle, gameLogic));
+			}	
+			else if (delay == 30 && canAttack == ( Math.random()>probablility)) {
+				specialMove();
+			}
 			move();
 		}	
 		if(delay >0) delay--;
@@ -98,28 +115,29 @@ public class LlaristicKnight extends Enemy{
 	}
 	
 	public void specialMove() {
-		if (yspeed < 0)
-			direction = "up";
+		speed = (int) (normalSpeed * 500 * Math.random());
+		move();
+		speed = normalSpeed;
+	}
+	
+	@Override
+	public void move() {
+		xspeed = Math.cos(angle) * speed;
+		yspeed = Math.sin(angle) * speed;
+		if(xspeed>0)
+			direction = Direction.RIGHT;
 		else
-			direction = "down";
-		setCollisionOn(false);
-		gameLogic.checkTile(this);
-		yExtra = (int) (yspeed * 500 * Math.random());
-		if (collisionOn == false && (worldY + yExtra> 0 && worldY+yExtra< 64*47 )) {
-			worldY += yExtra;
-		}
-
-		if (xspeed < 0)
-			direction = "left";
-		else
-			direction = "right";
-
-		setCollisionOn(false);
-		gameLogic.checkTile(this);
-		xExtra = (int) (xspeed * 500 * Math.random());
-		if (collisionOn == false && (worldX + xExtra> 0 && worldX+xExtra< 64*63 )) {
-			worldX += xExtra;
-		}
+			direction = Direction.LEFT;
+		if(worldX+xspeed<64)
+			worldX = 64;
+		else if (worldX+xspeed>64*63)
+			worldX = 64*63;
+		else worldX += xspeed;
+		if(worldY+yspeed<64)
+			worldY = 64;
+		else if (worldY+yspeed>64*47)
+			worldY = 64*47;
+		else worldY += yspeed;
 	}
 	@Override
 	public void initSolidArea() {
@@ -141,7 +159,7 @@ public class LlaristicKnight extends Enemy{
 		}
 		else if (health<=0) {
 			currentHealth = 0;
-			currentState = "dead";
+			currentState = EntityState.DEAD;
 		}
 		else {
 			currentHealth = health;

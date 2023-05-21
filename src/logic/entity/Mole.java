@@ -1,7 +1,7 @@
 package logic.entity;
 
 import Object.Ball;
-import Object.Projectile;
+import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -40,7 +40,7 @@ public class Mole extends Enemy{
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
-		if(currentState=="attacking") {
+		if(currentState== EntityState.ATTACK) {
 			if(rank=="DerKaiser") {
 				gc.setFill(Color.BLACK);
 				gc.setFont(new Font(15));
@@ -50,7 +50,7 @@ public class Mole extends Enemy{
 				gc.drawImage(animationImage, screenX, screenY);
 			else
 				gc.drawImage(image, screenX, screenY);
-		}else if (currentState=="dead") {
+		}else if (currentState== EntityState.DEAD) {
 			gc.drawImage(deadImage, screenX, screenY);
 		}
 		else {
@@ -68,13 +68,13 @@ public class Mole extends Enemy{
 	public void update() {
 		// TODO Auto-generated method stub
 		super.update();
-		if(currentState!="dead") {
+		if(currentState!= EntityState.DEAD) {
 //		System.out.println(currentHealth);
 		if (playerfound(800) && coolDown<=180)
-			currentState = "attacking";
+			currentState = EntityState.ATTACK;
 		else
-			currentState = "default";
-		if (currentState == "attacking") {
+			currentState = EntityState.DEFAULT;
+		if (currentState == EntityState.ATTACK) {
 
 			if (delay == 0) {
 				attack();
@@ -84,8 +84,8 @@ public class Mole extends Enemy{
 		}
 		if(coolDown==0) {
 			coolDown = 360;
-			System.out.println("yoooo");
-			currentState = "default";
+//			System.out.println("yoooo");
+			currentState = EntityState.DEFAULT;
 			move();
 		}
 		coolDown--;

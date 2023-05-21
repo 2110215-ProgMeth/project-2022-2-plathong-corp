@@ -2,6 +2,7 @@ package logic.entity;
 
 import java.util.ArrayList;
 
+import constant.Direction;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import logic.game.GameLogic;
@@ -23,14 +24,14 @@ public class MagicalTortoise extends Entity{
     public void draw(GraphicsContext gc) {
         // TODO Auto-generated method stub
         switch(direction) {
-        case "right":
+        case RIGHT:
                 if (gameLogic.getCounter()/10%2==1) 
                     image = RenderableHolder.mTRight1;
 
                 else
                     image = RenderableHolder.mTRight2;
             break;
-        case "left":
+        case LEFT:
                 if (gameLogic.getCounter()/10%2==1) 
                     image = RenderableHolder.mTLeft1;
 
@@ -55,9 +56,9 @@ public class MagicalTortoise extends Entity{
         Player player = gameLogic.getPlayer();
         double xDirection =  Math.cos(Math.atan2(player.worldY-worldY,player.worldX-worldX));
         if(xDirection<0)
-            direction = "left";
+            direction = Direction.LEFT;
         else
-            direction = "right";
+            direction = Direction.RIGHT;
     }
 
     public void setDialogues() {
@@ -74,7 +75,7 @@ public class MagicalTortoise extends Entity{
         dialogues.add("Please, get rid of all 3 inverders");
         dialogues.add("The Eye of QWIFOT");
         dialogues.add("MoleDerKaiser");
-        dialogues.add("LaristicKnight");
+        dialogues.add("LlaristicKnight");
     }
 
     public boolean playerfound(){

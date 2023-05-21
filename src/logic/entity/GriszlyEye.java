@@ -1,8 +1,8 @@
 package logic.entity;
 
+import constant.Direction;
+import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.RenderableHolder;
@@ -10,36 +10,35 @@ import sharedObject.RenderableHolder;
 public class GriszlyEye extends Enemy {
 
 	private int normalSpeed = 3;
+
 	public GriszlyEye(double x, double y, GameLogic gameLogic) {
 		super(x, y, gameLogic);
-		this.maxHp = 20;
-		this.currentHealth = maxHp;
-		this.dmg = 5;
-		this.z = -100;
-		this.speed = normalSpeed;
-		this.image = RenderableHolder.gERight;
+		maxHp = 20;
+		currentHealth = maxHp;
+		dmg = 5;
+		z = -100;
+		speed = normalSpeed;
+		image = RenderableHolder.gERight;
 	}
-
-	
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 		switch (direction) {
-		case "right":
-			if (currentState == "default")
+		case RIGHT:
+			if (currentState == EntityState.DEFAULT)
 				image = RenderableHolder.gERight;
 
 			else {
 				if (gameLogic.getCounter() / 10 % 2 == 1) {
 					image = RenderableHolder.gERightWalk;
 				} else
-					
+
 					image = RenderableHolder.gERightWalk2;
 			}
 			break;
-		case "left":
-			if (currentState == "default")
+		case LEFT:
+			if (currentState == EntityState.DEFAULT)
 				image = RenderableHolder.gELeft;
 			else {
 				if (gameLogic.getCounter() / 10 % 2 == 1) {
@@ -53,59 +52,59 @@ public class GriszlyEye extends Enemy {
 //		drawHitbox(gc);
 	}
 
-
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		super.update();
-		if (playerfound(500)) 
-			currentState = "attacking";
+		if (playerfound(500))
+			currentState = EntityState.ATTACK;
 		else
-			currentState = "default";
+			currentState = EntityState.DEFAULT;
 		Player player = gameLogic.getPlayer();
-		canAttack = canAttack(player.worldX, player.worldY, worldX+radius, worldY+radius,
-				128);
-		if (currentState=="attacking") {	
-			if (delay==0) {
-				speed = normalSpeed;			
-				delay =120;
+		canAttack = canAttack(player.worldX, player.worldY, worldX + radius, worldY + radius, 128);
+		if (currentState == EntityState.ATTACK) {
+			if (delay == 0) {
+				speed = normalSpeed;
+				delay = 120;
 			}
-			if (delay ==30) {
-				speed = normalSpeed*3;
+			if (delay == 30) {
+				speed = normalSpeed * 3;
 				RenderableHolder.griszlyEyeSound.play(0.1);
 				xspeed = Math.cos(angle) * speed;
 				yspeed = Math.sin(angle) * speed;
 			}
-			
-			if(delay>30) {			
+
+			if (delay > 30) {
 				xspeed = Math.cos(angle) * speed;
 				yspeed = Math.sin(angle) * speed;
-				move();
-		}
-			else {
-				worldX += xspeed;
-				worldY += yspeed;
 			}
-				
+			move();
+			
+			
+
 			attack(gameLogic.getPlayer());
 			delay--;
 		}
-	
+
 		updateAttackBlock();
 	}
-
-		
+	@Override
+	public void move() {
+		if(xspeed>0)
+			direction =Direction.RIGHT;
+		else
+			direction =Direction.LEFT;
+		worldX += xspeed;
+		worldY += yspeed;
+	}
 	public void initSolidArea() {
 		solidArea = new Rectangle(20, 0, 24, 32);
 
 	}
 
 	public void initAttackBlock() {
-		attackBlock = new Rectangle(0,0,0,0);
+		attackBlock = new Rectangle(0, 0, 0, 0);
 
 	}
-	
-	
-
 
 }

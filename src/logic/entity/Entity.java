@@ -1,5 +1,7 @@
 package logic.entity;
 
+import constant.Direction;
+import constant.EntityState;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
@@ -13,12 +15,12 @@ public abstract class Entity implements IRenderable {
 	protected int z, radius;
 	protected boolean visible, destroyed;
 	protected int speed;
-	protected String direction;
+	protected Direction direction;
 	protected Image image;
-	public Rectangle solidArea,solidScreen;
+	public Rectangle solidArea, solidScreen;
 	public boolean collisionOn = false;
 	public GameLogic gameLogic;
-	protected String currentState = "default";
+	protected EntityState currentState = EntityState.DEFAULT;
 
 	// Status
 	protected int maxHp;
@@ -34,18 +36,19 @@ public abstract class Entity implements IRenderable {
 		worldX = x;
 		worldY = y;
 		this.gameLogic = gameLogic;
-		this.direction = "right";
-		radius =32;
+		direction = Direction.RIGHT;
+		radius = 32;
 	}
 
 	public abstract void attack(Entity t);
+
 	public abstract void move();
 
 	public void update() {
 		screenX = worldX - gameLogic.getPlayer().worldX + gameLogic.getPlayer().screenX;
-        screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
-        
+		screenY = worldY - gameLogic.getPlayer().worldY + gameLogic.getPlayer().screenY;
 	}
+
 	public boolean canAttack(double x1, double y1, double x2, double y2, int attackRange) {
 		return (Math.abs(x1 - x2) < attackRange && Math.abs(y1 - y2) < attackRange);
 	}
@@ -76,7 +79,7 @@ public abstract class Entity implements IRenderable {
 		return worldY;
 	}
 
-	public String getDirection() {
+	public Direction getDirection() {
 		return direction;
 	}
 

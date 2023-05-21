@@ -1,7 +1,8 @@
 package logic.entity;
 
 import Object.Ball;
-import Object.Projectile;
+import constant.Direction;
+import constant.EntityState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
@@ -19,11 +20,10 @@ public class ShadowPot extends Enemy {
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		// TODO Auto-generated method stub
 		switch (direction) {
-		case "right":
+		case RIGHT:
 			if (gameLogic.getCounter() < 20)
-				if (currentState == "attacking")
+				if (currentState == EntityState.ATTACK)
 					image = RenderableHolder.sPRightAtk;
 				else
 					image = RenderableHolder.sPRight1;
@@ -31,9 +31,9 @@ public class ShadowPot extends Enemy {
 			else
 				image = RenderableHolder.sPRight2;
 			break;
-		case "left":
+		case LEFT:
 			if (gameLogic.getCounter() < 20)
-				if (currentState == "attacking")
+				if (currentState == EntityState.ATTACK)
 					image = RenderableHolder.sPLeftAtk;
 				else
 					image = RenderableHolder.sPLeft1;
@@ -44,30 +44,26 @@ public class ShadowPot extends Enemy {
 			break;
 		}
 		gc.drawImage(image, screenX, screenY);
-		// TODO Auto-generated method stub
 //		drawHitbox(gc);
 	}
 
 	public void attack() {
-        // TODO Auto-generated method stub
-  
         	gameLogic.addNewProjectile(new Ball(worldX+solidArea.getX(), worldY+solidArea.getY(), angle,gameLogic));
     }
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		super.update();
 		if (playerfound(1000))
-			currentState = "attacking";
+			currentState = EntityState.ATTACK;
 		else
-			currentState = "default";
-		if (currentState == "attacking") {
+			currentState = EntityState.DEFAULT;
+		if (currentState == EntityState.ATTACK) {
 			double xDirection = Math.cos(angle);
 			if (xDirection < 0)
-				direction = "left";
+				direction = Direction.LEFT;
 			else
-				direction = "right";
+				direction = Direction.RIGHT;
 
 			if (delay == 0) {
 

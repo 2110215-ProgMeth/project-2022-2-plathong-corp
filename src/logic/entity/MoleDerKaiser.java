@@ -1,9 +1,7 @@
 package logic.entity;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.Rectangle;
+import constant.EntityState;
 import logic.game.GameLogic;
-import sharedObject.RenderableHolder;
 
 public class MoleDerKaiser extends Mole{
 	private Mole[] moles = new Mole [3];
@@ -25,9 +23,9 @@ public class MoleDerKaiser extends Mole{
 		}
 		else if (health<=0) {
 			currentHealth = 0;
-			currentState = "dead";
+			currentState = EntityState.DEAD;
 			for(int i = 0;i<3;i++) {
-				moles[i].currentState = "dead";
+				moles[i].currentState = EntityState.DEAD;
 			}
 		}
 		else {

@@ -1,23 +1,17 @@
 package drawing;
 
-import MainMenu.GameOverButton;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import logic.game.GameLogic;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 
 public class GameScreen extends Canvas {
-    private boolean paused = false;
+
 
     public GameScreen(double width, double height) {
         super(width, height);

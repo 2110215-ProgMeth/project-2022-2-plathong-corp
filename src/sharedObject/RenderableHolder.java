@@ -15,7 +15,7 @@ public class RenderableHolder {
 
 	private List<IRenderable> entities;
 	private Comparator<IRenderable> comparator;
-	public static Image playerLeft,playerLeftWalk,playerLeftAtk,playerRight,playerRightWalk,playerRightAtk;
+	public static Image playerLeft,playerLeftWalk,playerLeftAtk,playerRight,playerRightWalk,playerRightAtk,slashLeft,slashRight;
 	public static Image cKLeft, cKLeftWalk1, cKLeftAtk, cKRight, cKRightWalk1, cKRightAtk;
 	public static Image gameOverOverlay, pauseOverlay, pauseMenu, soundButton, urm, volumeButton,wingameOverlay;
 	public static Image gELeft, gELeftWalk, gELeftWalk2, gERight, gERightWalk, gERightWalk2;
@@ -24,16 +24,16 @@ public class RenderableHolder {
 	// ShadowPot Sprite
 	public static Image sPLeft1, sPLeft2, sPRight2, sPRight1, sPLeftAtk, sPRightAtk;
 	// EyeOfQwifot Sprite
-	public static Image eQ1, eQ2, eQDead1, eQDead2;
+	public static Image eQ1, eQ2, eQDead1, eQDead2,eQAtk;
 	//MoleDerKaiser
 	public static Image mole,moleDerKaiser,moleDead,moleDerKaiserDead,mole1,moleDerKaiser1;
 	//llaristicKnight
-	public static Image lKLeft1,lKLeft2,lKLeftAtk,lKRight1,lKRight2,lKRightAtk;
+	public static Image lKLeft1,lKLeft2,lKLeftAtk,lKRight1,lKRight2,lKRightAtk,lKDead;
 	//projectile
 	public static Image ball,beam;
 	public static Image healthBar;
 	//Song & Effect
-	public static AudioClip inGameSong,sword1,chicknightSound,shootSound,griszlyEyeSound,npcSound,playerSkill,monsterdie,katana;
+	public static AudioClip inGameSong,sword1,chicknightSound,shootSound,griszlyEyeSound,npcSound,playerSkill,monsterdie,katana,llaristicTheme;
 	// Map Tile
 	public static Image ground1Tile,ground2Tile,ground3Tile,water1Tile,water2Tile,waterTopTile,waterBottomTile,
 	waterLeftTile,waterRightTile,waterTopLeftTile,waterTopRightTile,waterBottomLeftTile,waterBottomRightTile,
@@ -76,14 +76,7 @@ public class RenderableHolder {
 		loadLlaristicKnight();
 		loadProjectile();
 		loadSound();
-		//
-		//Game State
-		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
-		gameOverOverlay = new Image(ClassLoader.getSystemResource("pause/GameOver.png").toString());
-		wingameOverlay = new Image(ClassLoader.getSystemResource("pause/Victory.png").toString());
-		// StatusBar
-		healthBar = new Image(ClassLoader.getSystemResource("health_power_bar.png").toString());
-
+		loadOther();
 	}
 	
 	public static void loadSound() {
@@ -96,6 +89,7 @@ public class RenderableHolder {
 		playerSkill = new AudioClip(ClassLoader.getSystemResource("sound/skill1.wav").toString());
 		monsterdie = new AudioClip(ClassLoader.getSystemResource("sound/monsterdie.wav").toString());
 		katana = new AudioClip(ClassLoader.getSystemResource("sound/katana.mp3").toString());
+		llaristicTheme = new AudioClip(ClassLoader.getSystemResource("sound/llaristicTheme.wav").toString());
 	}
 	public static void loadPlayer() {
 		playerLeft = new Image(ClassLoader.getSystemResource("player/playerLeft.png").toString());
@@ -104,6 +98,8 @@ public class RenderableHolder {
 		playerRight = new Image(ClassLoader.getSystemResource("player/playerRight.png").toString());
 		playerRightWalk = new Image(ClassLoader.getSystemResource("player/playerRightWalk.png").toString());
 		playerRightAtk = new Image(ClassLoader.getSystemResource("player/playerRightAtk.png").toString());
+		slashRight = new Image(ClassLoader.getSystemResource("player/slashRight.png").toString());
+		slashLeft = new Image(ClassLoader.getSystemResource("player/slashLeft.png").toString());
 	}
 	public static void loadMapTile() {
 		ground1Tile =  new Image(ClassLoader.getSystemResource("mapTile/ground1.png").toString());
@@ -162,6 +158,7 @@ public class RenderableHolder {
 		eQ2 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifot2.png").toString());
 		eQDead1 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifotDead1.png").toString());
 		eQDead2 =  new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifotDead2.png").toString());
+		eQAtk = new Image(ClassLoader.getSystemResource("EyeOfQwifot/EyeOfQwifotAtk.png").toString());
 	}
 	public static void loadShadowPot() {
 		sPLeft1 =  new Image(ClassLoader.getSystemResource("ShadowPot/ShadowPotLeft1.png").toString());
@@ -187,20 +184,30 @@ public class RenderableHolder {
 		lKRight1 = new Image(ClassLoader.getSystemResource("llaristicKnight/llaristicKnightRight1.png").toString());
 		lKRight2 = new Image(ClassLoader.getSystemResource("llaristicKnight/llaristicKnightRight2.png").toString());
 		lKRightAtk = new Image(ClassLoader.getSystemResource("llaristicKnight/llaristicKnightRightAtk.png").toString());
+		lKDead = new Image(ClassLoader.getSystemResource("llaristicKnight/llaristicKnightDead.png").toString());
 	}
 	public static void loadProjectile() {
 		ball = new Image(ClassLoader.getSystemResource("ShadowPot/ball.png").toString());
 		beam = new Image(ClassLoader.getSystemResource("swordBeam/beamRight.png").toString());
 	}
+	public static void loadOther() {
+		//Overlay
+		pauseOverlay = new Image(ClassLoader.getSystemResource("pause/PauseOverlay.png").toString());
+		gameOverOverlay = new Image(ClassLoader.getSystemResource("pause/GameOver.png").toString());
+		wingameOverlay = new Image(ClassLoader.getSystemResource("pause/Victory.png").toString());
+		// StatusBar
+		healthBar = new Image(ClassLoader.getSystemResource("other/health_power_bar.png").toString());
+
+	}
 	public void add(IRenderable entity) {
-		System.out.println("add");
+//		System.out.println("add");
 		entities.add(entity);
 		Collections.sort(entities, comparator);
-		for (IRenderable x : entities) {
-			if (x instanceof Player)
-				System.out.println("player");
-
-		}
+//		for (IRenderable x : entities) {
+//			if (x instanceof Player)
+//				System.out.println("player");
+//
+//		}
 	}
 	public void update() {
         for (int i = entities.size() - 1; i >= 0; i--) {
