@@ -39,7 +39,7 @@ public class GameLogic {
 	private MagicalTortoise magicalTortoise;
 	private MoleDerKaiser moleDerKaiser;
 	private LlaristicKnight llaristicKnight;
-	private AudioClip gameSong = RenderableHolder.inGameSong;
+	private AudioClip gameSong;
 	// GameState
 	private GameState gameState = GameState.PLAYSTATE;
 
@@ -68,6 +68,7 @@ public class GameLogic {
 	}
 
 	public void startNewGame() {
+		gameSong = RenderableHolder.inGameSong;
 		gameSong.play();
 		this.gameObjectContainer = new ArrayList<Entity>();
 		this.projectilesContainer = new ArrayList<Projectile>();
@@ -131,9 +132,10 @@ public class GameLogic {
 			gameScreen.paintComponent();
 		} else if (gameState == GameState.PAUSESTATE) {
 			drawGamePauseOverlay();
+			gameSong.stop();
 			if (InputUtility.getKeyPressed(KeyCode.M)) {
 				Main.GoToMenu();
-				gameSong.stop();
+				
 				InputUtility.getKeyPressed().remove(KeyCode.M);
 			}
 //			System.out.println(500);
