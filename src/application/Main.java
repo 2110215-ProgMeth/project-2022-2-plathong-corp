@@ -111,7 +111,7 @@ public class Main extends Application {
 
 			});
 		}
-
+		stage.setResizable(false);
 		stage.setTitle("Black Light Matter");
 		stage.setScene(scene);
 		stage.show();

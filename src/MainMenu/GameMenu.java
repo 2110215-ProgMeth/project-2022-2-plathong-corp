@@ -49,7 +49,7 @@ public class GameMenu extends Parent{
 		MenuButton playBtn = new MenuButton("PLAY");
 		
 		playBtn.setOnMouseClicked(e->{
-			FadeTransition ft = new FadeTransition(Duration.seconds(0.5),this);
+			FadeTransition ft = new FadeTransition(Duration.seconds(0.2),this);
 			ft.setFromValue(1);
 			ft.setToValue(0);
 			ft.setOnFinished(evt-> setVisible(false));
@@ -89,10 +89,10 @@ public class GameMenu extends Parent{
 	}
 	
 	public void transition(VBox menuToOut,VBox menuToin,int Xtrans) {
-		TranslateTransition ttOut = new TranslateTransition(Duration.seconds(0.5),menuToOut);
+		TranslateTransition ttOut = new TranslateTransition(Duration.seconds(0.2),menuToOut);
 		ttOut.setToX(menuToOut.getTranslateX()+Xtrans);
 		
-		TranslateTransition ttIn = new TranslateTransition(Duration.seconds(0.5),menuToin);
+		TranslateTransition ttIn = new TranslateTransition(Duration.seconds(0.2),menuToin);
 		ttIn.setToX(menuToOut.getTranslateX());
 		
 		ttOut.play();
