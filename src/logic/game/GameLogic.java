@@ -38,7 +38,7 @@ public class GameLogic {
 	private MagicalTortoise magicalTortoise;
 	private MoleDerKaiser moleDerKaiser;
 	private LlaristicKnight llaristicKnight;
-	private AudioClip gameSong;
+	private AudioClip gameSong = RenderableHolder.inGameSong;
 	// GameState
 	private GameState gameState = GameState.PLAYSTATE;
 
@@ -67,7 +67,7 @@ public class GameLogic {
 	}
 
 	public void startNewGame() {
-		RenderableHolder.inGameSong.play();
+		gameSong.play();
 		this.gameObjectContainer = new ArrayList<Entity>();
 		this.projectilesContainer = new ArrayList<Projectile>();
 		RenderableHolder.getInstance().getEntities().clear();
@@ -119,56 +119,6 @@ public class GameLogic {
 
 	}
 
-//	public void checkTile(Entity entity) {
-//		int entityLeftWorldX = (int) (entity.getWorldPos().getX() + entity.getSolidArea().getX());
-//		int entityRightWorldX = (int) (entity.getWorldPos().getX() + entity.getSolidArea().getX() + entity.getSolidArea().getWidth());
-//		int entityTopWorldY = (int) (entity.getWorldPos().getY() + entity.getSolidArea().getY());
-//		int entityBottomWorldY = (int) (entity.getWorldPos().getY() + entity.getSolidArea().getY() + entity.getSolidArea().getHeight());
-//
-//		int entityLeftCol = entityLeftWorldX / map.getTileSize();
-//		int entityRightCol = entityRightWorldX / map.getTileSize();
-//		int entityTopRow = entityTopWorldY / map.getTileSize();
-//		int entityBottomRow = entityBottomWorldY / map.getTileSize();
-//
-//		int tile1 = 0;
-//		int tile2 = 0;
-//
-//		switch (entity.getDirection()) {
-//		case UP:
-//			entityTopRow = (entityTopWorldY - entity.getSpeed()) / map.getTileSize();
-//			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
-//			tile2 = map.getTileIndex(entityRightCol, entityTopRow);
-//			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
-//				entity.setCollisionOn(true);
-//			}
-//			break;
-//		case DOWN:
-//			entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / map.getTileSize();
-//			tile1 = map.getTileIndex(entityLeftCol, entityBottomRow);
-//			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
-//			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
-//				entity.setCollisionOn(true);
-//			}
-//			break;
-//		case LEFT:
-//			entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / map.getTileSize();
-//			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
-//			tile2 = map.getTileIndex(entityLeftCol, entityBottomRow);
-//			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
-//				entity.setCollisionOn(true);
-//			}
-//			break;
-//		case RIGHT:
-//			entityRightCol = (entityRightWorldX + entity.getSpeed()) / map.getTileSize();
-//			tile1 = map.getTileIndex(entityRightCol, entityTopRow);
-//			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
-//			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
-//				entity.setCollisionOn(true);
-//			}
-//			break;
-//		}
-//
-//	}
 
 	public void update() {
 //		System.out.println(gameState);
@@ -182,13 +132,13 @@ public class GameLogic {
 			drawGamePauseOverlay();
 			if (InputUtility.getKeyPressed(KeyCode.M)) {
 				Main.GoToMenu();
-				RenderableHolder.inGameSong.stop();
+				gameSong.stop();
 				InputUtility.getKeyPressed().remove(KeyCode.M);
 			}
 //			System.out.println(500);
 		} else if (gameState == GameState.GAMEOVERSTATE) {
 			drawGameOverOverlay();
-			RenderableHolder.inGameSong.stop();
+			gameSong.stop();
 			if (InputUtility.getKeyPressed(KeyCode.R)) {
 				startNewGame();
 //				reset();
@@ -212,7 +162,7 @@ public class GameLogic {
 			if (getMagicalTortoise().getDialoguesSize() - 1 < dialogueIndex)
 				dialogueIndex = 0;
 		} else if (gameState == GameState.WINSTATE) {
-			RenderableHolder.inGameSong.stop();
+			gameSong.stop();
 			if (isFinish) {
 				timeStamp = Main.second;
 				isFinish = false;

@@ -38,17 +38,14 @@ public abstract class Enemy extends Entity {
 
 	}
 
+	@Override
 	public void changeHealthTo(int health) {
-		if (health >= maxHp) {
-			currentHealth = maxHp;
-		} else if (health <= 0) {
+		super.changeHealthTo(health);
+			if(currentHealth == 0) {
 			RenderableHolder.monsterdie.play(0.2);
-			currentHealth = 0;
 			setDestroyed(true);
-		} else {
-			currentHealth = health;
-
-		}
+			}
+		
 	}
 
 	public void updateAttackBlock() {
@@ -135,5 +132,5 @@ public abstract class Enemy extends Entity {
 	public abstract void initSolidArea();
 
 	public abstract void initAttackBlock();
-	
+
 }

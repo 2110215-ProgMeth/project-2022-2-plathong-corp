@@ -90,7 +90,7 @@ public class Main extends Application {
 
 		gameMenu = new GameMenu();
 
-		Image img = new Image(ClassLoader.getSystemResource("other/darkSoul4.png").toString());
+		Image img = new Image(ClassLoader.getSystemResource("other/BLM.png").toString());
 		bg = new ImageView(img);
 		bg.setFitWidth(Constant.ScreenSize.GAMEWIDTH);
 		bg.setFitHeight(Constant.ScreenSize.GAMEHEIGHT);

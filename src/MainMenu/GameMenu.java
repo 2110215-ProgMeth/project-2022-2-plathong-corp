@@ -79,7 +79,7 @@ public class GameMenu extends Parent {
 
 		Rectangle bg = new Rectangle(1280, 720);
 		bg.setOpacity(0.1);
-		bg.setFill(Color.PINK);
+		bg.setFill(Color.WHITE);
 		mainMenu.getChildren().addAll(startBtn, optionBtn, exitBtn);
 		playMenu.getChildren().addAll(playBtn, ContBtn, backBtn);
 

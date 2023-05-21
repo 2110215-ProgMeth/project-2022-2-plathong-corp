@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
+import sharedObject.RenderableHolder;
 
 public abstract class Entity implements IRenderable {
 	protected boolean attackState = false;
@@ -43,7 +44,17 @@ public abstract class Entity implements IRenderable {
 	public abstract void attack(Entity t);
 
 	public abstract void move();
+	
+	public void changeHealthTo(int health) {
+		if (health >= maxHp) {
+			currentHealth = maxHp;
+		} else if (health <= 0) {
+			currentHealth = 0;
+		} else {
+			currentHealth = health;
 
+		}
+	}
 
 	public void update() {
 		double screenX = worldPos.getX() - gameLogic.getPlayer().getWorldPos().getX()

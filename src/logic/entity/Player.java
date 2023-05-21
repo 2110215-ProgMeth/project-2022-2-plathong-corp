@@ -133,16 +133,10 @@ public class Player extends Entity {
 		regain *= 4;
 		changeManaTo(currentMana - 100);
 	}
-
+	@Override
 	public void changeHealthTo(int health) {
 		if (iframe == 0) {
-			if (health >= maxHp) {
-				currentHealth = maxHp;
-			} else if (health <= 0) {
-				currentHealth = 0;
-			} else {
-				currentHealth = health;
-			}
+			super.changeHealthTo(health);
 			iframe = 30;
 		}
 
