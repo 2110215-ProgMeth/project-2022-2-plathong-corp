@@ -97,10 +97,5 @@ public class Chicknight extends Enemy {
 				solidArea.getWidth() + 10 * 2, 64);
 	}
 
-//	Debug Chick
-	public void drawAttackBlock(GraphicsContext gc) {
-		gc.setFill(Color.BLACK);
-		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
-	}
 
 }

@@ -18,7 +18,6 @@ public class RenderableHolder {
 	public static Image playerLeft, playerLeftWalk, playerLeftAtk, playerRight, playerRightWalk, playerRightAtk,
 			slashLeft, slashRight;
 	public static Image cKLeft, cKLeftWalk1, cKLeftAtk, cKRight, cKRightWalk1, cKRightAtk;
-	public static Image gameOverOverlay, pauseOverlay, pauseMenu, soundButton, urm, volumeButton, wingameOverlay;
 	public static Image gELeft, gELeftWalk, gELeftWalk2, gERight, gERightWalk, gERightWalk2;
 	// Magical Tortoise Sprite
 	public static Image mTLeft1, mTLeft2, mTRight1, mTRight2;
@@ -32,7 +31,7 @@ public class RenderableHolder {
 	public static Image lKLeft1, lKLeft2, lKLeftAtk, lKRight1, lKRight2, lKRightAtk, lKDead;
 	// projectile
 	public static Image ball, beam;
-	public static Image healthBar;
+	public static Image healthBar, gameOverOverlay, pauseOverlay, pauseMenu, wingameOverlay;
 	// Song & Effect
 	public static AudioClip inGameSong, sword1, chicknightSound, shootSound, griszlyEyeSound, npcSound, playerSkill,
 			monsterdie, katana, llaristicTheme;

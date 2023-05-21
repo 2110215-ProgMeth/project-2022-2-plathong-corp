@@ -15,7 +15,7 @@ public class ShadowPot extends Enemy {
 		image = RenderableHolder.sPRight1;
 		maxHp = 20;
 		currentHealth = maxHp;
-		delay = 1 * 60;
+
 	}
 
 	@Override
