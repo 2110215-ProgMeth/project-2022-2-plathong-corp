@@ -77,30 +77,7 @@ public class Chicknight extends Enemy {
 					delay = 60;
 				}
 			} else {
-				xspeed = Math.cos(angle) * speed;
-				yspeed = Math.sin(angle) * speed;
-
-				if (yspeed < 0)
-					direction = Direction.UP;
-				else
-					direction = Direction.DOWN;
-				setCollisionOn(false);
-				gameLogic.checkTile(this);
-				if (collisionOn == false) {
-					getWorldPos().setY(getWorldPos().getY()+yspeed);
-
-				}
-
-				if (xspeed < 0)
-					direction = Direction.LEFT;
-				else
-					direction = Direction.RIGHT;
-
-				setCollisionOn(false);
-				gameLogic.checkTile(this);
-				if (collisionOn == false) {
-					getWorldPos().setX(getWorldPos().getX()+xspeed);
-				}
+				move();
 			}
 			if (delay == 40)
 				attackState = false;
@@ -116,13 +93,9 @@ public class Chicknight extends Enemy {
 	}
 
 	public void initAttackBlock() {
-		attackBlock = new Rectangle(getScreenPos().getX() + solidArea.getWidth(), getScreenPos().getY(), solidArea.getWidth() + 10 * 2, 64);
+		attackBlock = new Rectangle(getScreenPos().getX() + solidArea.getWidth(), getScreenPos().getY(),
+				solidArea.getWidth() + 10 * 2, 64);
 	}
 
-//	Debug Chick
-	public void drawAttackBlock(GraphicsContext gc) {
-		gc.setFill(Color.BLACK);
-		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
-	}
 
 }

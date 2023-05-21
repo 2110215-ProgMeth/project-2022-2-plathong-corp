@@ -17,7 +17,7 @@ public class EyeOfQwifot extends Enemy {
 		z = 100;
 		image = RenderableHolder.eQ1;
 	}
-	
+
 	@Override
 	public void changeHealthTo(int health) {
 		if (health >= maxHp) {
@@ -39,14 +39,14 @@ public class EyeOfQwifot extends Enemy {
 			else
 				image = RenderableHolder.eQDead2;
 		} else {
-			if(delay>60 && delay<80)
+			if (delay > 60 && delay < 80)
 				image = RenderableHolder.eQAtk;
 			else {
-			if (gameLogic.getCounter() / 10 % 2 == 1)
-				image = RenderableHolder.eQ1;
+				if (gameLogic.getCounter() / 10 % 2 == 1)
+					image = RenderableHolder.eQ1;
 
-			else
-				image = RenderableHolder.eQ2;
+				else
+					image = RenderableHolder.eQ2;
 			}
 
 		}
@@ -59,10 +59,6 @@ public class EyeOfQwifot extends Enemy {
 
 	}
 
-	@Override
-	public void attack(Entity t) {
-
-	}
 
 	@Override
 	public void update() {
@@ -96,7 +92,5 @@ public class EyeOfQwifot extends Enemy {
 	public void initAttackBlock() {
 		attackBlock = new Rectangle(0, 0, 0, 0);
 	}
-
-	
 
 }

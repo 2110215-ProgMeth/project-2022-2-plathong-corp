@@ -7,20 +7,21 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import logic.game.GameLogic;
 import sharedObject.IRenderable;
+import sharedObject.RenderableHolder;
 
 public abstract class Entity implements IRenderable {
 	protected boolean attackState = false;
 	protected int delay = 0;
-	protected Vector<Double> worldPos ;
+	protected Vector<Double> worldPos;
 	protected Vector<Double> screenPos;
-	protected int z, radius;
+	protected int z;
 	protected boolean visible, destroyed;
 	protected int speed;
 	protected Direction direction;
 	protected Image image;
-	public Rectangle solidArea, solidScreen;
-	public boolean collisionOn = false;
-	public GameLogic gameLogic;
+	protected Rectangle solidArea, solidScreen;
+	protected boolean collisionOn = false;
+	protected GameLogic gameLogic;
 	protected EntityState currentState = EntityState.DEFAULT;
 
 	// Status
@@ -34,20 +35,32 @@ public abstract class Entity implements IRenderable {
 	public Entity(double x, double y, GameLogic gameLogic) {
 		visible = true;
 		destroyed = false;
-		worldPos = new Vector<Double>(x,y);
-		screenPos = new Vector<Double>(x,y);
+		worldPos = new Vector<Double>(x, y);
+		screenPos = new Vector<Double>(x, y);
 		this.gameLogic = gameLogic;
 		direction = Direction.RIGHT;
-		radius = 32;
 	}
 
 	public abstract void attack(Entity t);
 
 	public abstract void move();
+	
+	public void changeHealthTo(int health) {
+		if (health >= maxHp) {
+			currentHealth = maxHp;
+		} else if (health <= 0) {
+			currentHealth = 0;
+		} else {
+			currentHealth = health;
+
+		}
+	}
 
 	public void update() {
-		double screenX = worldPos.getX() - gameLogic.getPlayer().getWorldPos().getX() + gameLogic.getPlayer().getScreenPos().getX();
-		double screenY = worldPos.getY() - gameLogic.getPlayer().getWorldPos().getY() + gameLogic.getPlayer().getScreenPos().getY();
+		double screenX = worldPos.getX() - gameLogic.getPlayer().getWorldPos().getX()
+				+ gameLogic.getPlayer().getScreenPos().getX();
+		double screenY = worldPos.getY() - gameLogic.getPlayer().getWorldPos().getY()
+				+ gameLogic.getPlayer().getScreenPos().getY();
 		screenPos = new Vector<Double>(screenX, screenY);
 	}
 
@@ -76,18 +89,13 @@ public abstract class Entity implements IRenderable {
 	public Vector<Double> getWorldPos() {
 		return worldPos;
 	}
-	
+
 	public Vector<Double> getScreenPos() {
 		return screenPos;
 	}
 
 	public Direction getDirection() {
 		return direction;
-	}
-
-
-	public int getRadius() {
-		return radius;
 	}
 
 	public int getSpeed() {
@@ -108,6 +116,45 @@ public abstract class Entity implements IRenderable {
 
 	public void setDestroyed(boolean destroyed) {
 		this.destroyed = destroyed;
+	}
+	public boolean isAttackState() {
+		return attackState;
+	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public Rectangle getSolidScreen() {
+		return solidScreen;
+	}
+
+	public GameLogic getGameLogic() {
+		return gameLogic;
+	}
+
+	public EntityState getCurrentState() {
+		return currentState;
+	}
+
+	public int getMaxHp() {
+		return maxHp;
+	}
+
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	public int getDmg() {
+		return dmg;
+	}
+
+	public Rectangle getAttackBlock() {
+		return attackBlock;
 	}
 
 }

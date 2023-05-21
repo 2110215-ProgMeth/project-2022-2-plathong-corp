@@ -34,7 +34,7 @@ public class Main extends Application {
 	public Stage getStage() {
 		return stage;
 	}
-	
+
 	public static void GameStart() {
 
 		System.out.println(isStart);
@@ -90,7 +90,7 @@ public class Main extends Application {
 
 		gameMenu = new GameMenu();
 
-		Image img = new Image(ClassLoader.getSystemResource("other/darkSoul4.png").toString());
+		Image img = new Image(ClassLoader.getSystemResource("other/BLM.png").toString());
 		bg = new ImageView(img);
 		bg.setFitWidth(Constant.ScreenSize.GAMEWIDTH);
 		bg.setFitHeight(Constant.ScreenSize.GAMEHEIGHT);
@@ -111,12 +111,13 @@ public class Main extends Application {
 
 			});
 		}
+		stage.getIcons().add(RenderableHolder.cKLeft);
 		stage.setResizable(false);
 		stage.setTitle("Black Light Matter");
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Application.launch(args);

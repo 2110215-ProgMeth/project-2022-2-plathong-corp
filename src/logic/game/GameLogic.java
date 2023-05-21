@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import MainMenu.GameOverButton;
 import Object.Projectile;
 import application.Main;
+import constant.Constant;
 import constant.GameState;
 import drawing.GameScreen;
 import input.InputUtility;
@@ -40,9 +41,9 @@ public class GameLogic {
 	private LlaristicKnight llaristicKnight;
 	private AudioClip gameSong;
 	// GameState
-	public GameState gameState = GameState.PLAYSTATE;
+	private GameState gameState = GameState.PLAYSTATE;
 
-	public int dialogueIndex = 0;
+	private int dialogueIndex = 0;
 	private boolean isFinish = true;
 	private int timeStamp;
 
@@ -67,14 +68,15 @@ public class GameLogic {
 	}
 
 	public void startNewGame() {
-		RenderableHolder.inGameSong.play();
+		gameSong = RenderableHolder.inGameSong;
+		gameSong.play();
 		this.gameObjectContainer = new ArrayList<Entity>();
 		this.projectilesContainer = new ArrayList<Projectile>();
 		RenderableHolder.getInstance().getEntities().clear();
 		map = new Map1(this);
 		RenderableHolder.getInstance().add(map);
 //1920+64
-		player = new Player(1920+64, 1440, this);
+		player = new Player(1920+64 , 1440, this);
 		eyeOfQwifot = new EyeOfQwifot(3456, 512, this);
 		magicalTortoise = new MagicalTortoise(2040+32, 1444, this);
 		llaristicKnight = new LlaristicKnight(8 * 64, 10 * 64, this);
@@ -91,7 +93,7 @@ public class GameLogic {
 		for (int i = 0; i < 50; i++) {
 			double pointX = Math.random();
 			double pointY = Math.random();
-			boolean spawnPoint = ((pointX > 0.4 && pointX < 0.6) || (pointY > 0.4 && pointY < 0.6));
+			boolean spawnPoint = ((pointX > 0.35 && pointX < 0.65) || (pointY > 0.3 && pointY < 0.7));
 
 			while (pointX < 0.05 || pointX > 0.95 || pointY < 0.05 || pointY > 0.95 || spawnPoint || (pointX < 0.25&&pointY<0.35)) {
 				pointX = Math.random();
@@ -119,56 +121,6 @@ public class GameLogic {
 
 	}
 
-	public void checkTile(Entity entity) {
-		int entityLeftWorldX = (int) (entity.getWorldPos().getX() + entity.solidArea.getX());
-		int entityRightWorldX = (int) (entity.getWorldPos().getX() + entity.solidArea.getX() + entity.solidArea.getWidth());
-		int entityTopWorldY = (int) (entity.getWorldPos().getY() + entity.solidArea.getY());
-		int entityBottomWorldY = (int) (entity.getWorldPos().getY() + entity.solidArea.getY() + entity.solidArea.getHeight());
-
-		int entityLeftCol = entityLeftWorldX / map.getTileSize();
-		int entityRightCol = entityRightWorldX / map.getTileSize();
-		int entityTopRow = entityTopWorldY / map.getTileSize();
-		int entityBottomRow = entityBottomWorldY / map.getTileSize();
-
-		int tile1 = 0;
-		int tile2 = 0;
-
-		switch (entity.getDirection()) {
-		case UP:
-			entityTopRow = (entityTopWorldY - entity.getSpeed()) / map.getTileSize();
-			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
-			tile2 = map.getTileIndex(entityRightCol, entityTopRow);
-			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
-				entity.setCollisionOn(true);
-			}
-			break;
-		case DOWN:
-			entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / map.getTileSize();
-			tile1 = map.getTileIndex(entityLeftCol, entityBottomRow);
-			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
-			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
-				entity.setCollisionOn(true);
-			}
-			break;
-		case LEFT:
-			entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / map.getTileSize();
-			tile1 = map.getTileIndex(entityLeftCol, entityTopRow);
-			tile2 = map.getTileIndex(entityLeftCol, entityBottomRow);
-			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
-				entity.setCollisionOn(true);
-			}
-			break;
-		case RIGHT:
-			entityRightCol = (entityRightWorldX + entity.getSpeed()) / map.getTileSize();
-			tile1 = map.getTileIndex(entityRightCol, entityTopRow);
-			tile2 = map.getTileIndex(entityRightCol, entityBottomRow);
-			if (map.getTiles()[tile1].collision == true || map.getTiles()[tile2].collision == true) {
-				entity.setCollisionOn(true);
-			}
-			break;
-		}
-
-	}
 
 	public void update() {
 //		System.out.println(gameState);
@@ -178,17 +130,19 @@ public class GameLogic {
 		if (gameState == GameState.PLAYSTATE) {
 			logicUpdate();
 			gameScreen.paintComponent();
+			player.drawUI(gameScreen.getGraphicsContext2D());
 		} else if (gameState == GameState.PAUSESTATE) {
 			drawGamePauseOverlay();
+			gameSong.stop();
 			if (InputUtility.getKeyPressed(KeyCode.M)) {
 				Main.GoToMenu();
-				RenderableHolder.inGameSong.stop();
+				
 				InputUtility.getKeyPressed().remove(KeyCode.M);
 			}
 //			System.out.println(500);
 		} else if (gameState == GameState.GAMEOVERSTATE) {
 			drawGameOverOverlay();
-			RenderableHolder.inGameSong.stop();
+			gameSong.stop();
 			if (InputUtility.getKeyPressed(KeyCode.R)) {
 				startNewGame();
 //				reset();
@@ -212,7 +166,7 @@ public class GameLogic {
 			if (getMagicalTortoise().getDialoguesSize() - 1 < dialogueIndex)
 				dialogueIndex = 0;
 		} else if (gameState == GameState.WINSTATE) {
-			RenderableHolder.inGameSong.stop();
+			gameSong.stop();
 			if (isFinish) {
 				timeStamp = Main.second;
 				isFinish = false;
@@ -222,7 +176,7 @@ public class GameLogic {
 			if (InputUtility.getKeyPressed(KeyCode.M)) {
 				Main.GoToMenu();
 				InputUtility.getKeyPressed().remove(KeyCode.M);
-				RenderableHolder.inGameSong.stop();
+				gameSong.stop();
 			}
 //			System.out.println(Main.second);
 		}
@@ -266,12 +220,12 @@ public class GameLogic {
 
 	public void drawGamePauseOverlay() {
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
-		gc.drawImage(RenderableHolder.pauseOverlay, 480, 252);
+		gc.drawImage(RenderableHolder.pauseOverlay, 480*Constant.ScreenSize.GAMEWIDTH/1280, 252*Constant.ScreenSize.GAMEHEIGHT/720);
 	}
 
 	public void drawGameOverOverlay() {
-		GameOverButton retry = new GameOverButton((int) (1280 / 3.5), (int) (720 / 1.5), 200, 40, "RETRY(R)");
-		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 320, (int) (720 / 1.5), 200, 40, " Menu(M)");
+		GameOverButton retry = new GameOverButton((int) (Constant.ScreenSize.GAMEWIDTH / 3.5), (int) (Constant.ScreenSize.GAMEHEIGHT / 1.5), 200, 40, "RETRY(R)");
+		GameOverButton mainMenu = new GameOverButton((int) (Constant.ScreenSize.GAMEWIDTH / 3.5) + 320, (int) (Constant.ScreenSize.GAMEHEIGHT  / 1.5), 200, 40, " Menu(M)");
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
 		gc.drawImage(RenderableHolder.gameOverOverlay, 0, 0);
 		retry.draw(gc, Color.BLACK, Color.BLACK);
@@ -280,10 +234,10 @@ public class GameLogic {
 
 	public void drawWinGameOvelay(int time) {
 		// TODO Auto-generated method stub
-		GameOverButton mainMenu = new GameOverButton((int) (1280 / 3.5) + 480, (int) (720 / 1.5), 200, 40, " Menu(M)");
+		GameOverButton mainMenu = new GameOverButton((int) (Constant.ScreenSize.GAMEWIDTH / 3.5) + 480, (int) (Constant.ScreenSize.GAMEHEIGHT  / 1.5), 200, 40, " Menu(M)");
 		GraphicsContext gc = getGameScreen().getGraphicsContext2D();
-		gc.drawImage(RenderableHolder.wingameOverlay, 0, 0);
-		gc.fillText("Finish Time : " + time + " seconds", (int) (1280 / 3.5) + 420, (int) (720 / 1.7));
+		gc.drawImage(RenderableHolder.wingameOverlay, 0, 0,Constant.ScreenSize.GAMEWIDTH,Constant.ScreenSize.GAMEHEIGHT );
+		gc.fillText("Finish Time : " + time + " seconds", (int) (Constant.ScreenSize.GAMEWIDTH / 3.5) + 420, (int) (Constant.ScreenSize.GAMEHEIGHT  / 1.7));
 		mainMenu.draw(gc, Color.WHITE, Color.WHITE);
 
 	}
@@ -355,6 +309,10 @@ public class GameLogic {
 
 	public void setGameSong(AudioClip gameSong) {
 		this.gameSong = gameSong;
+	}
+
+	public Map1 getMap() {
+		return map;
 	}
 
 	

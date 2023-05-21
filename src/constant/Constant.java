@@ -5,5 +5,5 @@ public class Constant {
 		public final static int GAMEWIDTH = 1280;
 		public final static int GAMEHEIGHT = 720;
 	}
-	
+
 }

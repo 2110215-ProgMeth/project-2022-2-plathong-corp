@@ -27,7 +27,7 @@ public abstract class Enemy extends Entity {
 			((Player) p).changeHealthTo(gameLogic.getPlayer().getCurrentHealth() - dmg);
 		}
 	}
-	
+
 	public boolean checkEnemyHit() {
 		Player p = gameLogic.getPlayer();
 		double x = (double) p.getScreenPos().getX();
@@ -38,17 +38,14 @@ public abstract class Enemy extends Entity {
 
 	}
 
+	@Override
 	public void changeHealthTo(int health) {
-		if (health >= maxHp) {
-			currentHealth = maxHp;
-		} else if (health <= 0) {
+		super.changeHealthTo(health);
+			if(currentHealth == 0) {
 			RenderableHolder.monsterdie.play(0.2);
-			currentHealth = 0;
 			setDestroyed(true);
-		} else {
-			currentHealth = health;
-
-		}
+			}
+		
 	}
 
 	public void updateAttackBlock() {
@@ -61,10 +58,11 @@ public abstract class Enemy extends Entity {
 
 	public void update() {
 		super.update();
-		solidScreen = new Rectangle(getScreenPos().getX() + solidArea.getX(), getScreenPos().getY() + solidArea.getY(), solidArea.getWidth(),
-				solidArea.getHeight());
+		solidScreen = new Rectangle(getScreenPos().getX() + solidArea.getX(), getScreenPos().getY() + solidArea.getY(),
+				solidArea.getWidth(), solidArea.getHeight());
 		Player player = gameLogic.getPlayer();
-		angle = Math.atan2(player.getWorldPos().getY() - getWorldPos().getY(), player.getWorldPos().getX() - getWorldPos().getX());
+		angle = Math.atan2(player.getWorldPos().getY() - getWorldPos().getY(),
+				player.getWorldPos().getX() - getWorldPos().getX());
 	}
 
 	public void move() {
@@ -76,9 +74,9 @@ public abstract class Enemy extends Entity {
 		else
 			direction = Direction.DOWN;
 		setCollisionOn(false);
-		gameLogic.checkTile(this);
+		gameLogic.getMap().checkTile(this);
 		if (collisionOn == false) {
-			getWorldPos().setY(getWorldPos().getY()+yspeed);
+			getWorldPos().setY(getWorldPos().getY() + yspeed);
 		}
 
 		if (xspeed < 0)
@@ -87,9 +85,9 @@ public abstract class Enemy extends Entity {
 			direction = Direction.RIGHT;
 
 		setCollisionOn(false);
-		gameLogic.checkTile(this);
+		gameLogic.getMap().checkTile(this);
 		if (collisionOn == false) {
-			getWorldPos().setX(getWorldPos().getX()+xspeed);
+			getWorldPos().setX(getWorldPos().getX() + xspeed);
 		}
 	}
 
@@ -110,28 +108,29 @@ public abstract class Enemy extends Entity {
 	public EntityState getCurrentState() {
 		return currentState;
 	}
-	
+
 	public int getCurrentHealth() {
 		return currentHealth;
 	}
-	
+
 	public boolean isDead() {
 		return currentState == EntityState.DEAD;
 	}
-	
-	// Debugger
-		public void drawHitbox(GraphicsContext gc) {
-			gc.setLineWidth(2);
-			gc.setFill(Color.PINK);
-			gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidScreen.getWidth(), solidScreen.getHeight());
-		}
 
-		public void drawAttackBlock(GraphicsContext gc) {
-			gc.setFill(Color.BLACK);
-			gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
-		}
-	
+	// Debugger
+	public void drawHitbox(GraphicsContext gc) {
+		gc.setLineWidth(2);
+		gc.setFill(Color.PINK);
+		gc.strokeRect(solidScreen.getX(), solidScreen.getY(), solidScreen.getWidth(), solidScreen.getHeight());
+	}
+
+	public void drawAttackBlock(GraphicsContext gc) {
+		gc.setFill(Color.BLACK);
+		gc.strokeRect(attackBlock.getX(), attackBlock.getY(), attackBlock.getWidth(), attackBlock.getHeight());
+	}
+
 	public abstract void initSolidArea();
 
 	public abstract void initAttackBlock();
+
 }

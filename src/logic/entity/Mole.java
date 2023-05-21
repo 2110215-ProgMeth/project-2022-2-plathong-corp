@@ -71,7 +71,7 @@ public class Mole extends Enemy{
 		super.update();
 		if(currentState!= EntityState.DEAD) {
 //		System.out.println(currentHealth);
-		if (playerfound(800) && coolDown<=180)
+		if (playerfound(700) && coolDown<=180)
 			currentState = EntityState.ATTACK;
 		else
 			currentState = EntityState.DEFAULT;

@@ -13,24 +13,24 @@ public class GameOverButton {
 	protected Text text;
 	protected Rectangle bounds;
 
-	public GameOverButton(int x, int y, int width, int height,String text) {
-		
+	public GameOverButton(int x, int y, int width, int height, String text) {
+
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.text = new Text(text);
 		bounds = new Rectangle(x, y, width, height);
-		
+
 	}
-	
-	public void draw(GraphicsContext gc,Color colorStrokeRect,Color colorFillText) {
-		//(1280/2.5,720/1.5,200,40)
-		gc.strokeRect(x,y,width,height);
+
+	public void draw(GraphicsContext gc, Color colorStrokeRect, Color colorFillText) {
+		// (1280/2.5,720/1.5,200,40)
 		gc.setFill(colorStrokeRect);
+		gc.strokeRect(x, y, width, height);	
 		gc.setFont(Font.font("Times New Roman", FontWeight.BOLD, 32));
 		gc.setFill(colorFillText);
-		gc.fillText(text.getText(), (x+width/2-75), (y+height/1.3));
+		gc.fillText(text.getText(), (x + width / 2 - 75), (y + height / 1.3));
 	}
 
 	public int getX() {
@@ -45,7 +45,6 @@ public class GameOverButton {
 		return width;
 	}
 
-
 	public int getHeight() {
 		return height;
 	}
@@ -53,6 +52,5 @@ public class GameOverButton {
 	public Rectangle getBounds() {
 		return bounds;
 	}
-
 
 }

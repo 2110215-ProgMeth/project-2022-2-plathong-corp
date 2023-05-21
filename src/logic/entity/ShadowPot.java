@@ -15,7 +15,7 @@ public class ShadowPot extends Enemy {
 		image = RenderableHolder.sPRight1;
 		maxHp = 20;
 		currentHealth = maxHp;
-		delay = 1 * 60;
+
 	}
 
 	@Override
@@ -48,13 +48,14 @@ public class ShadowPot extends Enemy {
 	}
 
 	public void attack() {
-        	gameLogic.addNewProjectile(new Ball(getWorldPos().getX()+solidArea.getX(), getWorldPos().getY()+solidArea.getY(), angle,gameLogic));
-    }
+		gameLogic.addNewProjectile(new Ball(getWorldPos().getX() + solidArea.getX(),
+				getWorldPos().getY() + solidArea.getY(), angle, gameLogic));
+	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (playerfound(1000))
+		if (playerfound(500))
 			currentState = EntityState.ATTACK;
 		else
 			currentState = EntityState.DEFAULT;

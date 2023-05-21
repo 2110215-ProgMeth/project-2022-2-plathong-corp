@@ -12,7 +12,6 @@ import sharedObject.RenderableHolder;
 
 public class LlaristicKnight extends Enemy{
 
-	protected Rectangle normalAttackBlock;
 	private double probablility = 0.7;
 	private int normalSpeed = 1;
 	public LlaristicKnight(double x, double y, GameLogic gameLogic) {
@@ -100,8 +99,13 @@ public class LlaristicKnight extends Enemy{
 			if(delay==0) {
 				delay = 60;
 				attack(player);
-				RenderableHolder.katana.play(0.2);
+				RenderableHolder.katana.play(0.4);
 				gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle, gameLogic));
+				if(Math.random()>probablility) {
+					gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle+90, gameLogic));
+					gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle+180, gameLogic));
+//					gameLogic.addNewProjectile(new SwordBeam(getWorldPos().getX(), getWorldPos().getY(), angle+270, gameLogic));
+				}
 			}	
 			else if (delay == 30 && canAttack == ( Math.random()>probablility)) {
 				specialMove();
@@ -159,6 +163,8 @@ public class LlaristicKnight extends Enemy{
 		else if (health<=0) {
 			currentHealth = 0;
 			currentState = EntityState.DEAD;
+			gameLogic.getGameSong().stop();
+			gameLogic.setGameSong(RenderableHolder.inGameSong);
 		}
 		else {
 			currentHealth = health;
